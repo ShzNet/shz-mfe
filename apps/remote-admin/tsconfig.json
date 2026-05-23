@@ -6,7 +6,8 @@
     "paths": {
       "@shz/components": ["../../libs/components/src/index.ts"],
       "@shz/components/*": ["../../libs/components/src/*"],
-      "@shz/components/remote-config": ["../../libs/components/src/remote-config.ts"]
+      "@shz/core": ["../../libs/core/src/index.ts"],
+      "@shz/core/*": ["../../libs/core/src/*"]
     }
   },
   "include": ["src/**/*", "rsbuild.config.ts"],

@@ -1,4 +1,4 @@
-import { ChevronsUpDown, LayoutDashboard, Users } from 'lucide-react'
+import { ChevronsUpDown } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
@@ -7,17 +7,33 @@ import {
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar'
 import { type AppModule } from '@/hooks/use-remote-routes'
 
-const ICON_MAP: Record<string, React.ElementType> = { LayoutDashboard, Users }
+function ModuleLogo({ app, sizeClass }: { app: AppModule; sizeClass: string }) {
+  const fallback = app.name.slice(0, 2).toUpperCase()
+  return (
+    <div className={`relative ${sizeClass} overflow-hidden rounded-sm border bg-sidebar-primary`}>
+      <span className='absolute inset-0 flex items-center justify-center text-[10px] font-semibold text-sidebar-primary-foreground'>
+        {fallback}
+      </span>
+      {app.logoPng && (
+        <img
+          src={app.logoPng}
+          alt={app.name}
+          className='absolute inset-0 size-full object-cover'
+          onError={(e) => { (e.currentTarget.style.display = 'none') }}
+        />
+      )}
+    </div>
+  )
+}
 
 export function TeamSwitcher({ apps }: { apps: AppModule[] }) {
   const { isMobile } = useSidebar()
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
-  const activeApp = apps.find((app) => app.routes.some((r) => pathname.startsWith(r.path)))
+  const activeApp = apps.find((app) => pathname === app.basePath || pathname.startsWith(`${app.basePath}/`))
 
   const display = activeApp ?? null
-  const DisplayIcon = display ? ICON_MAP[display.icon] : null
 
   return (
     <SidebarMenu>
@@ -26,18 +42,16 @@ export function TeamSwitcher({ apps }: { apps: AppModule[] }) {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size='lg'
-              className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
+              className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-8! group-data-[collapsible=icon]:p-0!'
             >
-              <div className='flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground'>
-                {DisplayIcon ? <DisplayIcon className='size-4' /> : <span className='text-xs font-bold'>?</span>}
-              </div>
-              <div className='grid flex-1 text-start text-sm leading-tight'>
+              {display ? <ModuleLogo app={display} sizeClass='size-8 rounded-lg' /> : <span className='text-xs font-bold'>?</span>}
+              <div className='grid flex-1 text-start text-sm leading-tight group-data-[collapsible=icon]:hidden'>
                 <span className='truncate font-semibold'>{display?.name ?? 'Chọn module'}</span>
                 <span className='truncate text-xs text-muted-foreground'>
                   {display ? 'Đang hoạt động' : 'Chưa chọn'}
                 </span>
               </div>
-              <ChevronsUpDown className='ms-auto' />
+              <ChevronsUpDown className='ms-auto group-data-[collapsible=icon]:hidden' />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -48,17 +62,16 @@ export function TeamSwitcher({ apps }: { apps: AppModule[] }) {
           >
             <DropdownMenuLabel className='text-xs text-muted-foreground'>Modules</DropdownMenuLabel>
             {apps.map((app) => {
-              const Icon = ICON_MAP[app.icon]
               const isActive = activeApp?.id === app.id
               return (
                 <DropdownMenuItem
                   key={app.id}
-                  onClick={() => navigate(app.routes[0]?.path ?? '/')}
+                  onClick={() => navigate(app.basePath)}
                   className='gap-2 p-2'
                   data-active={isActive}
                 >
-                  <div className='flex size-6 items-center justify-center rounded-sm border data-[active=true]:border-primary data-[active=true]:bg-primary data-[active=true]:text-primary-foreground' data-active={isActive}>
-                    {Icon && <Icon className='size-4 shrink-0' />}
+                  <div data-active={isActive} className='data-[active=true]:border-primary'>
+                    <ModuleLogo app={app} sizeClass='size-6' />
                   </div>
                   <span className={isActive ? 'font-medium' : ''}>{app.name}</span>
                   {isActive && <span className='ms-auto text-xs text-muted-foreground'>active</span>}

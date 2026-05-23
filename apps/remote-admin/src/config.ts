@@ -1,20 +1,16 @@
-import type { RemoteAppConfig } from '@shz/components/remote-config'
+import type { ShellMenuConfig } from '@shz/core'
 
-const config: RemoteAppConfig = {
+const config: ShellMenuConfig = {
   nav: [
-    // Analytics
-    { title: 'Overview', path: '', icon: 'LayoutDashboard', group: 'Analytics', expose: './DashboardPage' },
-    { title: 'Analytics', path: '/analytics', icon: 'BarChart3', group: 'Analytics', expose: './AnalyticsPage' },
-    { title: 'Reports', path: '/reports', icon: 'FileText', group: 'Analytics', expose: './ReportsPage' },
-    // Management
-    { title: 'Projects', path: '/projects', icon: 'FolderKanban', group: 'Management', expose: './ProjectsPage' },
-    { title: 'Users', path: '/users', icon: 'Users', group: 'Management', expose: './UsersPage' },
-    { title: 'Tasks', path: '/tasks', icon: 'CheckSquare', group: 'Management', expose: './TasksPage' },
-    // Communication
-    { title: 'Messages', path: '/messages', icon: 'MessageSquare', group: 'Communication', expose: './MessagesPage' },
-    { title: 'Calendar', path: '/calendar', icon: 'CalendarDays', group: 'Communication', expose: './CalendarPage' },
-    // System
-    { title: 'Settings', path: '/settings', icon: 'Settings', group: 'System', expose: './SettingsPage' },
+    { title: 'Dashboard', path: '', icon: 'LayoutDashboard', group: 'General' },
+    { title: 'Projects', path: '/projects', icon: 'FolderKanban', group: 'Management' },
+    { title: 'Reports', path: '/reports', icon: 'FileText', group: 'Management' },
+    { title: 'Users Table', path: '/users-table', icon: 'Users', group: 'Management' },
+    { title: 'Tree Explorer', path: '/tree', icon: 'ShieldCheck', group: 'Utilities' },
+    { title: 'Kanban DnD', path: '/kanban', icon: 'CheckSquare', group: 'Utilities' },
+    { title: 'Calendar', path: '/calendar', icon: 'CalendarDays', group: 'Utilities' },
+    { title: 'UI Forms', path: '/ui-forms', icon: 'Settings', group: 'Components' },
+    { title: 'UI Data', path: '/ui-data', icon: 'BarChart3', group: 'Components' },
   ],
 }
 

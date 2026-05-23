@@ -180,21 +180,32 @@ function OverviewTab() {
         <Card className='lg:col-span-2'>
           <CardHeader>
             <CardTitle>Revenue Trend</CardTitle>
-            <CardDescription>Monthly comparison with skeleton placeholder for chart area</CardDescription>
+            <CardDescription>Monthly revenue vs target</CardDescription>
           </CardHeader>
-          <CardContent className='space-y-2'>
-            {Array.from({ length: 7 }, (_, i) => (
-              <div key={i} className='flex items-center gap-3'>
-                <Skeleton className='h-4 w-12 shrink-0' />
-                <div className='flex-1 overflow-hidden rounded-full bg-muted'>
-                  <div
-                    className='h-5 rounded-full bg-primary/70 transition-all'
-                    style={{ width: `${30 + Math.sin(i * 1.2) * 20 + i * 8}%` }}
-                  />
-                </div>
-                <Skeleton className='h-4 w-16 shrink-0' />
-              </div>
-            ))}
+          <CardContent>
+            <div className='h-52 w-full rounded-md border bg-muted/20 p-3'>
+              <svg viewBox='0 0 640 220' className='h-full w-full'>
+                <polyline
+                  points='20,170 100,150 180,160 260,120 340,110 420,90 500,105 620,70'
+                  fill='none'
+                  stroke='currentColor'
+                  strokeWidth='3'
+                  className='text-primary'
+                />
+                <polyline
+                  points='20,180 100,170 180,150 260,145 340,130 420,125 500,120 620,110'
+                  fill='none'
+                  stroke='currentColor'
+                  strokeWidth='2'
+                  strokeDasharray='6 4'
+                  className='text-muted-foreground'
+                />
+              </svg>
+            </div>
+            <div className='mt-3 flex items-center gap-4 text-xs text-muted-foreground'>
+              <span className='inline-flex items-center gap-1'><span className='size-2 rounded-full bg-primary' />Revenue</span>
+              <span className='inline-flex items-center gap-1'><span className='size-2 rounded-full bg-muted-foreground' />Target</span>
+            </div>
           </CardContent>
         </Card>
 
@@ -218,6 +229,56 @@ function OverviewTab() {
                   <Badge variant='outline' className='shrink-0 text-xs'>{emp.role}</Badge>
                 </div>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className='grid gap-4 lg:grid-cols-3'>
+        <Card className='lg:col-span-2'>
+          <CardHeader>
+            <CardTitle>Traffic Sources</CardTitle>
+            <CardDescription>Channel contribution (%)</CardDescription>
+          </CardHeader>
+          <CardContent className='space-y-3'>
+            {[
+              { label: 'Organic Search', value: 42 },
+              { label: 'Direct', value: 28 },
+              { label: 'Social', value: 18 },
+              { label: 'Referral', value: 12 },
+            ].map((row) => (
+              <div key={row.label} className='space-y-1'>
+                <div className='flex justify-between text-xs text-muted-foreground'>
+                  <span>{row.label}</span>
+                  <span>{row.value}%</span>
+                </div>
+                <div className='h-2 overflow-hidden rounded bg-muted'>
+                  <div className='h-full rounded bg-primary/80' style={{ width: `${row.value}%` }} />
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Conversion</CardTitle>
+            <CardDescription>Weekly goal progress</CardDescription>
+          </CardHeader>
+          <CardContent className='flex items-center justify-center'>
+            <div className='relative flex h-36 w-36 items-center justify-center'>
+              <div
+                className='absolute inset-0 rounded-full'
+                style={{
+                  background:
+                    'conic-gradient(var(--color-primary) 0 72%, var(--color-muted) 72% 100%)',
+                }}
+              />
+              <div className='absolute inset-3 rounded-full bg-background' />
+              <div className='relative text-center'>
+                <p className='text-2xl font-bold'>72%</p>
+                <p className='text-xs text-muted-foreground'>of target</p>
+              </div>
             </div>
           </CardContent>
         </Card>

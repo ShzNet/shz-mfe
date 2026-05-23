@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {
+  type Column,
   type ColumnDef,
   type ColumnFiltersState,
   type SortingState,
@@ -16,7 +17,10 @@ import { Button } from './button'
 import { Input } from './input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table'
 import {
-  DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './dropdown-menu'
 import { cn } from '../lib/utils'
@@ -31,7 +35,15 @@ interface DataTableProps<TData, TValue> {
   searchPlaceholder?: string
   pageSize?: number
   className?: string
+  /** Show header dropdown on each column with sort + quick filter */
+  headerMenu?: boolean
+  /** Per-column filter UI in header menu */
+  headerFilterConfig?: Record<string, HeaderFilterConfig>
 }
+
+type HeaderFilterConfig =
+  | { type: 'text'; placeholder?: string }
+  | { type: 'select'; options: Array<{ label: string; value: string }>; allLabel?: string }
 
 export function DataTable<TData, TValue>({
   columns,
@@ -40,6 +52,8 @@ export function DataTable<TData, TValue>({
   searchPlaceholder = 'Search…',
   pageSize = 10,
   className,
+  headerMenu = false,
+  headerFilterConfig,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -105,9 +119,17 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
+                    {header.isPlaceholder ? null : (
+                      headerMenu && (header.column.getCanSort() || header.column.getCanFilter()) ? (
+                        <HeaderMenu
+                          column={header.column}
+                          label={getHeaderLabel(header.column, header.getContext())}
+                          filterConfig={headerFilterConfig?.[header.column.id]}
+                        />
+                      ) : (
+                        flexRender(header.column.columnDef.header, header.getContext())
+                      )
+                    )}
                   </TableHead>
                 ))}
               </TableRow>
@@ -163,6 +185,85 @@ export function DataTable<TData, TValue>({
           </Button>
         </div>
       </div>
+    </div>
+  )
+}
+
+function getHeaderLabel<TData, TValue>(column: Column<TData, TValue>, ctx: unknown) {
+  const header = column.columnDef.header
+  if (typeof header === 'string') return header
+  if (typeof column.id === 'string') return column.id
+  return String(column.id ?? '')
+}
+
+function HeaderMenu<TData, TValue>({
+  column,
+  label,
+  filterConfig,
+}: {
+  column: Column<TData, TValue>
+  label: string
+  filterConfig?: HeaderFilterConfig
+}) {
+  const canSort = column.getCanSort()
+  const canFilter = column.getCanFilter()
+  const filterValue = (column.getFilterValue() as string) ?? ''
+  const config = filterConfig ?? { type: 'text', placeholder: `Filter ${label}...` as string }
+
+  return (
+    <div className='flex items-center gap-1'>
+      <span className='text-sm'>{label}</span>
+      {canSort && (
+        <Button
+          variant='ghost'
+          size='icon'
+          className='size-7'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          <ArrowUpDown className='size-3.5 opacity-70' />
+        </Button>
+      )}
+      {canFilter && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant='ghost' size='icon' className='size-7'>
+              <ChevronDown className='size-3.5 opacity-70' />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align='start' className='w-56'>
+            {canFilter && config.type === 'text' && (
+              <div className='p-2'>
+                <Input
+                  placeholder={config.placeholder ?? `Filter ${label}...`}
+                  value={filterValue}
+                  onChange={(e) => column.setFilterValue(e.target.value)}
+                  className='h-8'
+                />
+              </div>
+            )}
+            {canFilter && config.type === 'select' && (
+              <div className='p-1'>
+                <button
+                  className='w-full rounded px-2 py-1 text-left text-sm hover:bg-accent'
+                  onClick={() => column.setFilterValue('')}
+                >
+                  {config.allLabel ?? 'All'}
+                </button>
+                {config.options.map((opt) => (
+                  <button
+                    key={opt.value}
+                    className='w-full rounded px-2 py-1 text-left text-sm hover:bg-accent'
+                    onClick={() => column.setFilterValue(opt.value)}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            )}
+            {canSort && canFilter && <DropdownMenuSeparator />}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </div>
   )
 }

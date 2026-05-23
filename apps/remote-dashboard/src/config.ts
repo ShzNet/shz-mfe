@@ -1,8 +1,8 @@
-import type { RemoteAppConfig } from '@shz/components/remote-config'
+import type { ShellMenuConfig } from '@shz/core'
 
-const config: RemoteAppConfig = {
+const config: ShellMenuConfig = {
   nav: [
-    { title: 'Overview', path: '', icon: 'LayoutDashboard', group: 'General', expose: './Page' },
+    { title: 'Overview', path: '', icon: 'LayoutDashboard', group: 'General' },
   ],
 }
 

@@ -3,7 +3,7 @@ import {
   Card, CardContent, CardHeader, CardTitle,
   Badge, Button,
   Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter,
-  Input, Label, Textarea,
+  Input, DateInput, Label, Textarea,
   Select, SelectTrigger, SelectValue, SelectContent, SelectItem,
 } from '@shz/components'
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
@@ -98,7 +98,7 @@ export default function CalendarPage() {
   })
 
   return (
-    <div className='flex flex-1 flex-col gap-6 p-4 pt-0'>
+    <div className='flex h-full min-h-0 flex-1 flex-col gap-6 p-4 pt-0'>
       <div className='flex items-center justify-between pt-4'>
         <div>
           <h1 className='text-2xl font-bold tracking-tight'>Calendar</h1>
@@ -115,7 +115,7 @@ export default function CalendarPage() {
             <div className='space-y-3'>
               <div className='space-y-1.5'><Label>Title</Label><Input placeholder='Event title' value={newEvent.title} onChange={(e) => setNewEvent((p) => ({ ...p, title: e.target.value }))} /></div>
               <div className='grid grid-cols-2 gap-3'>
-                <div className='space-y-1.5'><Label>Date</Label><Input type='date' defaultValue={selectedDate ?? todayStr} onChange={(e) => setSelectedDate(e.target.value)} /></div>
+                <div className='space-y-1.5'><Label>Date</Label><DateInput defaultValue={selectedDate ?? todayStr} onChange={(e) => setSelectedDate(e.target.value)} /></div>
                 <div className='space-y-1.5'><Label>Time</Label><Input type='time' value={newEvent.time} onChange={(e) => setNewEvent((p) => ({ ...p, time: e.target.value }))} /></div>
               </div>
               <div className='space-y-1.5'>
@@ -138,9 +138,9 @@ export default function CalendarPage() {
         </Dialog>
       </div>
 
-      <div className='grid gap-4 lg:grid-cols-4'>
+      <div className='grid min-h-0 flex-1 gap-4 lg:grid-cols-4'>
         {/* Calendar grid */}
-        <Card className='lg:col-span-3'>
+        <Card className='flex min-h-0 flex-col lg:col-span-3'>
           <CardHeader className='pb-2'>
             <div className='flex items-center justify-between'>
               <CardTitle>{MONTHS[month]} {year}</CardTitle>
@@ -150,7 +150,7 @@ export default function CalendarPage() {
               </div>
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className='min-h-0'>
             <div className='grid grid-cols-7 gap-px'>
               {DAYS.map((d) => (
                 <div key={d} className='py-2 text-center text-xs font-medium text-muted-foreground'>{d}</div>

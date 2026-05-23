@@ -87,12 +87,11 @@ export function NoAppSelected({ apps }: NoAppSelectedProps) {
             {apps.map((app) => {
               const Icon = ICON_MAP[app.icon]
               const color = APP_COLORS[app.id] ?? FALLBACK_COLOR
-              const firstRoute = app.routes[0]?.path ?? '/'
 
               return (
                 <button
                   key={app.id}
-                  onClick={() => navigate(firstRoute)}
+                  onClick={() => navigate(app.basePath)}
                   className={`group relative flex items-center gap-4 overflow-hidden rounded-2xl border bg-gradient-to-br p-5 text-start ring-2 ring-transparent transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${color.bg} ${color.ring}`}
                 >
                   <div className={`flex size-12 shrink-0 items-center justify-center rounded-xl border bg-background/60 backdrop-blur-sm ${color.text}`}>

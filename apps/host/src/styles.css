@@ -10,6 +10,7 @@
  * in remote modules" problem — host compiles CSS for everyone.
  */
 @source "../../../libs/components/src";
+@source "../../../apps/remote-admin/src";
 @source "../../../apps/remote-dashboard/src";
 @source "../../../apps/remote-users/src";
 

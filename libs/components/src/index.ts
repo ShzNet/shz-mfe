@@ -11,8 +11,10 @@ export { Progress } from './ui/progress'
 
 // Inputs
 export { Input } from './ui/input'
+export { DateInput } from './ui/date-input'
 export { Textarea } from './ui/textarea'
 export { Label } from './ui/label'
+export { Form, FormItem, FormLabel, FormControl, FormDescription, FormMessage, FormField } from './ui/form'
 export { Checkbox } from './ui/checkbox'
 export { RadioGroup, RadioGroupItem } from './ui/radio-group'
 export { Switch } from './ui/switch'
@@ -42,6 +44,13 @@ export {
   Sheet, SheetTrigger, SheetClose, SheetContent,
   SheetHeader, SheetFooter, SheetTitle, SheetDescription,
 } from './ui/sheet'
+export {
+  Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent,
+  SidebarGroupLabel, SidebarHeader, SidebarInput, SidebarInset, SidebarMenu, SidebarMenuAction,
+  SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSkeleton, SidebarMenuSub,
+  SidebarMenuSubButton, SidebarMenuSubItem, SidebarProvider, SidebarRail, SidebarSeparator,
+  SidebarTrigger, useSidebar,
+} from './ui/sidebar'
 
 // Overlays
 export {
@@ -56,6 +65,7 @@ export {
   DropdownMenuSubTrigger, DropdownMenuRadioGroup,
 } from './ui/dropdown-menu'
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './ui/tooltip'
+export { Toaster, toast } from './ui/sonner'
 export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor, PopoverClose } from './ui/popover'
 export {
   Command, CommandDialog, CommandInput, CommandList, CommandEmpty,
@@ -69,3 +79,9 @@ export { Collapsible, CollapsibleTrigger, CollapsibleContent } from './ui/collap
 export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from './ui/table'
 export { DataTable, SortableHeader, type ColumnDef } from './ui/data-table'
 export { Tree, type TreeNode } from './ui/tree'
+export { TreeTable, type TreeTableRow } from './ui/tree-table'
+export { VirtualList } from './ui/virtual-list'
+export { SplitButton, type SplitButtonItem } from './ui/split-button'
+export { Autocomplete, type AutocompleteOption } from './ui/autocomplete'
+export { MultiSelect, type MultiSelectOption } from './ui/multi-select'
+export { FileUploader } from './ui/file-uploader'

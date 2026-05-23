@@ -32,7 +32,7 @@ export function AppSidebar({ apps }: { apps: AppModule[] }) {
   const { collapsible, variant } = useLayout()
   const { pathname } = useLocation()
 
-  const activeApp = apps.find((app) => app.routes.some((r) => pathname.startsWith(r.path)))
+  const activeApp = apps.find((app) => pathname === app.basePath || pathname.startsWith(`${app.basePath}/`))
   const navGroups = activeApp ? buildNavGroups(activeApp.routes) : []
 
   return (

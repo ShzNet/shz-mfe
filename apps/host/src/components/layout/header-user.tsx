@@ -29,15 +29,11 @@ export function HeaderUser({ user }: { user: SidebarUser }) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <button className='flex items-center gap-2 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring'>
+          <button className='rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring'>
             <Avatar className='size-8'>
               <AvatarImage src={user.avatar} alt={user.name} />
               <AvatarFallback className='text-xs font-semibold'>{initials}</AvatarFallback>
             </Avatar>
-            <div className='hidden text-start sm:block'>
-              <p className='text-sm font-medium leading-none'>{user.name}</p>
-              <p className='text-xs text-muted-foreground'>{user.email}</p>
-            </div>
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='min-w-56 rounded-lg'>

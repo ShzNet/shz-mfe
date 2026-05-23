@@ -37,7 +37,11 @@ export function AuthenticatedLayout({ apps }: { apps: AppModule[] }) {
               <HeaderUser user={HEADER_USER} />
             </div>
           </Header>
-          <Outlet />
+          <main className='flex min-h-0 flex-1 flex-col px-4 pb-4 md:px-6 md:pb-6'>
+            <div className='mx-auto flex min-h-0 w-full max-w-[1600px] flex-1 flex-col'>
+              <Outlet />
+            </div>
+          </main>
         </SidebarInset>
       </SidebarProvider>
     </LayoutProvider>

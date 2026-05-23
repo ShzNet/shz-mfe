@@ -42,10 +42,8 @@ export function App() {
     )
   }
 
-  const allRoutes = apps.flatMap((app) => app.routes)
-
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Routes>
         <Route path='/sign-in' element={<SignIn />} />
 
@@ -67,14 +65,14 @@ export function App() {
             </AuthGuard>
           }
         >
-          {allRoutes.map((route) => (
+          {apps.map((app) => (
             <Route
-              key={route.path}
-              path={route.path}
+              key={app.id}
+              path={`${app.basePath}/*`}
               element={
                 <RemoteModule
-                  remoteName={route.remoteName}
-                  exposedModule={route.exposedModule}
+                  remoteName={app.remoteName}
+                  exposedModule='./Page'
                 />
               }
             />

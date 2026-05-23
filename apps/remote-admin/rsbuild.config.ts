@@ -49,15 +49,7 @@ export default defineConfig({
       name: 'remote_admin',
       exposes: {
         './config': './src/config.ts',
-        './DashboardPage': './src/pages/dashboard.tsx',
-        './AnalyticsPage': './src/pages/analytics.tsx',
-        './ReportsPage': './src/pages/reports.tsx',
-        './ProjectsPage': './src/pages/projects.tsx',
-        './UsersPage': './src/pages/users.tsx',
-        './TasksPage': './src/pages/tasks.tsx',
-        './MessagesPage': './src/pages/messages.tsx',
-        './CalendarPage': './src/pages/calendar.tsx',
-        './SettingsPage': './src/pages/settings.tsx',
+        './Page': './src/pages/app.tsx',
       },
       shared: {
         react: { singleton: true, requiredVersion: false },

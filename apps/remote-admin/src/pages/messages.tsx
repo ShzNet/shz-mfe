@@ -101,9 +101,9 @@ export default function MessagesPage() {
 
   return (
     <TooltipProvider>
-      <div className='flex flex-1 gap-0 p-4 pt-0 h-[calc(100vh-8rem)]'>
+      <div className='flex h-full min-h-0 flex-1 gap-0 p-4 pt-0'>
         {/* Sidebar */}
-        <Card className='w-72 shrink-0 flex flex-col rounded-r-none border-r-0'>
+        <Card className='flex w-72 min-h-0 shrink-0 flex-col rounded-r-none border-r-0'>
           <div className='p-3 border-b'>
             <div className='flex items-center justify-between mb-2'>
               <h2 className='font-semibold text-sm'>Messages</h2>
@@ -121,7 +121,7 @@ export default function MessagesPage() {
               />
             </div>
           </div>
-          <ScrollArea className='flex-1'>
+          <ScrollArea className='min-h-0 flex-1'>
             <div className='divide-y'>
               {filtered.map((conv) => (
                 <button
@@ -163,7 +163,7 @@ export default function MessagesPage() {
         </Card>
 
         {/* Chat area */}
-        <Card className='flex-1 flex flex-col rounded-l-none'>
+        <Card className='flex min-h-0 flex-1 flex-col rounded-l-none'>
           {/* Header */}
           <div className='flex items-center justify-between px-4 py-3 border-b shrink-0'>
             <div className='flex items-center gap-3'>
@@ -201,7 +201,7 @@ export default function MessagesPage() {
           </div>
 
           {/* Messages */}
-          <ScrollArea className='flex-1 px-4'>
+          <ScrollArea className='min-h-0 flex-1 px-4'>
             <div className='space-y-4 py-4'>
               {active.messages.map((msg) => (
                 <div key={msg.id} className={`flex ${msg.from === 'me' ? 'justify-end' : 'justify-start'}`}>

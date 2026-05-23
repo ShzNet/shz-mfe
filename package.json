@@ -1,0 +1,20 @@
+{
+  "name": "shz-mfe",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "nx run-many -t dev --parallel=3",
+    "dev:host": "nx dev host",
+    "dev:remote-dashboard": "nx dev remote-dashboard",
+    "dev:remote-users": "nx dev remote-users",
+    "dev:remote-admin": "nx dev remote-admin",
+    "start:all": "nx run-many -t dev --parallel=3",
+    "preview:all": "nx run-many -t preview --parallel=3",
+    "build": "nx run-many -t build",
+    "build:all": "nx run-many -t build --parallel=3"
+  },
+  "devDependencies": {
+    "nx": "^21.0.0",
+    "typescript": "~5.8.0"
+  }
+}

@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* Same theme variables as host — ensures consistent look in standalone mode */
+@import "../../../libs/components/src/styles/theme.css";
+
+/* Scan @shz/components so shared component classes are included */
+@source "../../../libs/components/src";
+
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; }
+}

@@ -49,6 +49,7 @@ export default defineConfig({
       },
     }),
     pluginModuleFederation({
+      dts: false,
       name: 'remote_dashboard',
       exposes: {
         './Page': './src/pages/page.tsx',

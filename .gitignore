@@ -16,7 +16,7 @@ coverage/
 # Rsbuild / Rspack caches
 .rsbuild/
 .rspack-cache/
-apps/host/@mf-types/
+apps/**/@mf-types/
 
 # Nx cache and local state
 .nx/

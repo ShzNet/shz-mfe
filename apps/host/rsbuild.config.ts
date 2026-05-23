@@ -44,6 +44,7 @@ export default defineConfig({
       },
     }),
     pluginModuleFederation({
+      dts: false,
       name: 'host',
       // No static remotes — all registered at runtime via registerRemotes()
       remotes: {},

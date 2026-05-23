@@ -46,6 +46,7 @@ export default defineConfig({
       },
     }),
     pluginModuleFederation({
+      dts: false,
       name: 'remote_admin',
       exposes: {
         './config': './src/config.ts',

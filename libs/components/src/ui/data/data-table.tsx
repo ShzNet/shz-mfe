@@ -13,17 +13,17 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { ArrowUpDown, ChevronDown } from 'lucide-react'
-import { Button } from './button'
-import { Input } from './input'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table'
+import { Button } from '../button'
+import { Input } from '../input'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../table'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from './dropdown-menu'
-import { cn } from '../lib/utils'
+} from '../dropdown-menu'
+import { cn } from '../../lib/utils'
 
 export { type ColumnDef }
 

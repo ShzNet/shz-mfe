@@ -15,21 +15,29 @@ import {
 } from '@shz/components'
 
 const ALL_COMPONENTS = [
+  // shadcn/ui standard
   'Accordion', 'Alert', 'Alert Dialog', 'Aspect Ratio', 'Avatar', 'Badge', 'Breadcrumb', 'Button',
-  'Button Group', 'Calendar', 'Card', 'Carousel', 'Chart', 'Checkbox', 'Collapsible', 'Combobox',
-  'Command', 'Context Menu', 'Data Table', 'Date Picker', 'Dialog', 'Direction', 'Drawer',
-  'Dropdown Menu', 'Empty', 'Field', 'Hover Card', 'Input', 'Input Group', 'Input OTP', 'Item',
-  'Kbd', 'Label', 'Menubar', 'Native Select', 'Navigation Menu', 'Pagination', 'Popover',
-  'Progress', 'Radio Group', 'Resizable', 'Scroll Area', 'Select', 'Separator', 'Sheet', 'Sidebar',
-  'Skeleton', 'Slider', 'Sonner', 'Spinner', 'Switch', 'Table', 'Tabs', 'Textarea', 'Toast',
-  'Toggle', 'Toggle Group', 'Tooltip', 'Typography',
+  'Calendar', 'Card', 'Carousel', 'Chart', 'Checkbox', 'Collapsible', 'Command', 'Context Menu',
+  'Data Table', 'Dialog', 'Drawer', 'Dropdown Menu', 'Hover Card', 'Input', 'Input OTP', 'Label',
+  'Menubar', 'Navigation Menu', 'Pagination', 'Popover', 'Progress', 'Radio Group', 'Resizable',
+  'Scroll Area', 'Select', 'Separator', 'Sheet', 'Sidebar', 'Skeleton', 'Slider', 'Sonner',
+  'Switch', 'Table', 'Tabs', 'Textarea', 'Toggle', 'Toggle Group', 'Tooltip',
+  // custom / extended
+  'Autocomplete', 'Date Input', 'File Uploader', 'Multi Select', 'Split Button',
+  'Stats Card', 'Data Table (Extended)', 'Tree', 'Tree Table', 'Virtual List',
 ] as const
 
 const INSTALLED = new Set([
-  'Accordion', 'Avatar', 'Badge', 'Breadcrumb', 'Button', 'Card', 'Checkbox', 'Collapsible',
-  'Command', 'Data Table', 'Dialog', 'Dropdown Menu', 'Input', 'Label', 'Pagination', 'Popover',
-  'Progress', 'Radio Group', 'Scroll Area', 'Select', 'Separator', 'Sheet', 'Sidebar', 'Skeleton',
-  'Slider', 'Sonner', 'Switch', 'Table', 'Tabs', 'Textarea', 'Toggle', 'Toggle Group', 'Tooltip',
+  // shadcn/ui standard
+  'Accordion', 'Alert', 'Alert Dialog', 'Avatar', 'Badge', 'Breadcrumb', 'Button', 'Calendar',
+  'Card', 'Checkbox', 'Collapsible', 'Command', 'Context Menu', 'Data Table', 'Dialog', 'Drawer',
+  'Dropdown Menu', 'Hover Card', 'Input', 'Input OTP', 'Label', 'Menubar', 'Navigation Menu',
+  'Pagination', 'Popover', 'Progress', 'Radio Group', 'Resizable', 'Scroll Area', 'Select',
+  'Separator', 'Sheet', 'Sidebar', 'Skeleton', 'Slider', 'Sonner', 'Switch', 'Table', 'Tabs',
+  'Textarea', 'Toggle', 'Toggle Group', 'Tooltip',
+  // custom / extended
+  'Autocomplete', 'Date Input', 'File Uploader', 'Multi Select', 'Split Button',
+  'Stats Card', 'Data Table (Extended)', 'Tree', 'Tree Table', 'Virtual List',
 ])
 
 export default function ShadcnCatalogPage() {

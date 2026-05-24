@@ -1,4 +1,8 @@
-import { LayoutDashboard, Users, ShieldCheck, CheckSquare, Settings, BarChart3, FileText, FolderKanban, MessageSquare, CalendarDays } from 'lucide-react'
+import {
+  LayoutDashboard, Users, ShieldCheck, CheckSquare, Settings, BarChart3, FileText,
+  FolderKanban, MessageSquare, CalendarDays, TrendingUp, Table2, GitBranch, LayoutGrid,
+  Package, FormInput, Layers, Navigation, Bell, ClipboardList, Database,
+} from 'lucide-react'
 import { useLocation } from 'react-router-dom'
 import {
   Sidebar, SidebarContent, SidebarHeader, SidebarRail,
@@ -12,6 +16,8 @@ import { TeamSwitcher } from './team-switcher'
 const ICON_MAP: Record<string, React.ElementType> = {
   LayoutDashboard, Users, ShieldCheck, CheckSquare, Settings,
   BarChart3, FileText, FolderKanban, MessageSquare, CalendarDays,
+  TrendingUp, Table2, GitBranch, LayoutGrid,
+  Package, FormInput, Layers, Navigation, Bell, ClipboardList, Database,
 }
 
 function buildNavGroups(routes: RemoteRouteConfig[]): NavGroup[] {

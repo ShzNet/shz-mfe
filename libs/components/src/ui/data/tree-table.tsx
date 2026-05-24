@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { ChevronRight } from 'lucide-react'
-import { cn } from '../lib/utils'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './table'
+import { cn } from '../../lib/utils'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../table'
 
 export interface TreeTableRow {
   id: string

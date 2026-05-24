@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Upload, FileText } from 'lucide-react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 interface FileUploaderProps {
   onFilesChange?: (files: File[]) => void

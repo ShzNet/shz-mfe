@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { ChevronRightIcon, FileIcon, FolderIcon, FolderOpenIcon } from 'lucide-react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
 
 export interface TreeNode {
   id: string

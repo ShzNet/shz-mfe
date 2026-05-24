@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { ChevronDown } from 'lucide-react'
-import { Button } from './button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './dropdown-menu'
+import { Button } from '../button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../dropdown-menu'
 
 export interface SplitButtonItem {
   label: string

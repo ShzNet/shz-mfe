@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { Check, ChevronsUpDown } from 'lucide-react'
-import { cn } from '../lib/utils'
-import { Button } from './button'
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from './command'
-import { Popover, PopoverContent, PopoverTrigger } from './popover'
+import { cn } from '../../lib/utils'
+import { Button } from '../button'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../command'
+import { Popover, PopoverContent, PopoverTrigger } from '../popover'
 
 export interface AutocompleteOption {
   label: string

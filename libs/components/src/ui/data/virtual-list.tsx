@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ScrollArea } from './scroll-area'
+import { ScrollArea } from '../scroll-area'
 
 interface VirtualListProps<T> {
   items: T[]

@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { X } from 'lucide-react'
-import { Badge } from './badge'
-import { Button } from './button'
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from './dropdown-menu'
+import { Badge } from '../badge'
+import { Button } from '../button'
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '../dropdown-menu'
 
 export interface MultiSelectOption {
   label: string

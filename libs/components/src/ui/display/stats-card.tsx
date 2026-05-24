@@ -1,7 +1,7 @@
 import { type ElementType } from 'react'
 import { TrendingUp, TrendingDown } from 'lucide-react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './card'
-import { cn } from '../lib/utils'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../card'
+import { cn } from '../../lib/utils'
 
 export interface StatsCardProps {
   title: string

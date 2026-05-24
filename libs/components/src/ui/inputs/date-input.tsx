@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Calendar } from 'lucide-react'
-import { cn } from '../lib/utils'
-import { Input } from './input'
+import { cn } from '../../lib/utils'
+import { Input } from '../input'
 
 const DateInput = React.forwardRef<HTMLInputElement, React.ComponentProps<typeof Input>>(
   ({ className, ...props }, ref) => {

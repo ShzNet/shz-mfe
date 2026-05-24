@@ -15,9 +15,7 @@
     "projectsRelationship": "independent",
     "version": {
       "conventionalCommits": true,
-      "generatorOptions": {
-        "fallbackCurrentVersionResolver": "disk"
-      },
+      "fallbackCurrentVersionResolver": "disk",
       "git": {
         "commit": false,
         "stageChanges": true,

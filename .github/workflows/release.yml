@@ -41,14 +41,23 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Check first release
+        id: first_release
+        run: |
+          if git tag --list | grep -qE '^(core|components)@'; then
+            echo "flag=" >> $GITHUB_OUTPUT
+          else
+            echo "flag=--first-release" >> $GITHUB_OUTPUT
+          fi
+
       - name: Version
-        run: pnpm nx release version
+        run: pnpm nx release version ${{ steps.first_release.outputs.flag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NX_NO_CLOUD: true
 
       - name: Changelog
-        run: pnpm nx release changelog
+        run: pnpm nx release changelog ${{ steps.first_release.outputs.flag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NX_NO_CLOUD: true

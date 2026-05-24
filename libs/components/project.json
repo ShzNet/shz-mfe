@@ -19,6 +19,14 @@
         "command": "tsup --watch",
         "cwd": "{projectRoot}"
       }
+    },
+    "nx-release-publish": {
+      "executor": "@nx/js:release-publish",
+      "dependsOn": ["build"],
+      "options": {
+        "packageRoot": "{projectRoot}",
+        "registry": "https://registry.npmjs.org"
+      }
     }
   }
 }

@@ -9,5 +9,24 @@
     "dev": {
       "cache": false
     }
+  },
+  "release": {
+    "projects": ["core", "components"],
+    "projectsRelationship": "independent",
+    "version": {
+      "conventionalCommits": true,
+      "generatorOptions": {
+        "fallbackCurrentVersionResolver": "disk"
+      }
+    },
+    "changelog": {
+      "projectChangelogs": true,
+      "workspaceChangelog": false
+    },
+    "git": {
+      "commit": true,
+      "commitMessage": "chore(release): publish [skip ci]",
+      "tag": true
+    }
   }
 }

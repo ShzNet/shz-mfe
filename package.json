@@ -14,6 +14,7 @@
     "build:all": "nx run-many -t build --parallel=3"
   },
   "devDependencies": {
+    "@nx/js": "^21.0.0",
     "nx": "^21.0.0",
     "typescript": "~5.8.0"
   }

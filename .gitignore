@@ -31,6 +31,9 @@ apps/**/@mf-types/
 .env.test.local
 .env.production.local
 
+# pnpm store
+.pnpm-store/
+
 # OS / editor
 .DS_Store
 Thumbs.db

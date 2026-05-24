@@ -29,12 +29,12 @@ const ALL_COMPONENTS = [
 
 const INSTALLED = new Set([
   // shadcn/ui standard
-  'Accordion', 'Alert', 'Alert Dialog', 'Avatar', 'Badge', 'Breadcrumb', 'Button', 'Calendar',
-  'Card', 'Checkbox', 'Collapsible', 'Command', 'Context Menu', 'Data Table', 'Dialog', 'Drawer',
-  'Dropdown Menu', 'Hover Card', 'Input', 'Input OTP', 'Label', 'Menubar', 'Navigation Menu',
-  'Pagination', 'Popover', 'Progress', 'Radio Group', 'Resizable', 'Scroll Area', 'Select',
-  'Separator', 'Sheet', 'Sidebar', 'Skeleton', 'Slider', 'Sonner', 'Switch', 'Table', 'Tabs',
-  'Textarea', 'Toggle', 'Toggle Group', 'Tooltip',
+  'Accordion', 'Alert', 'Alert Dialog', 'Aspect Ratio', 'Avatar', 'Badge', 'Breadcrumb', 'Button',
+  'Calendar', 'Card', 'Carousel', 'Chart', 'Checkbox', 'Collapsible', 'Command', 'Context Menu',
+  'Data Table', 'Dialog', 'Drawer', 'Dropdown Menu', 'Hover Card', 'Input', 'Input OTP', 'Label',
+  'Menubar', 'Navigation Menu', 'Pagination', 'Popover', 'Progress', 'Radio Group', 'Resizable',
+  'Scroll Area', 'Select', 'Separator', 'Sheet', 'Sidebar', 'Skeleton', 'Slider', 'Sonner',
+  'Switch', 'Table', 'Tabs', 'Textarea', 'Toggle', 'Toggle Group', 'Tooltip',
   // custom / extended
   'Autocomplete', 'Date Input', 'File Uploader', 'Multi Select', 'Split Button',
   'Stats Card', 'Data Table (Extended)', 'Tree', 'Tree Table', 'Virtual List',

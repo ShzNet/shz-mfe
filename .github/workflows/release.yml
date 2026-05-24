@@ -41,8 +41,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Version & Changelog
-        run: pnpm nx release --skip-publish --yes
+      - name: Version
+        run: pnpm nx release version --yes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NX_NO_CLOUD: true
+
+      - name: Changelog
+        run: pnpm nx release changelog --yes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NX_NO_CLOUD: true

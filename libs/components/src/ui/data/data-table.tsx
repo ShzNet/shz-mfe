@@ -4,6 +4,7 @@ import {
   type ColumnDef,
   type ColumnFiltersState,
   type ColumnOrderState,
+  type RowData,
   type OnChangeFn,
   type RowSelectionState,
   type SortingState,
@@ -57,6 +58,7 @@ interface DataTableProps<TData, TValue> {
   showColumnToggle?: boolean
   stickyHeader?: boolean
   tableWrapperClassName?: string
+  getRowId?: (originalRow: TData, index: number, parent?: RowData) => string
 }
 
 type HeaderFilterConfig =
@@ -84,6 +86,7 @@ export function DataTable<TData, TValue>({
   showColumnToggle = true,
   stickyHeader = false,
   tableWrapperClassName,
+  getRowId,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [internalColumnFilters, setInternalColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -141,6 +144,7 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getRowId,
     state: { sorting, columnFilters, columnVisibility, columnOrder, rowSelection },
   })
 

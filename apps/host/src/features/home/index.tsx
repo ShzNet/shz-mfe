@@ -99,9 +99,7 @@ export function NoAppSelected({ apps }: NoAppSelectedProps) {
                   </div>
                   <div className='min-w-0 flex-1'>
                     <p className='font-semibold'>{app.name}</p>
-                    <p className='text-xs text-muted-foreground'>
-                      {app.routes.length} page{app.routes.length !== 1 ? 's' : ''}
-                    </p>
+                    <p className='text-xs text-muted-foreground'>Mở module</p>
                   </div>
                   <ChevronRight className='size-4 shrink-0 text-muted-foreground/50 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-muted-foreground' />
                 </button>

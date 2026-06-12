@@ -1,15 +1,4 @@
-import { useEffect, useState } from 'react'
-import { registerRemotes, loadRemote } from '@module-federation/enhanced/runtime'
-import type { ShellMenuConfig } from '@shz/core'
-
-export interface RemoteRouteConfig {
-  path: string
-  nav: {
-    title: string
-    icon: string
-    group: string
-  }
-}
+import { registerRemotes } from '@module-federation/enhanced/runtime'
 
 export interface AppModule {
   id: string
@@ -18,21 +7,9 @@ export interface AppModule {
   logoPng: string
   basePath: string
   remoteName: string
-  routes: RemoteRouteConfig[]
 }
 
-/** Static registry from API — only topology info, no nav config */
-interface AppRegistry {
-  id: string
-  name: string
-  icon: string
-  logoPng: string
-  basePath: string
-  remoteName: string
-  entry: string
-}
-
-const MOCK_REGISTRY: AppRegistry[] = [
+const MOCK_REGISTRY: (AppModule & { entry: string })[] = [
   {
     id: 'dashboard',
     name: 'Dashboard',
@@ -62,74 +39,11 @@ const MOCK_REGISTRY: AppRegistry[] = [
   },
 ]
 
-async function loadAppConfig(registry: AppRegistry): Promise<AppModule> {
-  try {
-    const mod = await loadRemote<{ default: ShellMenuConfig }>(`${registry.remoteName}/config`)
-    const config = mod?.default ?? { nav: [] }
+// Register all remotes once at module load time (synchronous)
+registerRemotes(MOCK_REGISTRY.map((r) => ({ name: r.remoteName, entry: r.entry })))
 
-    const joinRoutePath = (basePath: string, routePath: string) => {
-      const normalizedBase = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath
-      const normalizedRoute = routePath.replace(/^\/+/, '')
-      return normalizedRoute ? `${normalizedBase}/${normalizedRoute}` : normalizedBase
-    }
-
-    const routes: RemoteRouteConfig[] = config.nav.map((item) => ({
-      path: joinRoutePath(registry.basePath, item.path),
-      nav: { title: item.title, icon: item.icon, group: item.group },
-    }))
-
-    return {
-      id: registry.id,
-      name: registry.name,
-      icon: registry.icon,
-      logoPng: registry.logoPng,
-      basePath: registry.basePath,
-      remoteName: registry.remoteName,
-      routes,
-    }
-  } catch {
-    // Remote offline — return app with no routes (still show in team switcher)
-    return {
-      id: registry.id,
-      name: registry.name,
-      icon: registry.icon,
-      logoPng: registry.logoPng,
-      basePath: registry.basePath,
-      remoteName: registry.remoteName,
-      routes: [],
-    }
-  }
-}
+const APPS: AppModule[] = MOCK_REGISTRY.map(({ entry: _entry, ...app }) => app)
 
 export function useRemoteRoutes() {
-  const [apps, setApps] = useState<AppModule[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
-
-  useEffect(() => {
-    let cancelled = false
-
-    async function init() {
-      try {
-        // Register all remotes first
-        registerRemotes(
-          MOCK_REGISTRY.map((r) => ({ name: r.remoteName, entry: r.entry }))
-        )
-
-        // Load nav config from each remote in parallel
-        const modules = await Promise.all(MOCK_REGISTRY.map(loadAppConfig))
-
-        if (!cancelled) setApps(modules)
-      } catch (err) {
-        if (!cancelled) setError(err instanceof Error ? err : new Error('Failed to load remote routes'))
-      } finally {
-        if (!cancelled) setLoading(false)
-      }
-    }
-
-    init()
-    return () => { cancelled = true }
-  }, [])
-
-  return { apps, loading, error }
+  return { apps: APPS, loading: false, error: null as Error | null }
 }

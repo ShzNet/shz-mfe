@@ -51,6 +51,7 @@ export default defineConfig({
       exposes: {
         './config': './src/config.ts',
         './Page': './src/pages/app.tsx',
+        './Nav': './src/nav.tsx',
       },
       shared: {
         react: { singleton: true, requiredVersion: false },

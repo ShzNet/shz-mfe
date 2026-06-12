@@ -3,7 +3,9 @@ import {
   type Column,
   type ColumnDef,
   type ColumnFiltersState,
+  type OnChangeFn,
   type SortingState,
+  type Updater,
   type VisibilityState,
   flexRender,
   getCoreRowModel,
@@ -26,6 +28,7 @@ import {
 import { cn } from '../../lib/utils'
 
 export { type ColumnDef }
+export { type ColumnFiltersState, type VisibilityState }
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -39,6 +42,12 @@ interface DataTableProps<TData, TValue> {
   headerMenu?: boolean
   /** Per-column filter UI in header menu */
   headerFilterConfig?: Record<string, HeaderFilterConfig>
+  columnFilters?: ColumnFiltersState
+  onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>
+  columnVisibility?: VisibilityState
+  onColumnVisibilityChange?: OnChangeFn<VisibilityState>
+  showToolbar?: boolean
+  showColumnToggle?: boolean
 }
 
 type HeaderFilterConfig =
@@ -54,19 +63,44 @@ export function DataTable<TData, TValue>({
   className,
   headerMenu = false,
   headerFilterConfig,
+  columnFilters: controlledColumnFilters,
+  onColumnFiltersChange,
+  columnVisibility: controlledColumnVisibility,
+  onColumnVisibilityChange,
+  showToolbar = true,
+  showColumnToggle = true,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+  const [internalColumnFilters, setInternalColumnFilters] = React.useState<ColumnFiltersState>([])
+  const [internalColumnVisibility, setInternalColumnVisibility] = React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
+
+  const columnFilters = controlledColumnFilters ?? internalColumnFilters
+  const columnVisibility = controlledColumnVisibility ?? internalColumnVisibility
+
+  const handleColumnFiltersChange: OnChangeFn<ColumnFiltersState> = React.useCallback((updater) => {
+    const nextValue = resolveUpdater(updater, columnFilters)
+    if (controlledColumnFilters === undefined) {
+      setInternalColumnFilters(nextValue)
+    }
+    onColumnFiltersChange?.(updater)
+  }, [columnFilters, controlledColumnFilters, onColumnFiltersChange])
+
+  const handleColumnVisibilityChange: OnChangeFn<VisibilityState> = React.useCallback((updater) => {
+    const nextValue = resolveUpdater(updater, columnVisibility)
+    if (controlledColumnVisibility === undefined) {
+      setInternalColumnVisibility(nextValue)
+    }
+    onColumnVisibilityChange?.(updater)
+  }, [columnVisibility, controlledColumnVisibility, onColumnVisibilityChange])
 
   const table = useReactTable({
     data,
     columns,
     initialState: { pagination: { pageSize } },
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
+    onColumnFiltersChange: handleColumnFiltersChange,
+    onColumnVisibilityChange: handleColumnVisibilityChange,
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -76,43 +110,46 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div className={cn('space-y-3', className)}>
-      {/* Toolbar */}
-      <div className='flex items-center gap-2'>
-        {searchColumn && (
-          <Input
-            placeholder={searchPlaceholder}
-            value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ''}
-            onChange={(e) => table.getColumn(searchColumn)?.setFilterValue(e.target.value)}
-            className='max-w-xs'
-          />
-        )}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='outline' size='sm' className='ml-auto gap-1'>
-              Columns <ChevronDown className='size-4 opacity-50' />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            {table
-              .getAllColumns()
-              .filter((col) => col.getCanHide())
-              .map((col) => (
-                <DropdownMenuCheckboxItem
-                  key={col.id}
-                  className='capitalize'
-                  checked={col.getIsVisible()}
-                  onCheckedChange={(value) => col.toggleVisibility(!!value)}
-                >
-                  {col.id}
-                </DropdownMenuCheckboxItem>
-              ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+    <div className={cn('flex min-h-0 flex-col space-y-3', className)}>
+      {showToolbar && (searchColumn || showColumnToggle) && (
+        <div className='flex items-center gap-2'>
+          {searchColumn && (
+            <Input
+              placeholder={searchPlaceholder}
+              value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ''}
+              onChange={(e) => table.getColumn(searchColumn)?.setFilterValue(e.target.value)}
+              className='max-w-xs'
+            />
+          )}
+          {showColumnToggle && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant='outline' size='sm' className='ml-auto gap-1'>
+                  Columns <ChevronDown className='size-4 opacity-50' />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end'>
+                {table
+                  .getAllColumns()
+                  .filter((col) => col.getCanHide())
+                  .map((col) => (
+                    <DropdownMenuCheckboxItem
+                      key={col.id}
+                      className='capitalize'
+                      checked={col.getIsVisible()}
+                      onCheckedChange={(value) => col.toggleVisibility(!!value)}
+                    >
+                      {col.id}
+                    </DropdownMenuCheckboxItem>
+                  ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
+        </div>
+      )}
 
       {/* Table */}
-      <div className='rounded-md border'>
+      <div className='min-h-0 flex-1'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -158,7 +195,7 @@ export function DataTable<TData, TValue>({
       </div>
 
       {/* Footer */}
-      <div className='flex items-center justify-between text-sm text-muted-foreground'>
+      <div className='flex items-center justify-between border-t px-3 py-3 text-sm text-muted-foreground'>
         <span>
           {table.getFilteredSelectedRowModel().rows.length} of{' '}
           {table.getFilteredRowModel().rows.length} row(s) selected
@@ -187,6 +224,10 @@ export function DataTable<TData, TValue>({
       </div>
     </div>
   )
+}
+
+function resolveUpdater<T>(updater: Updater<T>, currentValue: T): T {
+  return typeof updater === 'function' ? (updater as (value: T) => T)(currentValue) : updater
 }
 
 function getHeaderLabel<TData, TValue>(column: Column<TData, TValue>, ctx: unknown) {

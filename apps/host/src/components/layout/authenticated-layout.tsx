@@ -37,8 +37,8 @@ export function AuthenticatedLayout({ apps }: { apps: AppModule[] }) {
               <HeaderUser user={HEADER_USER} />
             </div>
           </Header>
-          <main className='flex min-h-0 flex-1 flex-col px-4 py-4 md:px-6 md:py-6'>
-            <div className='mx-auto flex min-h-0 w-full max-w-[1600px] flex-1 flex-col'>
+          <main className='flex min-h-0 flex-1 flex-col px-2 py-2 md:px-3 md:py-3'>
+            <div className='flex min-h-0 w-full flex-1 flex-col'>
               <Outlet />
             </div>
           </main>

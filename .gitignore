@@ -39,3 +39,6 @@ apps/**/@mf-types/
 Thumbs.db
 .idea/
 .vscode/
+
+.claude/worktrees
+.claude/settings.local.json

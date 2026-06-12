@@ -3,7 +3,9 @@ import {
   type Column,
   type ColumnDef,
   type ColumnFiltersState,
+  type ColumnOrderState,
   type OnChangeFn,
+  type RowSelectionState,
   type SortingState,
   type Updater,
   type VisibilityState,
@@ -17,6 +19,7 @@ import {
 import { ArrowUpDown, ChevronDown } from 'lucide-react'
 import { Button } from '../button'
 import { Input } from '../input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../table'
 import {
   DropdownMenu,
@@ -28,7 +31,7 @@ import {
 import { cn } from '../../lib/utils'
 
 export { type ColumnDef }
-export { type ColumnFiltersState, type VisibilityState }
+export { type ColumnFiltersState, type ColumnOrderState, type RowSelectionState, type VisibilityState }
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -46,8 +49,14 @@ interface DataTableProps<TData, TValue> {
   onColumnFiltersChange?: OnChangeFn<ColumnFiltersState>
   columnVisibility?: VisibilityState
   onColumnVisibilityChange?: OnChangeFn<VisibilityState>
+  columnOrder?: ColumnOrderState
+  onColumnOrderChange?: OnChangeFn<ColumnOrderState>
+  rowSelection?: RowSelectionState
+  onRowSelectionChange?: OnChangeFn<RowSelectionState>
   showToolbar?: boolean
   showColumnToggle?: boolean
+  stickyHeader?: boolean
+  tableWrapperClassName?: string
 }
 
 type HeaderFilterConfig =
@@ -67,16 +76,25 @@ export function DataTable<TData, TValue>({
   onColumnFiltersChange,
   columnVisibility: controlledColumnVisibility,
   onColumnVisibilityChange,
+  columnOrder: controlledColumnOrder,
+  onColumnOrderChange,
+  rowSelection: controlledRowSelection,
+  onRowSelectionChange,
   showToolbar = true,
   showColumnToggle = true,
+  stickyHeader = false,
+  tableWrapperClassName,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [internalColumnFilters, setInternalColumnFilters] = React.useState<ColumnFiltersState>([])
   const [internalColumnVisibility, setInternalColumnVisibility] = React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+  const [internalColumnOrder, setInternalColumnOrder] = React.useState<ColumnOrderState>([])
+  const [internalRowSelection, setInternalRowSelection] = React.useState<RowSelectionState>({})
 
   const columnFilters = controlledColumnFilters ?? internalColumnFilters
   const columnVisibility = controlledColumnVisibility ?? internalColumnVisibility
+  const columnOrder = controlledColumnOrder ?? internalColumnOrder
+  const rowSelection = controlledRowSelection ?? internalRowSelection
 
   const handleColumnFiltersChange: OnChangeFn<ColumnFiltersState> = React.useCallback((updater) => {
     const nextValue = resolveUpdater(updater, columnFilters)
@@ -94,6 +112,22 @@ export function DataTable<TData, TValue>({
     onColumnVisibilityChange?.(updater)
   }, [columnVisibility, controlledColumnVisibility, onColumnVisibilityChange])
 
+  const handleColumnOrderChange: OnChangeFn<ColumnOrderState> = React.useCallback((updater) => {
+    const nextValue = resolveUpdater(updater, columnOrder)
+    if (controlledColumnOrder === undefined) {
+      setInternalColumnOrder(nextValue)
+    }
+    onColumnOrderChange?.(updater)
+  }, [columnOrder, controlledColumnOrder, onColumnOrderChange])
+
+  const handleRowSelectionChange: OnChangeFn<RowSelectionState> = React.useCallback((updater) => {
+    const nextValue = resolveUpdater(updater, rowSelection)
+    if (controlledRowSelection === undefined) {
+      setInternalRowSelection(nextValue)
+    }
+    onRowSelectionChange?.(updater)
+  }, [controlledRowSelection, onRowSelectionChange, rowSelection])
+
   const table = useReactTable({
     data,
     columns,
@@ -101,12 +135,13 @@ export function DataTable<TData, TValue>({
     onSortingChange: setSorting,
     onColumnFiltersChange: handleColumnFiltersChange,
     onColumnVisibilityChange: handleColumnVisibilityChange,
-    onRowSelectionChange: setRowSelection,
+    onColumnOrderChange: handleColumnOrderChange,
+    onRowSelectionChange: handleRowSelectionChange,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    state: { sorting, columnFilters, columnVisibility, rowSelection },
+    state: { sorting, columnFilters, columnVisibility, columnOrder, rowSelection },
   })
 
   return (
@@ -150,8 +185,8 @@ export function DataTable<TData, TValue>({
 
       {/* Table */}
       <div className='min-h-0 flex-1'>
-        <Table>
-          <TableHeader>
+        <Table wrapperClassName={tableWrapperClassName}>
+          <TableHeader className={cn(stickyHeader && 'sticky top-0 z-10 bg-background shadow-[0_1px_0_0_hsl(var(--border))]')}>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
@@ -196,10 +231,29 @@ export function DataTable<TData, TValue>({
 
       {/* Footer */}
       <div className='flex items-center justify-between border-t px-3 py-3 text-sm text-muted-foreground'>
-        <span>
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
-          {table.getFilteredRowModel().rows.length} row(s) selected
-        </span>
+        <div className='flex items-center gap-4'>
+          <span>
+            {table.getFilteredSelectedRowModel().rows.length} of{' '}
+            {table.getFilteredRowModel().rows.length} row(s) selected
+          </span>
+          <div className='flex items-center gap-2'>
+            <span>Rows per page</span>
+            <Select
+              value={String(table.getState().pagination.pageSize)}
+              onValueChange={(value) => table.setPageSize(Number(value))}
+            >
+              <SelectTrigger size='sm' className='h-8 w-[88px]'>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value='10'>10</SelectItem>
+                <SelectItem value='20'>20</SelectItem>
+                <SelectItem value='50'>50</SelectItem>
+                <SelectItem value='100'>100</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
         <div className='flex items-center gap-2'>
           <Button
             variant='outline'

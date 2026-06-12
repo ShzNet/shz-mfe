@@ -3,6 +3,8 @@ import {
   Badge,
   Button,
   Checkbox,
+  ColumnManager,
+  type ColumnManagerItem,
   DataTable,
   DateInput,
   Dialog,
@@ -25,10 +27,12 @@ import {
   SelectTrigger,
   SelectValue,
   type ColumnFiltersState,
+  type ColumnOrderState,
   type ColumnDef,
+  type RowSelectionState,
   type VisibilityState,
 } from '@shz/components'
-import { Columns3, Filter, Plus, RotateCcw, Search } from 'lucide-react'
+import { Columns3, Filter, Plus, RotateCcw, Search, Trash2 } from 'lucide-react'
 
 type Role = 'admin' | 'editor' | 'viewer'
 type Status = 'active' | 'inactive' | 'pending'
@@ -41,6 +45,13 @@ interface UserRow {
   status: Status
   team: string
   joined: string
+  location: string
+  manager: string
+  employeeCode: string
+  phone: string
+  workMode: 'onsite' | 'hybrid' | 'remote'
+  timezone: string
+  lastActive: string
 }
 
 type UserForm = Omit<UserRow, 'id'>
@@ -53,7 +64,7 @@ interface UserFilters {
   team: string
 }
 
-const INITIAL_USERS: UserRow[] = [
+const BASE_USERS: Array<Omit<UserRow, 'location' | 'manager' | 'employeeCode' | 'phone' | 'workMode' | 'timezone' | 'lastActive'>> = [
   { id: '1', name: 'Alice Johnson', email: 'alice@example.com', role: 'admin', status: 'active', team: 'Platform', joined: '2024-01-10' },
   { id: '2', name: 'Bob Martinez', email: 'bob@example.com', role: 'editor', status: 'active', team: 'Design', joined: '2024-02-15' },
   { id: '3', name: 'Carol White', email: 'carol@example.com', role: 'viewer', status: 'pending', team: 'Product', joined: '2024-03-22' },
@@ -76,6 +87,22 @@ const INITIAL_USERS: UserRow[] = [
   { id: '20', name: 'Thomas Phan', email: 'thomas@example.com', role: 'admin', status: 'active', team: 'Analytics', joined: '2024-08-25' },
 ]
 
+const LOCATIONS = ['HCMC', 'Hanoi', 'Da Nang', 'Singapore', 'Bangkok']
+const MANAGERS = ['Emma Clark', 'Daniel Tran', 'Sophia Lee', 'Lucas Nguyen']
+const WORK_MODES: UserRow['workMode'][] = ['hybrid', 'onsite', 'remote']
+const TIMEZONES = ['GMT+7', 'GMT+8', 'GMT+9']
+
+const INITIAL_USERS: UserRow[] = BASE_USERS.map((user, index) => ({
+  ...user,
+  location: LOCATIONS[index % LOCATIONS.length],
+  manager: MANAGERS[index % MANAGERS.length],
+  employeeCode: `EMP-${String(index + 1).padStart(4, '0')}`,
+  phone: `090${String(1000000 + index * 137).slice(0, 7)}`,
+  workMode: WORK_MODES[index % WORK_MODES.length],
+  timezone: TIMEZONES[index % TIMEZONES.length],
+  lastActive: `2026-06-${String((index % 9) + 1).padStart(2, '0')} 0${index % 8}:30`,
+}))
+
 const EMPTY_FORM: UserForm = {
   name: '',
   email: '',
@@ -83,6 +110,13 @@ const EMPTY_FORM: UserForm = {
   status: 'active',
   team: '',
   joined: '',
+  location: '',
+  manager: '',
+  employeeCode: '',
+  phone: '',
+  workMode: 'hybrid',
+  timezone: 'GMT+7',
+  lastActive: '',
 }
 
 const DEFAULT_FILTERS: UserFilters = {
@@ -92,13 +126,22 @@ const DEFAULT_FILTERS: UserFilters = {
   team: '',
 }
 
-const MANAGEABLE_COLUMNS = [
-  { id: 'name', label: 'Name' },
+const MANAGEABLE_COLUMNS: ColumnManagerItem[] = [
+  { id: 'name', label: 'Name', locked: true },
   { id: 'team', label: 'Team' },
-  { id: 'role', label: 'Role' },
+  { id: 'role', label: 'Role', locked: true },
   { id: 'status', label: 'Status' },
   { id: 'joined', label: 'Joined' },
-] as const
+  { id: 'location', label: 'Location' },
+  { id: 'manager', label: 'Manager' },
+  { id: 'employeeCode', label: 'Employee Code' },
+  { id: 'phone', label: 'Phone' },
+  { id: 'workMode', label: 'Work Mode' },
+  { id: 'timezone', label: 'Timezone' },
+  { id: 'lastActive', label: 'Last Active' },
+]
+
+const LOCKED_COLUMN_IDS = new Set(MANAGEABLE_COLUMNS.filter((column) => column.locked).map((column) => column.id))
 
 const roleVariant: Record<Role, 'default' | 'secondary' | 'outline'> = {
   admin: 'default',
@@ -117,6 +160,9 @@ export default function UsersTablePage() {
   const [draftFilters, setDraftFilters] = useState<UserFilters>(DEFAULT_FILTERS)
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [draftColumnVisibility, setDraftColumnVisibility] = useState<VisibilityState>({})
+  const [columnOrder, setColumnOrder] = useState<ColumnOrderState>(MANAGEABLE_COLUMNS.map((column) => column.id))
+  const [draftColumnOrder, setDraftColumnOrder] = useState<ColumnOrderState>(MANAGEABLE_COLUMNS.map((column) => column.id))
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 
   useEffect(() => {
     if (filtersOpen) {
@@ -127,12 +173,33 @@ export default function UsersTablePage() {
   useEffect(() => {
     if (columnsOpen) {
       setDraftColumnVisibility(columnVisibility)
+      setDraftColumnOrder(columnOrder)
     }
-  }, [columnsOpen, columnVisibility])
+  }, [columnsOpen, columnOrder, columnVisibility])
 
   function startCreate() {
     setEditingId(null)
     setForm(EMPTY_FORM)
+    setOpen(true)
+  }
+
+  function startEdit(user: UserRow) {
+    setEditingId(user.id)
+    setForm({
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      status: user.status,
+      team: user.team,
+      joined: user.joined,
+      location: user.location,
+      manager: user.manager,
+      employeeCode: user.employeeCode,
+      phone: user.phone,
+      workMode: user.workMode,
+      timezone: user.timezone,
+      lastActive: user.lastActive,
+    })
     setOpen(true)
   }
 
@@ -146,6 +213,20 @@ export default function UsersTablePage() {
       setUsers((prev) => [{ id, ...form }, ...prev])
     }
     setOpen(false)
+  }
+
+  function deleteSelectedUsers() {
+    const selectedIds = new Set(
+      Object.entries(rowSelection)
+        .filter(([, selected]) => selected)
+        .map(([rowId]) => users[Number(rowId)]?.id)
+        .filter((id): id is string => !!id),
+    )
+
+    if (!selectedIds.size) return
+
+    setUsers((prev) => prev.filter((user) => !selectedIds.has(user.id)))
+    setRowSelection({})
   }
 
   const columnFilters = useMemo<ColumnFiltersState>(() => {
@@ -180,6 +261,23 @@ export default function UsersTablePage() {
     () => MANAGEABLE_COLUMNS.filter((column) => isColumnVisible(columnVisibility, column.id)).length,
     [columnVisibility],
   )
+
+  const selectedCount = useMemo(
+    () => Object.values(rowSelection).filter(Boolean).length,
+    [rowSelection],
+  )
+
+  const dataTableColumnOrder = useMemo<ColumnOrderState>(
+    () => ['select', ...columnOrder],
+    [columnOrder],
+  )
+
+  const orderedDraftColumns = useMemo(() => {
+    const byId = new Map(MANAGEABLE_COLUMNS.map((column) => [column.id, column]))
+    return draftColumnOrder
+      .map((id) => byId.get(id))
+      .filter((column): column is ColumnManagerItem => !!column)
+  }, [draftColumnOrder])
 
   const columns: ColumnDef<UserRow>[] = useMemo(() => [
     {
@@ -217,10 +315,14 @@ export default function UsersTablePage() {
       accessorFn: (row) => `${row.name} ${row.email}`,
       header: 'Name',
       cell: ({ row }) => (
-        <div className='pl-2'>
-          <p className='font-medium'>{row.original.name}</p>
+        <button
+          type='button'
+          className='pl-2 text-left'
+          onClick={() => startEdit(row.original)}
+        >
+          <p className='font-medium text-primary hover:underline'>{row.original.name}</p>
           <p className='text-xs text-muted-foreground'>{row.original.email}</p>
-        </div>
+        </button>
       ),
     },
     { accessorKey: 'team', header: 'Team' },
@@ -235,6 +337,17 @@ export default function UsersTablePage() {
       cell: ({ row }) => <Badge variant='outline' className='capitalize'>{row.original.status}</Badge>,
     },
     { accessorKey: 'joined', header: 'Joined' },
+    { accessorKey: 'location', header: 'Location' },
+    { accessorKey: 'manager', header: 'Manager' },
+    { accessorKey: 'employeeCode', header: 'Employee Code' },
+    { accessorKey: 'phone', header: 'Phone' },
+    {
+      accessorKey: 'workMode',
+      header: 'Work Mode',
+      cell: ({ row }) => <span className='capitalize'>{row.original.workMode}</span>,
+    },
+    { accessorKey: 'timezone', header: 'Timezone' },
+    { accessorKey: 'lastActive', header: 'Last Active' },
   ], [])
 
   return (
@@ -302,6 +415,12 @@ export default function UsersTablePage() {
               </DialogFooter>
             </DialogContent>
           </Dialog>
+          {selectedCount > 0 && (
+            <Button variant='outline' size='sm' className='gap-1.5' onClick={deleteSelectedUsers}>
+              <Trash2 className='size-4' />
+              Delete ({selectedCount})
+            </Button>
+          )}
         </div>
       </AcitonBar>
 
@@ -317,7 +436,6 @@ export default function UsersTablePage() {
             <Button variant='ghost' size='sm' className='gap-1.5 lg:order-2' onClick={() => setColumnsOpen(true)}>
               <Columns3 className='size-4' />
               Edit columns
-              <span className='text-muted-foreground'>{visibleColumnCount}/{MANAGEABLE_COLUMNS.length}</span>
             </Button>
             <Button variant='ghost' size='sm' className='gap-1.5 lg:order-3' onClick={() => setFiltersOpen(true)}>
               <Filter className='size-4' />
@@ -343,7 +461,13 @@ export default function UsersTablePage() {
           columnFilters={columnFilters}
           columnVisibility={columnVisibility}
           onColumnVisibilityChange={setColumnVisibility}
+          columnOrder={dataTableColumnOrder}
+          onColumnOrderChange={setColumnOrder}
+          rowSelection={rowSelection}
+          onRowSelectionChange={setRowSelection}
           showToolbar={false}
+          stickyHeader
+          tableWrapperClassName='max-h-[calc(100svh-19rem)]'
           className='min-h-0 flex-1 space-y-0'
         />
       </div>
@@ -434,31 +558,32 @@ export default function UsersTablePage() {
         <SheetContent side='right' className='w-full gap-0 p-0 sm:max-w-lg'>
           <SheetHeader className='border-b px-6 py-5'>
             <SheetTitle>Edit columns</SheetTitle>
-            <SheetDescription>Choose which columns are visible in the grid.</SheetDescription>
+            <SheetDescription>Choose visible columns and drag to reorder them.</SheetDescription>
           </SheetHeader>
 
-          <div className='flex-1 space-y-3 overflow-y-auto px-6 py-5'>
-            {MANAGEABLE_COLUMNS.map((column) => (
-              <label
-                key={column.id}
-                className='flex cursor-pointer items-center justify-between rounded-md border px-3 py-3 transition-colors hover:bg-muted/40'
-              >
-                <div>
-                  <p className='font-medium'>{column.label}</p>
-                  <p className='text-xs text-muted-foreground'>Show this column in the table view.</p>
-                </div>
-                <Checkbox
-                  checked={isColumnVisible(draftColumnVisibility, column.id)}
-                  onCheckedChange={(checked) => {
-                    setDraftColumnVisibility((prev) => setColumnVisible(prev, column.id, !!checked))
-                  }}
-                />
-              </label>
-            ))}
+          <div className='flex-1 overflow-y-auto px-6 py-5'>
+            <ColumnManager
+              items={orderedDraftColumns}
+              visibility={Object.fromEntries(MANAGEABLE_COLUMNS.map((column) => [column.id, isColumnVisible(draftColumnVisibility, column.id)]))}
+              onVisibilityChange={(columnId, visible) => {
+                if (LOCKED_COLUMN_IDS.has(columnId)) return
+                setDraftColumnVisibility((prev) => setColumnVisible(prev, columnId, visible))
+              }}
+              onOrderChange={(items) => {
+                setDraftColumnOrder(items.map((item) => item.id))
+              }}
+              className='max-h-[calc(100svh-12rem)] overflow-y-auto pr-1'
+            />
           </div>
 
           <SheetFooter className='border-t px-6 py-4 sm:flex-row sm:justify-between'>
-            <Button variant='ghost' onClick={() => setDraftColumnVisibility({})}>
+            <Button
+              variant='ghost'
+              onClick={() => {
+                setDraftColumnVisibility({})
+                setDraftColumnOrder(MANAGEABLE_COLUMNS.map((column) => column.id))
+              }}
+            >
               Reset to default
             </Button>
             <div className='flex gap-2'>
@@ -466,6 +591,7 @@ export default function UsersTablePage() {
               <Button
                 onClick={() => {
                   setColumnVisibility(draftColumnVisibility)
+                  setColumnOrder(draftColumnOrder)
                   setColumnsOpen(false)
                 }}
               >

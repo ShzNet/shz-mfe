@@ -18,6 +18,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "registry": "http://localhost:4873/"
+  },
   "devDependencies": {
     "tsup": "^8.5.1"
   }

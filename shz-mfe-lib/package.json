@@ -11,7 +11,10 @@
     "start:all": "nx run-many -t dev --parallel=3",
     "preview:all": "nx run-many -t preview --parallel=4",
     "build": "nx run-many -t build",
-    "build:all": "nx run-many -t build --parallel=3"
+    "build:all": "nx run-many -t build --parallel=3",
+    "publish:local:core": "pnpm --filter @shz/core build && pnpm --filter @shz/core publish --registry http://localhost:4873 --access public --no-git-checks",
+    "publish:local:components": "pnpm --filter @shz/components build && pnpm --filter @shz/components publish --registry http://localhost:4873 --access public --no-git-checks",
+    "publish:local": "pnpm publish:local:core && pnpm publish:local:components"
   },
   "devDependencies": {
     "@nx/js": "^21.0.0",

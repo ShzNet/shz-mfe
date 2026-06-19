@@ -14,7 +14,8 @@
     "build:all": "nx run-many -t build --parallel=3",
     "publish:local:core": "pnpm --filter @shz/core build && pnpm --filter @shz/core publish --registry http://localhost:4873 --access public --no-git-checks",
     "publish:local:components": "pnpm --filter @shz/components build && pnpm --filter @shz/components publish --registry http://localhost:4873 --access public --no-git-checks",
-    "publish:local": "pnpm publish:local:core && pnpm publish:local:components"
+    "publish:local:nx-generators": "pnpm --filter @shz/nx-generators build && pnpm publish ./tools/nx-generators/dist --registry http://localhost:4873 --access public --no-git-checks",
+    "publish:local": "pnpm publish:local:core && pnpm publish:local:components && pnpm publish:local:nx-generators"
   },
   "devDependencies": {
     "@nx/js": "^21.0.0",

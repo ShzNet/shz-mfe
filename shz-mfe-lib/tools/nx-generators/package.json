@@ -1,0 +1,21 @@
+{
+  "name": "@shz/nx-generators",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "main": "./src/generators/shared.js",
+  "exports": {
+    ".": "./src/generators/shared.js",
+    "./package.json": "./package.json"
+  },
+  "generators": "./generators.json",
+  "scripts": {
+    "build": "node ./scripts/build.mjs"
+  },
+  "files": [
+    "generators.json",
+    "src"
+  ],
+  "publishConfig": {
+    "registry": "http://localhost:4873/"
+  }
+}

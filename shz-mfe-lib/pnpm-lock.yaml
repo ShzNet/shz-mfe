@@ -434,6 +434,8 @@ importers:
         specifier: ^8.5.1
         version: 8.5.1(@swc/core@1.15.33(@swc/helpers@0.5.21))(jiti@2.7.0)(postcss@8.5.15)(typescript@5.8.3)(yaml@2.9.0)
 
+  tools/nx-generators: {}
+
 packages:
 
   '@alloc/quick-lru@5.2.0':

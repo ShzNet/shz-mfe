@@ -15,7 +15,9 @@
       "@shz/core": ["./libs/core/src/index.ts"],
       "@shz/core/*": ["./libs/core/src/*"],
       "@shz/components": ["./libs/components/src/index.ts"],
-      "@shz/components/*": ["./libs/components/src/*"]
+      "@shz/components/*": ["./libs/components/src/*"],
+      "@shz/nx-generators": ["./tools/nx-generators"],
+      "@shz/nx-generators/*": ["./tools/nx-generators/*"]
     }
   },
   "exclude": ["node_modules", "dist", ".nx"]

@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string", "description": "Application project name, e.g. remote-sales" },
+    "displayName": { "type": "string", "description": "Display title for menus and sample pages" },
+    "packageName": { "type": "string", "description": "Published package name for the generated app" },
+    "basePath": { "type": "string", "description": "Host route base path, e.g. /app/sales" },
+    "baseSegment": { "type": "string", "description": "Path segment used when basePath is omitted" },
+    "remoteName": { "type": "string", "description": "Module Federation remote name" },
+    "port": { "type": "number", "description": "Dev server port" },
+    "componentsPackage": { "type": "string" },
+    "componentsVersion": { "type": "string" },
+    "corePackage": { "type": "string" },
+    "coreVersion": { "type": "string" }
+  },
+  "required": ["name"]
+}

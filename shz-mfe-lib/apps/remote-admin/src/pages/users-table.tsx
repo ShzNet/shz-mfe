@@ -13,6 +13,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   FilterBuilder,
   countActiveFilterBuilderRules,
   createFilterBuilderGroup,
@@ -39,7 +43,7 @@ import {
   type RowSelectionState,
   type VisibilityState,
 } from '@shz/components'
-import { Columns3, Filter, Plus, RotateCcw, Search, Trash2 } from 'lucide-react'
+import { Check, ChevronDown, Columns3, Filter, Plus, RotateCcw, Search, Trash2 } from 'lucide-react'
 
 type Role = 'admin' | 'editor' | 'viewer'
 type Status = 'active' | 'inactive' | 'pending'
@@ -361,6 +365,11 @@ export default function UsersTablePage() {
       .filter((column): column is ColumnManagerItem => !!column)
   }, [draftColumnOrder])
 
+  const activeViewLabel = useMemo(
+    () => VIEW_PRESETS.find((view) => view.id === activeViewId)?.label ?? 'Custom view',
+    [activeViewId],
+  )
+
   const columns: ColumnDef<UserRow>[] = useMemo(() => [
     {
       id: 'select',
@@ -510,23 +519,30 @@ export default function UsersTablePage() {
         <div className='border-b px-3 py-2'>
           <div className='flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between'>
             <div className='flex items-center gap-2'>
-              <Select
-                value={activeViewId}
-                onValueChange={(value) => {
-                  if (value === 'custom') return
-                  applyView(value as Exclude<UsersTableViewId, 'custom'>)
-                }}
-              >
-                <SelectTrigger className='h-8 w-[210px] border-none px-2 text-primary shadow-none'>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant='ghost'
+                    size='sm'
+                    className='h-auto gap-1 rounded-sm px-1 py-0 text-sm font-medium text-primary hover:bg-transparent hover:text-primary focus-visible:ring-0'
+                  >
+                    <span>{activeViewLabel}</span>
+                    <ChevronDown className='size-4' />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align='start'>
                   {VIEW_PRESETS.map((view) => (
-                    <SelectItem key={view.id} value={view.id}>{view.label}</SelectItem>
+                    <DropdownMenuItem key={view.id} onClick={() => applyView(view.id)}>
+                      <Check className={activeViewId === view.id ? 'opacity-100' : 'opacity-0'} />
+                      {view.label}
+                    </DropdownMenuItem>
                   ))}
-                  <SelectItem value='custom'>Custom view</SelectItem>
-                </SelectContent>
-              </Select>
+                  <DropdownMenuItem onClick={() => setActiveViewId('custom')}>
+                    <Check className={activeViewId === 'custom' ? 'opacity-100' : 'opacity-0'} />
+                    Custom view
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
             <div className='flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-end'>

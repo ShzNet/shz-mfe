@@ -1,5 +1,3 @@
-import type { ComponentType } from 'react'
-
 type RemoteManifest = {
   exposes?: Array<{
     path: string
@@ -51,9 +49,9 @@ async function loadRemoteStyles(manifestUrl: string, exposedModule: string) {
   )
 }
 
-export async function loadRemoteComponent(remoteName: string, exposedModule: string, entry: string) {
+export async function loadRemoteModule<TModule = unknown>(remoteName: string, exposedModule: string, entry: string): Promise<TModule> {
   const { loadRemote } = await import('@module-federation/enhanced/runtime')
   await loadRemoteStyles(entry, exposedModule)
   const moduleId = buildModuleId(remoteName, exposedModule)
-  return (await loadRemote(moduleId)) as { default: ComponentType }
+  return await loadRemote<TModule>(moduleId)
 }

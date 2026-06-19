@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as RechartsPrimitive from 'recharts'
+import type { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent'
 import type { TooltipContentProps } from 'recharts/types/component/Tooltip'
 import type { LegendPayload } from 'recharts/types/component/DefaultLegendContent'
 import { cn } from '../lib/utils'
@@ -105,7 +106,7 @@ function ChartTooltipContent({
   color,
   nameKey,
   labelKey,
-}: TooltipContentProps<number, string> &
+}: TooltipContentProps<ValueType, NameType> &
   React.ComponentProps<'div'> & {
     hideLabel?: boolean
     hideIndicator?: boolean
@@ -151,8 +152,7 @@ function ChartTooltipContent({
               className={cn('flex w-full flex-wrap items-stretch gap-2 [&>svg]:size-2.5 [&>svg]:text-muted-foreground', indicator === 'dot' && 'items-center')}
             >
               {formatter && item?.value !== undefined && item.name ? (
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (formatter as any)(item.value, item.name, item, index, item.payload)
+                formatter(item.value, item.name, item, index, item.payload)
               ) : (
                 <>
                   {itemConfig?.icon ? (

@@ -1,18 +1,19 @@
 {
   "name": "host-sample-workspace",
   "private": true,
-  "version": "0.0.3",
+  "version": "0.0.4",
   "packageManager": "pnpm@11.4.0",
   "scripts": {
     "nx": "nx",
     "generate:host": "pnpm nx g @shz/nx-generators:host --name=host-sample --displayName=\"Host Sample\" --port=3100",
     "dev": "pnpm nx dev host-sample",
     "build": "pnpm nx build host-sample",
+    "typecheck": "pnpm nx typecheck host-sample",
     "dev:host-sample": "nx dev host-sample"
   },
   "devDependencies": {
     "@nx/js": "^21.0.0",
-    "@shz/nx-generators": "0.0.3",
+    "@shz/nx-generators": "0.0.4",
     "nx": "^21.0.0",
     "typescript": "~5.8.0"
   }

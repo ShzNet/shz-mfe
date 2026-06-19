@@ -11,6 +11,11 @@ function RemoteDashboardShell({ onMenuChange }: ShellRemoteShellProps) {
   return <DashboardPage />
 }
 
-export const getInitialMenu: ShellRemoteShellModule['getInitialMenu'] = () => config
+const remoteDashboardShellModule = {
+  default: RemoteDashboardShell,
+  getInitialMenu: () => config,
+} satisfies ShellRemoteShellModule
 
-export default RemoteDashboardShell
+export const getInitialMenu = remoteDashboardShellModule.getInitialMenu
+
+export default remoteDashboardShellModule.default

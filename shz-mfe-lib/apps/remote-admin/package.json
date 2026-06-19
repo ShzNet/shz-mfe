@@ -5,8 +5,9 @@
   "private": true,
   "scripts": {
     "dev": "rsbuild dev",
-    "build": "rsbuild build",
-    "preview": "rsbuild preview"
+    "build": "pnpm typecheck && rsbuild build",
+    "preview": "rsbuild preview",
+    "typecheck": "tsc -p tsconfig.json --noEmit && node ../../../scripts/check-no-explicit-any.mjs src"
   },
   "dependencies": {
     "@shz/components": "workspace:*",

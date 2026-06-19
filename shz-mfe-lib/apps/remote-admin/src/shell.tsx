@@ -11,6 +11,11 @@ function RemoteAdminShell({ onMenuChange }: ShellRemoteShellProps) {
   return <AdminAppPage />
 }
 
-export const getInitialMenu: ShellRemoteShellModule['getInitialMenu'] = () => config
+const remoteAdminShellModule = {
+  default: RemoteAdminShell,
+  getInitialMenu: () => config,
+} satisfies ShellRemoteShellModule
 
-export default RemoteAdminShell
+export const getInitialMenu = remoteAdminShellModule.getInitialMenu
+
+export default remoteAdminShellModule.default

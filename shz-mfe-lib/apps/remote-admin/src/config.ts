@@ -1,6 +1,6 @@
 import type { ShellMenuConfig } from '@shz/core'
 
-const config: ShellMenuConfig = {
+const config = {
   nav: [
     { title: 'Dashboard', path: '', icon: 'LayoutDashboard', group: 'General' },
     { title: 'Analytics', path: '/analytics', icon: 'TrendingUp', group: 'General' },
@@ -27,6 +27,6 @@ const config: ShellMenuConfig = {
     { title: 'UI Forms', path: '/ui-forms', icon: 'ClipboardList', group: 'Components' },
     { title: 'UI Data', path: '/ui-data', icon: 'Database', group: 'Components' },
   ],
-}
+} satisfies ShellMenuConfig
 
 export default config

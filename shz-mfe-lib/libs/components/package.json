@@ -18,8 +18,9 @@
     }
   },
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch"
+    "build": "pnpm typecheck && tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit && node ../../../scripts/check-no-explicit-any.mjs src"
   },
   "files": [
     "dist",

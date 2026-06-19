@@ -45,8 +45,7 @@ export default defineConfig({
       name: 'remote_admin',
       exposes: {
         './config': './src/config.ts',
-        './Page': './src/pages/app.tsx',
-        './Nav': './src/nav.tsx',
+        './Shell': './src/shell.tsx',
       },
       shared: {
         react: { singleton: true, requiredVersion: false },

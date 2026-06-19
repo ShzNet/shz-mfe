@@ -1,5 +1,5 @@
-import { Suspense, lazy } from 'react'
-import { loadRemoteComponent } from '../lib/remote-loader'
+import { Suspense, lazy, type ComponentType } from 'react'
+import { loadRemoteModule } from '../lib/remote-loader'
 
 type RemoteModuleProps = {
   remoteName: string
@@ -13,7 +13,7 @@ function RemoteFallback() {
 
 export function RemoteModule({ remoteName, exposedModule, entry }: RemoteModuleProps) {
   const LazyComponent = lazy(async () => {
-    const mod = await loadRemoteComponent(remoteName, exposedModule, entry)
+    const mod = await loadRemoteModule<{ default: ComponentType }>(remoteName, exposedModule, entry)
     return { default: mod.default }
   })
 

@@ -11,6 +11,11 @@ function RemoteUsersShell({ onMenuChange }: ShellRemoteShellProps) {
   return <UsersPage />
 }
 
-export const getInitialMenu: ShellRemoteShellModule['getInitialMenu'] = () => config
+const remoteUsersShellModule = {
+  default: RemoteUsersShell,
+  getInitialMenu: () => config,
+} satisfies ShellRemoteShellModule
 
-export default RemoteUsersShell
+export const getInitialMenu = remoteUsersShellModule.getInitialMenu
+
+export default remoteUsersShellModule.default

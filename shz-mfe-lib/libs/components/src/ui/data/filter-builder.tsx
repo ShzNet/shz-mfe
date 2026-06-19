@@ -587,17 +587,17 @@ function matchDateRule(rawValue: FilterBuilderResolvedValue, condition: FilterBu
   }
 }
 
-function isActiveNode<TCode extends string = string>(node: FilterBuilderNode<TCode>) {
+function isActiveNode<TCode extends string = string>(node: FilterBuilderNode<TCode>): boolean {
   return node.kind === 'rule'
     ? !!node.fieldCode && !!node.value.trim()
     : node.children.some((child) => isActiveNode(child))
 }
 
-function normalizeFilterBuilderValue(value: FilterBuilderResolvedValue) {
+function normalizeFilterBuilderValue(value: FilterBuilderResolvedValue): string {
   return String(value ?? '').trim().toLowerCase()
 }
 
-function toDateString(value: FilterBuilderResolvedValue) {
+function toDateString(value: FilterBuilderResolvedValue): string {
   if (value instanceof Date) return value.toISOString().slice(0, 10)
   return String(value ?? '').slice(0, 10)
 }

@@ -42,3 +42,6 @@ Thumbs.db
 
 .claude/worktrees
 .claude/settings.local.json
+
+# Local Verdaccio packages
+verdaccio/storage/

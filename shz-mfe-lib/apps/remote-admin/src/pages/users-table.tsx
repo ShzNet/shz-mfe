@@ -13,6 +13,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  FilterBuilder,
+  countActiveFilterBuilderRules,
+  createFilterBuilderGroup,
+  createFilterBuilderRule,
+  type FilterBuilderField,
+  type FilterBuilderResolvedValue,
+  type FilterBuilderValue,
+  matchesFilterBuilderGroup,
   Input,
   Label,
   Sheet,
@@ -55,37 +63,7 @@ interface UserRow {
 
 type UserForm = Omit<UserRow, 'id'>
 type FilterFieldId = 'team' | 'role' | 'status' | 'location' | 'manager' | 'workMode' | 'timezone' | 'joined'
-type FilterFieldType = 'text' | 'select' | 'date'
-type FilterOperator = 'contains' | 'equals' | 'notEquals' | 'startsWith' | 'before' | 'after' | 'on'
-type FilterGroupOperator = 'and' | 'or'
-
-interface FilterRule {
-  kind: 'rule'
-  id: string
-  field: FilterFieldId
-  operator: FilterOperator
-  value: string
-}
-
-interface FilterGroup {
-  kind: 'group'
-  id: string
-  operator: FilterGroupOperator
-  children: FilterNode[]
-}
-
-type FilterNode = FilterRule | FilterGroup
-
-interface UserFilters {
-  root: FilterGroup
-}
-
-interface FilterFieldDefinition {
-  id: FilterFieldId
-  label: string
-  type: FilterFieldType
-  options?: Array<{ label: string; value: string }>
-}
+type UsersTableViewId = 'all' | 'active-ops' | 'design-review' | 'custom'
 
 const BASE_USERS: Array<Omit<UserRow, 'location' | 'manager' | 'employeeCode' | 'phone' | 'workMode' | 'timezone' | 'lastActive'>> = [
   { id: '1', name: 'Alice Johnson', email: 'alice@example.com', role: 'admin', status: 'active', team: 'Platform', joined: '2024-01-10' },
@@ -142,9 +120,7 @@ const EMPTY_FORM: UserForm = {
   lastActive: '',
 }
 
-const DEFAULT_FILTERS: UserFilters = {
-  root: createFilterGroup('and'),
-}
+const DEFAULT_FILTERS: FilterBuilderValue<FilterFieldId> = createFilterBuilderGroup<FilterFieldId>('and')
 
 const MANAGEABLE_COLUMNS: ColumnManagerItem[] = [
   { id: 'name', label: 'Name', locked: true },
@@ -163,31 +139,88 @@ const MANAGEABLE_COLUMNS: ColumnManagerItem[] = [
 
 const LOCKED_COLUMN_IDS = new Set(MANAGEABLE_COLUMNS.filter((column) => column.locked).map((column) => column.id))
 
-const FILTER_FIELDS: FilterFieldDefinition[] = [
-  { id: 'status', label: 'Status', type: 'select', options: [
+const FILTER_FIELDS: Array<FilterBuilderField<FilterFieldId>> = [
+  { code: 'status', name: 'Status', dataType: 'select', options: [
     { label: 'Active', value: 'active' },
     { label: 'Inactive', value: 'inactive' },
     { label: 'Pending', value: 'pending' },
   ] },
-  { id: 'role', label: 'Role', type: 'select', options: [
+  { code: 'role', name: 'Role', dataType: 'select', options: [
     { label: 'Admin', value: 'admin' },
     { label: 'Editor', value: 'editor' },
     { label: 'Viewer', value: 'viewer' },
   ] },
-  { id: 'team', label: 'Team', type: 'text' },
-  { id: 'location', label: 'Location', type: 'text' },
-  { id: 'manager', label: 'Manager', type: 'text' },
-  { id: 'workMode', label: 'Work Mode', type: 'select', options: [
+  { code: 'team', name: 'Team', dataType: 'text' },
+  { code: 'location', name: 'Location', dataType: 'text' },
+  {
+    code: 'manager',
+    name: 'Manager',
+    dataType: 'select',
+    supportedConditions: ['equals', 'notEquals'],
+    getOptions: async () => MANAGERS.map((manager) => ({ label: manager, value: manager })),
+  },
+  { code: 'workMode', name: 'Work Mode', dataType: 'select', options: [
     { label: 'Onsite', value: 'onsite' },
     { label: 'Hybrid', value: 'hybrid' },
     { label: 'Remote', value: 'remote' },
   ] },
-  { id: 'timezone', label: 'Timezone', type: 'select', options: [
+  { code: 'timezone', name: 'Timezone', dataType: 'select', options: [
     { label: 'GMT+7', value: 'GMT+7' },
     { label: 'GMT+8', value: 'GMT+8' },
     { label: 'GMT+9', value: 'GMT+9' },
   ] },
-  { id: 'joined', label: 'Joined', type: 'date' },
+  { code: 'joined', name: 'Joined', dataType: 'date' },
+]
+
+interface UsersTableViewPreset {
+  id: Exclude<UsersTableViewId, 'custom'>
+  label: string
+  filters: FilterBuilderValue<FilterFieldId>
+  columnVisibility: VisibilityState
+  columnOrder: ColumnOrderState
+}
+
+const VIEW_PRESETS: UsersTableViewPreset[] = [
+  {
+    id: 'all',
+    label: 'All users',
+    filters: DEFAULT_FILTERS,
+    columnVisibility: {},
+    columnOrder: MANAGEABLE_COLUMNS.map((column) => column.id),
+  },
+  {
+    id: 'active-ops',
+    label: 'Active operations',
+    filters: createViewGroup([
+      createViewRule('status', 'equals', 'active'),
+      createViewGroup([
+        createViewRule('team', 'contains', 'Operations'),
+        createViewRule('team', 'contains', 'Support'),
+      ], 'or'),
+    ]),
+    columnVisibility: {
+      phone: false,
+      employeeCode: false,
+      manager: false,
+      lastActive: false,
+    },
+    columnOrder: ['name', 'team', 'status', 'workMode', 'timezone', 'joined', 'location', 'role', 'manager', 'employeeCode', 'phone', 'lastActive'],
+  },
+  {
+    id: 'design-review',
+    label: 'Design review',
+    filters: createViewGroup([
+      createViewRule('team', 'equals', 'Design'),
+      createViewRule('status', 'notEquals', 'inactive'),
+    ]),
+    columnVisibility: {
+      phone: false,
+      employeeCode: false,
+      timezone: false,
+      workMode: false,
+    },
+    columnOrder: ['name', 'role', 'status', 'manager', 'joined', 'location', 'team', 'employeeCode', 'phone', 'workMode', 'timezone', 'lastActive'],
+  },
 ]
 
 const roleVariant: Record<Role, 'default' | 'secondary' | 'outline'> = {
@@ -203,14 +236,15 @@ export default function UsersTablePage() {
   const [form, setForm] = useState<UserForm>(EMPTY_FORM)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [columnsOpen, setColumnsOpen] = useState(false)
-  const [appliedFilters, setAppliedFilters] = useState<UserFilters>(DEFAULT_FILTERS)
-  const [draftFilters, setDraftFilters] = useState<UserFilters>(DEFAULT_FILTERS)
+  const [appliedFilters, setAppliedFilters] = useState<FilterBuilderValue<FilterFieldId>>(DEFAULT_FILTERS)
+  const [draftFilters, setDraftFilters] = useState<FilterBuilderValue<FilterFieldId>>(DEFAULT_FILTERS)
   const [quickKeyword, setQuickKeyword] = useState('')
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [draftColumnVisibility, setDraftColumnVisibility] = useState<VisibilityState>({})
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>(MANAGEABLE_COLUMNS.map((column) => column.id))
   const [draftColumnOrder, setDraftColumnOrder] = useState<ColumnOrderState>(MANAGEABLE_COLUMNS.map((column) => column.id))
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const [activeViewId, setActiveViewId] = useState<UsersTableViewId>('all')
 
   useEffect(() => {
     if (filtersOpen) {
@@ -276,12 +310,32 @@ export default function UsersTablePage() {
     setRowSelection({})
   }
 
+  function applyView(viewId: Exclude<UsersTableViewId, 'custom'>) {
+    const view = VIEW_PRESETS.find((entry) => entry.id === viewId)
+    if (!view) return
+
+    const nextFilters = cloneFilterValue(view.filters)
+    const nextVisibility = { ...view.columnVisibility }
+    const nextOrder = [...view.columnOrder]
+
+    setAppliedFilters(nextFilters)
+    setDraftFilters(nextFilters)
+    setColumnVisibility(nextVisibility)
+    setDraftColumnVisibility(nextVisibility)
+    setColumnOrder(nextOrder)
+    setDraftColumnOrder(nextOrder)
+    setActiveViewId(view.id)
+  }
+
   const activeFilterCount = useMemo(() => {
-    return countActiveRules(appliedFilters.root)
+    return countActiveFilterBuilderRules(appliedFilters)
   }, [appliedFilters])
 
   const filteredUsers = useMemo(
-    () => users.filter((user) => matchesKeyword(user, quickKeyword) && matchFilterGroup(user, appliedFilters.root)),
+    () => users.filter((user) => (
+      matchesKeyword(user, quickKeyword)
+      && matchesFilterBuilderGroup(user, appliedFilters, FILTER_FIELDS, resolveFilterFieldValue)
+    )),
     [users, appliedFilters, quickKeyword],
   )
 
@@ -454,30 +508,60 @@ export default function UsersTablePage() {
 
       <div className='flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg bg-background shadow-sm'>
         <div className='border-b px-3 py-2'>
-          <div className='flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-end'>
-            {activeFilterCount > 0 && (
-              <Button variant='ghost' size='sm' className='gap-1.5 lg:order-1' onClick={() => setAppliedFilters(DEFAULT_FILTERS)}>
-                <RotateCcw className='size-4' />
-                Reset filters
+          <div className='flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between'>
+            <div className='flex items-center gap-2'>
+              <Select
+                value={activeViewId}
+                onValueChange={(value) => {
+                  if (value === 'custom') return
+                  applyView(value as Exclude<UsersTableViewId, 'custom'>)
+                }}
+              >
+                <SelectTrigger className='h-8 w-[210px] border-none px-2 text-primary shadow-none'>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {VIEW_PRESETS.map((view) => (
+                    <SelectItem key={view.id} value={view.id}>{view.label}</SelectItem>
+                  ))}
+                  <SelectItem value='custom'>Custom view</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className='flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-end'>
+              {activeFilterCount > 0 && (
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  className='gap-1.5 lg:order-1'
+                  onClick={() => {
+                    setAppliedFilters(DEFAULT_FILTERS)
+                    setActiveViewId('custom')
+                  }}
+                >
+                  <RotateCcw className='size-4' />
+                  Reset filters
+                </Button>
+              )}
+              <Button variant='ghost' size='sm' className='gap-1.5 lg:order-2' onClick={() => setColumnsOpen(true)}>
+                <Columns3 className='size-4' />
+                Edit columns
               </Button>
-            )}
-            <Button variant='ghost' size='sm' className='gap-1.5 lg:order-2' onClick={() => setColumnsOpen(true)}>
-              <Columns3 className='size-4' />
-              Edit columns
-            </Button>
-            <Button variant='ghost' size='sm' className='gap-1.5 lg:order-3' onClick={() => setFiltersOpen(true)}>
-              <Filter className='size-4' />
-              Edit filters
-              {activeFilterCount > 0 && <span className='rounded-sm bg-muted px-1.5 py-0.5 text-xs'>{activeFilterCount}</span>}
-            </Button>
-            <div className='relative w-full lg:order-4 lg:w-72'>
-              <Search className='pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground' />
-              <Input
-                value={quickKeyword}
-                onChange={(e) => setQuickKeyword(e.target.value)}
-                placeholder='Filter by keyword'
-                className='pl-9'
-              />
+              <Button variant='ghost' size='sm' className='gap-1.5 lg:order-3' onClick={() => setFiltersOpen(true)}>
+                <Filter className='size-4' />
+                Edit filters
+                {activeFilterCount > 0 && <span className='rounded-sm bg-muted px-1.5 py-0.5 text-xs'>{activeFilterCount}</span>}
+              </Button>
+              <div className='relative w-full lg:order-4 lg:w-72'>
+                <Search className='pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground' />
+                <Input
+                  value={quickKeyword}
+                  onChange={(e) => setQuickKeyword(e.target.value)}
+                  placeholder='Filter by keyword'
+                  className='pl-9'
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -501,17 +585,17 @@ export default function UsersTablePage() {
       </div>
 
       <Sheet open={filtersOpen} onOpenChange={setFiltersOpen}>
-        <SheetContent side='right' className='w-full gap-0 p-0 sm:max-w-xl'>
+        <SheetContent side='right' className='w-full gap-0 p-0 sm:max-w-4xl'>
           <SheetHeader className='border-b px-6 py-5'>
             <SheetTitle>Edit filters</SheetTitle>
             <SheetDescription>Build nested rule groups and combine them with AND or OR.</SheetDescription>
           </SheetHeader>
 
-          <div className='flex-1 space-y-5 overflow-y-auto px-6 py-5'>
-            <FilterGroupEditor
-              group={draftFilters.root}
-              isRoot
-              onChange={(group) => setDraftFilters({ root: group })}
+          <div className='flex-1 overflow-y-auto px-6 py-5'>
+            <FilterBuilder
+              fields={FILTER_FIELDS}
+              value={draftFilters}
+              onChange={setDraftFilters}
             />
           </div>
 
@@ -524,6 +608,7 @@ export default function UsersTablePage() {
               <Button
                 onClick={() => {
                   setAppliedFilters(draftFilters)
+                  setActiveViewId('custom')
                   setFiltersOpen(false)
                 }}
               >
@@ -572,6 +657,7 @@ export default function UsersTablePage() {
                 onClick={() => {
                   setColumnVisibility(draftColumnVisibility)
                   setColumnOrder(draftColumnOrder)
+                  setActiveViewId('custom')
                   setColumnsOpen(false)
                 }}
               >
@@ -607,327 +693,44 @@ function setColumnVisible(state: VisibilityState, columnId: string, visible: boo
   return next
 }
 
-function createFilterRule(): FilterRule {
-  const field = FILTER_FIELDS[0]
-  return {
-    kind: 'rule',
-    id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-    field: field.id,
-    operator: getOperatorsForField(field.type)[0].value,
-    value: '',
-  }
-}
-
-function createFilterGroup(operator: FilterGroupOperator = 'and'): FilterGroup {
-  return {
-    kind: 'group',
-    id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-    operator,
-    children: [],
-  }
-}
-
-function getFilterField(fieldId: FilterFieldId): FilterFieldDefinition {
-  return FILTER_FIELDS.find((field) => field.id === fieldId) ?? FILTER_FIELDS[0]
-}
-
-function getOperatorsForField(type: FilterFieldType): Array<{ label: string; value: FilterOperator }> {
-  if (type === 'date') {
-    return [
-      { label: 'On', value: 'on' },
-      { label: 'Before', value: 'before' },
-      { label: 'After', value: 'after' },
-    ]
-  }
-
-  if (type === 'select') {
-    return [
-      { label: 'Equals', value: 'equals' },
-      { label: 'Not equals', value: 'notEquals' },
-    ]
-  }
-
-  return [
-    { label: 'Contains', value: 'contains' },
-    { label: 'Equals', value: 'equals' },
-    { label: 'Starts with', value: 'startsWith' },
-    { label: 'Not equals', value: 'notEquals' },
-  ]
-}
-
 function matchesKeyword(user: UserRow, keyword: string) {
   const normalizedKeyword = normalizeString(keyword)
   if (!normalizedKeyword) return true
   return normalizeString(`${user.name} ${user.email}`).includes(normalizedKeyword)
 }
 
-function matchFilterGroup(user: UserRow, group: FilterGroup) {
-  const activeChildren = group.children.filter((child) => isNodeActive(child))
-  if (!activeChildren.length) return true
-
-  return group.operator === 'or'
-    ? activeChildren.some((child) => matchNode(user, child))
-    : activeChildren.every((child) => matchNode(user, child))
-}
-
-function matchRule(user: UserRow, rule: FilterRule) {
-  if (!rule.value.trim()) return true
-
-  const field = getFilterField(rule.field)
-  const rawValue = String(user[rule.field] ?? '')
-
-  if (field.type === 'date') {
-    return matchDateRule(rawValue, rule.operator, rule.value)
-  }
-
-  const left = normalizeString(rawValue)
-  const right = normalizeString(rule.value)
-
-  switch (rule.operator) {
-    case 'equals':
-      return left === right
-    case 'notEquals':
-      return left !== right
-    case 'startsWith':
-      return left.startsWith(right)
-    case 'contains':
-    default:
-      return left.includes(right)
-  }
-}
-
-function matchDateRule(rawValue: string, operator: FilterOperator, ruleValue: string) {
-  if (!ruleValue) return true
-
-  const left = rawValue.slice(0, 10)
-  const right = ruleValue.slice(0, 10)
-
-  switch (operator) {
-    case 'before':
-      return left < right
-    case 'after':
-      return left > right
-    case 'on':
-    case 'equals':
-    default:
-      return left === right
-  }
-}
-
 function normalizeString(value: string) {
   return value.trim().toLowerCase()
 }
 
-function isNodeActive(node: FilterNode) {
-  return node.kind === 'rule'
-    ? !!node.value.trim()
-    : node.children.some((child) => isNodeActive(child))
+function resolveFilterFieldValue(user: UserRow, fieldCode: FilterFieldId): FilterBuilderResolvedValue {
+  return user[fieldCode]
 }
 
-function matchNode(user: UserRow, node: FilterNode) {
-  return node.kind === 'rule' ? matchRule(user, node) : matchFilterGroup(user, node)
-}
-
-function countActiveRules(group: FilterGroup): number {
-  return group.children.reduce((count, child) => (
-    child.kind === 'rule'
-      ? count + (child.value.trim() ? 1 : 0)
-      : count + countActiveRules(child)
-  ), 0)
-}
-
-function updateGroupNode(group: FilterGroup, targetId: string, updater: (node: FilterNode) => FilterNode): FilterGroup {
+function createViewRule(
+  fieldCode: FilterFieldId,
+  condition: 'contains' | 'equals' | 'notEquals' | 'startsWith' | 'before' | 'after' | 'on',
+  value: string,
+) {
+  const rule = createFilterBuilderRule<FilterFieldId>()
   return {
-    ...group,
-    children: group.children.map((child) => {
-      if (child.id === targetId) return updater(child)
-      if (child.kind === 'group') return updateGroupNode(child, targetId, updater)
-      return child
-    }),
+    ...rule,
+    fieldCode,
+    condition,
+    value,
   }
 }
 
-function appendNodeToGroup(group: FilterGroup, targetGroupId: string, node: FilterNode): FilterGroup {
-  if (group.id === targetGroupId) {
-    return { ...group, children: [...group.children, node] }
-  }
-
+function createViewGroup(
+  children: FilterBuilderValue<FilterFieldId>['children'],
+  operator: 'and' | 'or' = 'and',
+) {
   return {
-    ...group,
-    children: group.children.map((child) => (
-      child.kind === 'group' ? appendNodeToGroup(child, targetGroupId, node) : child
-    )),
+    ...createFilterBuilderGroup<FilterFieldId>(operator),
+    children,
   }
 }
 
-function removeNodeFromGroup(group: FilterGroup, targetId: string): FilterGroup {
-  return {
-    ...group,
-    children: group.children
-      .filter((child) => child.id !== targetId)
-      .map((child) => child.kind === 'group' ? removeNodeFromGroup(child, targetId) : child),
-  }
-}
-
-function FilterGroupEditor({
-  group,
-  onChange,
-  isRoot = false,
-}: {
-  group: FilterGroup
-  onChange: (group: FilterGroup) => void
-  isRoot?: boolean
-}) {
-  return (
-    <div className='space-y-3 rounded-md border p-4'>
-      <div className='flex flex-wrap items-center justify-between gap-3'>
-        <div className='flex items-center gap-3'>
-          <Label>{isRoot ? 'Root group' : 'Group'}</Label>
-          <Select
-            value={group.operator}
-            onValueChange={(value) => onChange({ ...group, operator: value as FilterGroupOperator })}
-          >
-            <SelectTrigger size='sm' className='w-[110px]'>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value='and'>AND</SelectItem>
-              <SelectItem value='or'>OR</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className='flex gap-2'>
-          <Button
-            variant='outline'
-            size='sm'
-            className='gap-1.5'
-            onClick={() => onChange(appendNodeToGroup(group, group.id, createFilterRule()))}
-          >
-            <Plus className='size-4' />
-            Add filter
-          </Button>
-          <Button
-            variant='outline'
-            size='sm'
-            className='gap-1.5'
-            onClick={() => onChange(appendNodeToGroup(group, group.id, createFilterGroup('and')))}
-          >
-            <Plus className='size-4' />
-            Add group
-          </Button>
-        </div>
-      </div>
-
-      {group.children.length ? (
-        <div className='space-y-3'>
-          {group.children.map((child) => child.kind === 'rule' ? (
-            <FilterRuleEditor
-              key={child.id}
-              rule={child}
-              onChange={(rule) => onChange(updateGroupNode(group, child.id, () => rule) as FilterGroup)}
-              onRemove={() => onChange(removeNodeFromGroup(group, child.id))}
-            />
-          ) : (
-            <div key={child.id} className='pl-4 border-l'>
-              <div className='mb-2 flex justify-end'>
-                <Button variant='ghost' size='sm' onClick={() => onChange(removeNodeFromGroup(group, child.id))}>
-                  Remove group
-                </Button>
-              </div>
-              <FilterGroupEditor
-                group={child}
-                onChange={(nextGroup) => onChange(updateGroupNode(group, child.id, () => nextGroup) as FilterGroup)}
-              />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className='rounded-md border border-dashed p-4 text-sm text-muted-foreground'>
-          No filters yet. Add a filter or group to start building logic.
-        </div>
-      )}
-    </div>
-  )
-}
-
-function FilterRuleEditor({
-  rule,
-  onChange,
-  onRemove,
-}: {
-  rule: FilterRule
-  onChange: (rule: FilterRule) => void
-  onRemove: () => void
-}) {
-  const field = getFilterField(rule.field)
-  const operators = getOperatorsForField(field.type)
-
-  return (
-    <div className='grid gap-3 rounded-md border p-3 md:grid-cols-[1.2fr_1fr_1.2fr_auto] md:items-center'>
-      <Select
-        value={rule.field}
-        onValueChange={(value) => {
-          const nextField = getFilterField(value as FilterFieldId)
-          onChange({
-            ...rule,
-            field: value as FilterFieldId,
-            operator: getOperatorsForField(nextField.type)[0].value,
-            value: '',
-          })
-        }}
-      >
-        <SelectTrigger>
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {FILTER_FIELDS.map((item) => (
-            <SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      <Select
-        value={rule.operator}
-        onValueChange={(value) => onChange({ ...rule, operator: value as FilterOperator })}
-      >
-        <SelectTrigger>
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
-          {operators.map((operator) => (
-            <SelectItem key={operator.value} value={operator.value}>{operator.label}</SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      {field.type === 'select' ? (
-        <Select
-          value={rule.value}
-          onValueChange={(value) => onChange({ ...rule, value })}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder='Select value' />
-          </SelectTrigger>
-          <SelectContent>
-            {field.options?.map((option) => (
-              <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      ) : field.type === 'date' ? (
-        <DateInput value={rule.value} onChange={(e) => onChange({ ...rule, value: e.target.value })} />
-      ) : (
-        <Input
-          value={rule.value}
-          onChange={(e) => onChange({ ...rule, value: e.target.value })}
-          placeholder='Enter value'
-        />
-      )}
-
-      <Button variant='ghost' size='icon' onClick={onRemove}>
-        <Trash2 className='size-4' />
-      </Button>
-    </div>
-  )
+function cloneFilterValue<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T
 }

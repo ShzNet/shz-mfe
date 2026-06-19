@@ -118,6 +118,24 @@ export { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, Ch
 export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from './ui/table'
 export { DataTable, SortableHeader, type ColumnDef, type ColumnFiltersState, type ColumnOrderState, type RowSelectionState, type VisibilityState } from './ui/data/data-table'
 export { ColumnManager, type ColumnManagerItem } from './ui/data/column-manager'
+export {
+  FilterBuilder,
+  createFilterBuilderGroup,
+  createFilterBuilderRule,
+  countActiveFilterBuilderRules,
+  matchesFilterBuilderGroup,
+  type FilterBuilderCondition,
+  type FilterBuilderDataType,
+  type FilterBuilderField,
+  type FilterBuilderGroup,
+  type FilterBuilderGroupOperator,
+  type FilterBuilderNode,
+  type FilterBuilderOption,
+  type FilterBuilderProps,
+  type FilterBuilderResolvedValue,
+  type FilterBuilderRule,
+  type FilterBuilderValue,
+} from './ui/data/filter-builder'
 export { Tree, type TreeNode } from './ui/data/tree'
 export { TreeTable, type TreeTableRow } from './ui/data/tree-table'
 export { VirtualList } from './ui/data/virtual-list'

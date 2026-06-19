@@ -10,7 +10,7 @@ const LINK_CLASS =
 
 const ITEMS = [
   { title: 'Overview', path: BASE, icon: LayoutDashboard },
-]
+] as const
 
 export default function RemoteAdminNav() {
   const { pathname } = useLocation()

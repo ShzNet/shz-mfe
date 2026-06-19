@@ -8,7 +8,7 @@ export interface HostRemoteApp {
   entry: string
 }
 
-export const apps: HostRemoteApp[] = [
+export const apps = [
   {
     id: 'admin',
     name: 'Admin Sample',
@@ -16,6 +16,6 @@ export const apps: HostRemoteApp[] = [
     remoteName: 'remote_admin',
     entry: 'http://localhost:3103/mf-manifest.json',
   },
-]
+] satisfies HostRemoteApp[]
 
 registerRemotes(apps.map((app) => ({ name: app.remoteName, entry: app.entry })))

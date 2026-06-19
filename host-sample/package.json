@@ -1,7 +1,7 @@
 {
   "name": "host-sample-workspace",
   "private": true,
-  "version": "0.0.4",
+  "version": "0.0.5",
   "packageManager": "pnpm@11.4.0",
   "scripts": {
     "nx": "nx",
@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@nx/js": "^21.0.0",
-    "@shz/nx-generators": "0.0.4",
+    "@shz/nx-generators": "0.0.5",
     "nx": "^21.0.0",
     "typescript": "~5.8.0"
   }

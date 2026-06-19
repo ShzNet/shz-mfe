@@ -1,6 +1,6 @@
 {
   "name": "@shz/remote-admin",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,8 +10,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit && node ../../../scripts/check-no-explicit-any.mjs src"
   },
   "dependencies": {
-    "@shz/components": "^0.0.4",
-    "@shz/core": "^0.0.4",
+    "@shz/components": "^0.0.5",
+    "@shz/core": "^0.0.5",
     "lucide-react": "^0.487.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

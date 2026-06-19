@@ -53,5 +53,11 @@ export async function loadRemoteModule<TModule = unknown>(remoteName: string, ex
   const { loadRemote } = await import('@module-federation/enhanced/runtime')
   await loadRemoteStyles(entry, exposedModule)
   const moduleId = buildModuleId(remoteName, exposedModule)
-  return await loadRemote<TModule>(moduleId)
+  const remoteModule = await loadRemote<TModule>(moduleId)
+
+  if (remoteModule == null) {
+    throw new Error(`Remote module "${moduleId}" could not be loaded`)
+  }
+
+  return remoteModule
 }

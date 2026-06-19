@@ -4,7 +4,12 @@ export type { ShellRemoteModuleMeta, ShellResolvedModule, ShellRouteItem } from 
 export type { CoreEvent, EventBus, Unsubscribe } from './runtime/event-bus'
 export { createEventBus } from './runtime/event-bus'
 
-export type { ShellRemoteContextValue, ShellRemoteComponentProps } from './runtime/remote-context'
+export type {
+  ShellRemoteContextValue,
+  ShellRemoteComponentProps,
+  ShellRemoteShellProps,
+  ShellRemoteShellModule,
+} from './runtime/remote-context'
 export {
   buildShellRemoteContextKey,
   setShellRemoteContext,

@@ -9,6 +9,7 @@ const config: ShellMenuConfig = {
     { title: 'Tasks', path: '/tasks', icon: 'CheckSquare', group: 'Management' },
     { title: 'Users', path: '/users', icon: 'Users', group: 'Management' },
     { title: 'Users Table', path: '/users-table', icon: 'Table2', group: 'Management' },
+    { title: 'Orders Table', path: '/orders-table', icon: 'ShoppingCart', group: 'Management' },
     { title: 'Reports', path: '/reports', icon: 'FileText', group: 'Management' },
     { title: 'Messages', path: '/messages', icon: 'MessageSquare', group: 'Management' },
 

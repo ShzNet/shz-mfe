@@ -1,3 +1,5 @@
+import type { ComponentType } from 'react'
+import type { ShellMenuConfig } from '../contracts/menu'
 import type { ShellRemoteModuleMeta } from '../contracts/shell'
 
 export interface ShellRemoteContextValue<TData = unknown> {
@@ -8,6 +10,15 @@ export interface ShellRemoteContextValue<TData = unknown> {
 
 export interface ShellRemoteComponentProps<TData = unknown> {
   shellContext?: ShellRemoteContextValue<TData>
+}
+
+export interface ShellRemoteShellProps<TData = unknown> extends ShellRemoteComponentProps<TData> {
+  onMenuChange?: (menu: ShellMenuConfig) => void
+}
+
+export interface ShellRemoteShellModule<TData = unknown> {
+  default: ComponentType<ShellRemoteShellProps<TData>>
+  getInitialMenu?: () => ShellMenuConfig
 }
 
 const remoteContextStore = new Map<string, ShellRemoteContextValue<unknown>>()

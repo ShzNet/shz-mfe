@@ -1,7 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Toaster } from '@/components/ui/sonner'
 import { AuthenticatedLayout } from '@/components/layout/authenticated-layout'
-import { RemoteModule } from '@/mf/remote-module'
+import { RemoteShellPage } from '@/mf/remote-shell'
 import { SignIn } from '@/features/auth/sign-in'
 import { NoAppSelected } from '@/features/home'
 import { useRemoteRoutes } from '@/hooks/use-remote-routes'
@@ -30,9 +30,8 @@ function RemotePageRoute({ app }: { app: (ReturnType<typeof useRemoteRoutes>)['a
   const { auth } = useAuthStore()
 
   return (
-    <RemoteModule
+    <RemoteShellPage
       remoteName={app.remoteName}
-      exposedModule='./Page'
       remote={app}
       contextData={{ app, auth }}
     />

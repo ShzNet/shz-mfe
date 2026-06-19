@@ -885,7 +885,7 @@ export default function AdminDashboardPage() {
   const shellData = getShellRemoteContextData<{
     app?: { name?: string }
     auth?: { user?: { email?: string } | null }
-  }>('remote_admin', './Page')
+  }>('remote_admin', './Shell')
   const hostAppName = shellData?.app?.name ?? 'Component Demo'
   const hostUserEmail = shellData?.auth?.user?.email ?? 'standalone mode'
 

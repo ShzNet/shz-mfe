@@ -52,9 +52,8 @@ export default defineConfig({
       dts: false,
       name: 'remote_dashboard',
       exposes: {
-        './Page': './src/pages/page.tsx',
         './config': './src/config.ts',
-        './Nav': './src/nav.tsx',
+        './Shell': './src/shell.tsx',
       },
       shared: {
         '@shz/core': { singleton: true, requiredVersion: false },

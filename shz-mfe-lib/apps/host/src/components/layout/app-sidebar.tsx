@@ -4,18 +4,18 @@ import {
 } from '@/components/ui/sidebar'
 import { useLayout } from '@/context/layout-provider'
 import { type AppModule } from '@/hooks/use-remote-routes'
-import { useAuthStore } from '@/stores/auth-store'
 import { TeamSwitcher } from './team-switcher'
-import { RemoteModule } from '@/mf/remote-module'
+import { RemoteSidebarMenu } from './remote-sidebar-menu'
+import { useRemoteShellMenu } from '@/mf/remote-shell'
 
 export function AppSidebar({ apps }: { apps: AppModule[] }) {
   const { collapsible, variant } = useLayout()
   const { pathname } = useLocation()
-  const { auth } = useAuthStore()
 
   const activeApp = apps.find(
     (app) => pathname === app.basePath || pathname.startsWith(`${app.basePath}/`)
   )
+  const shellMenu = useRemoteShellMenu(activeApp?.remoteName ?? '')
 
   return (
     <Sidebar collapsible={collapsible} variant={variant}>
@@ -24,12 +24,14 @@ export function AppSidebar({ apps }: { apps: AppModule[] }) {
       </SidebarHeader>
       <SidebarContent>
         {activeApp && (
-          <RemoteModule
-            remoteName={activeApp.remoteName}
-            exposedModule='./Nav'
-            remote={activeApp}
-            contextData={{ app: activeApp, auth }}
-          />
+          <>
+            {shellMenu.error && (
+              <div className='px-3 py-2 text-sm text-destructive'>
+                {shellMenu.error.message}
+              </div>
+            )}
+            {shellMenu.menu && <RemoteSidebarMenu app={activeApp} menu={shellMenu.menu} />}
+          </>
         )}
       </SidebarContent>
       <SidebarRail />

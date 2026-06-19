@@ -1,9 +1,13 @@
 import type { ShellMenuConfig } from '@shz/core'
 
-const config = {
+const baseMenu = {
   nav: [
     { title: 'Overview', path: '', icon: 'LayoutDashboard', group: 'General' },
   ],
 } satisfies ShellMenuConfig
 
-export default config
+export function getRemoteAdminMenu(): ShellMenuConfig {
+  return baseMenu
+}
+
+export default baseMenu

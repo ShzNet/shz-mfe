@@ -44,7 +44,7 @@ export default defineConfig({
       dts: false,
       name: 'remote_admin',
       exposes: {
-        './config': './src/config.ts',
+        './config': './src/menu.ts',
         './Shell': './src/shell.tsx',
       },
       shared: {

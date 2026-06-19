@@ -1,6 +1,6 @@
 import { Sidebar, SidebarContent, SidebarHeader, SidebarInset, SidebarProvider, SidebarRail } from '@shz/components'
 import { useNavigate } from 'react-router-dom'
-import { RemoteShellPage, useRemoteShellMenu } from '../components/remote-shell'
+import { RemoteShellPage, useRemoteShell } from '../components/remote-shell'
 import { AppHeader } from './app-header'
 import { AppSidebarNav } from './app-sidebar-nav'
 import { RemoteSidebarMenu } from './remote-sidebar-menu'
@@ -14,7 +14,7 @@ type AppShellProps = {
 
 export function AppShell({ app, auth, onSignOut }: AppShellProps) {
   const navigate = useNavigate()
-  const shellMenu = useRemoteShellMenu(app.remoteName, app.entry)
+  const remoteShell = useRemoteShell(app.remoteName, app.entry)
 
   function handleSignOut() {
     onSignOut()
@@ -28,15 +28,15 @@ export function AppShell({ app, auth, onSignOut }: AppShellProps) {
           <AppSidebarNav app={app} />
         </SidebarHeader>
         <SidebarContent>
-          {shellMenu.error && <div className='px-3 py-2 text-sm text-destructive'>{shellMenu.error.message}</div>}
-          {shellMenu.menu && <RemoteSidebarMenu app={app} menu={shellMenu.menu} />}
+          {remoteShell.error && <div className='px-3 py-2 text-sm text-destructive'>{remoteShell.error.message}</div>}
+          {remoteShell.menu && <RemoteSidebarMenu app={app} menu={remoteShell.menu} />}
         </SidebarContent>
         <SidebarRail />
       </Sidebar>
       <SidebarInset>
         <AppHeader app={app} auth={auth} onSignOut={handleSignOut} />
         <main className='flex min-h-0 flex-1 flex-col'>
-          <RemoteShellPage remoteName={app.remoteName} entry={app.entry} />
+          <RemoteShellPage remoteName={app.remoteName} state={remoteShell} />
         </main>
       </SidebarInset>
     </SidebarProvider>

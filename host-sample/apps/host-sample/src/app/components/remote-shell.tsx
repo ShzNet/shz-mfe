@@ -20,7 +20,7 @@ type RemoteShellState = {
 
 type RemoteShellPageProps = {
   remoteName: string
-  entry: string
+  state: RemoteShellState
 }
 
 const shellModuleCache = new Map<string, RemoteShellModule>()
@@ -110,7 +110,7 @@ function useRemoteShellModule(remoteName: string, entry: string): RemoteShellSta
   return state
 }
 
-export function useRemoteShellMenu(remoteName: string, entry: string) {
+export function useRemoteShell(remoteName: string, entry: string) {
   const state = useRemoteShellModule(remoteName, entry)
 
   useEffect(() => {
@@ -126,8 +126,8 @@ export function useRemoteShellMenu(remoteName: string, entry: string) {
   return { ...state, menu }
 }
 
-export function RemoteShellPage({ remoteName, entry }: RemoteShellPageProps) {
-  const { module, loading, error } = useRemoteShellModule(remoteName, entry)
+export function RemoteShellPage({ remoteName, state }: RemoteShellPageProps) {
+  const { module, loading, error } = state
   const onMenuChange = useEffectEvent((menu: ShellMenuConfig) => {
     setRemoteMenu(remoteName, menu)
   })

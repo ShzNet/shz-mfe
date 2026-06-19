@@ -1,30 +1,22 @@
-import { useEffect } from 'react'
-import type { ShellMenuConfig } from '@shz/core'
-import { getRemoteAdminMenu } from './menu'
 import AppPage from './pages/app'
+import RemoteAdminMenu from './nav'
 
-type RemoteShellProps = {
-  onMenuChange?: (menu: ShellMenuConfig) => void
-}
+type RemoteShellProps = Record<string, never>
 
 type RemoteShellModule = {
   default: typeof RemoteAdminShell
-  getInitialMenu: () => ShellMenuConfig
+  Menu: typeof RemoteAdminMenu
 }
 
-function RemoteAdminShell({ onMenuChange }: RemoteShellProps) {
-  useEffect(() => {
-    onMenuChange?.(getRemoteAdminMenu())
-  }, [onMenuChange])
-
+function RemoteAdminShell(_: RemoteShellProps) {
   return <AppPage />
 }
 
 const remoteAdminShellModule = {
   default: RemoteAdminShell,
-  getInitialMenu: getRemoteAdminMenu,
+  Menu: RemoteAdminMenu,
 } satisfies RemoteShellModule
 
-export const getInitialMenu = remoteAdminShellModule.getInitialMenu
+export const Menu = remoteAdminShellModule.Menu
 
 export default remoteAdminShellModule.default

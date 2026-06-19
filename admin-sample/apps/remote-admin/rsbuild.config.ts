@@ -48,9 +48,11 @@ export default defineConfig({
         './Shell': './src/shell.tsx',
       },
       shared: {
+        '@shz/core': { singleton: true, requiredVersion: false },
         react: { singleton: true, requiredVersion: false },
         'react-dom': { singleton: true, requiredVersion: false },
         'react-router-dom': { singleton: true, requiredVersion: false },
+        '@shz/components': { singleton: true, requiredVersion: false },
       },
     }),
   ],

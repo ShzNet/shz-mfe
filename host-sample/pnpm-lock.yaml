@@ -12,8 +12,8 @@ importers:
         specifier: ^21.0.0
         version: 21.6.11(@babel/traverse@7.29.7)(nx@21.6.11)
       '@shz/nx-generators':
-        specifier: 0.0.5
-        version: 0.0.5
+        specifier: 0.0.6
+        version: 0.0.6
       nx:
         specifier: ^21.0.0
         version: 21.6.11
@@ -27,11 +27,11 @@ importers:
         specifier: ^0.9.0
         version: 0.9.1(@rspack/core@1.7.12(@swc/helpers@0.5.23))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.8.3)
       '@shz/components':
-        specifier: ^0.0.5
-        version: 0.0.5(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(lucide-react@0.487.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-is@19.2.7)(react@19.2.7)(redux@5.0.1)
+        specifier: ^0.0.6
+        version: 0.0.6(@rspack/core@1.7.12(@swc/helpers@0.5.23))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(lucide-react@0.487.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-is@19.2.7)(react@19.2.7)(redux@5.0.1)(typescript@5.8.3)
       '@shz/core':
-        specifier: ^0.0.5
-        version: 0.0.5
+        specifier: ^0.0.6
+        version: 0.0.6(@rspack/core@1.7.12(@swc/helpers@0.5.23))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.8.3)
       lucide-react:
         specifier: ^0.487.0
         version: 0.487.0(react@19.2.7)
@@ -1732,18 +1732,18 @@ packages:
       webpack-hot-middleware:
         optional: true
 
-  '@shz/components@0.0.5':
-    resolution: {integrity: sha512-usKFNsx+to9dzaxPCxD06o/F9c+kF3G0JTvlhTTgpHjeFbEVG192SE6rmLjN2nmr0e/ERBPTeH7t5Lww19MwEA==}
+  '@shz/components@0.0.6':
+    resolution: {integrity: sha512-2hRBDME2W/dHchoFnwZ3jyDWWjXFf1wfO0Pxjitfv7+VHr6M+tcvuOSPdCSUuvbunqxlLdQlheLReJByLUJ/sQ==}
     peerDependencies:
       lucide-react: '>=0.400.0'
       react: ^19.0.0
       react-dom: ^19.0.0
 
-  '@shz/core@0.0.5':
-    resolution: {integrity: sha512-eenh0uf84NFisBa90drzrtFC7Hf/knP0V0MZ8F+7BsMYPlruECnX7qbs3SAMJGgq4EwfTo1F8A+Gz33ECmpD3w==}
+  '@shz/core@0.0.6':
+    resolution: {integrity: sha512-85lweY7s8Ed43fr9Li/9vQseaMQ7UG+po05uVd3yNLLsCOeaEs1QhSZW5/1UmBL70vAbwfG22hIv/Ef+2GAFUg==}
 
-  '@shz/nx-generators@0.0.5':
-    resolution: {integrity: sha512-eN5cJxIzD7Fkzfhs9J4uwpL4McmYLUTL/E925KkssPNAgXvnZqSqWDIMXMiLCxOXz6ggP/mf/ZdRldPxHGw0YA==}
+  '@shz/nx-generators@0.0.6':
+    resolution: {integrity: sha512-nYZEqbXkt/yUM0AhT/zeaHMA12fzQwtq3kft3mkLirakebxT1E48bPkm0PLiNEfI8AoStfD9SSdgXex9AFAlOA==}
 
   '@sinclair/typebox@0.34.49':
     resolution: {integrity: sha512-brySQQs7Jtn0joV8Xh9ZV/hZb9Ozb0pmazDIASBkYKCjXrXU3mpcFahmK/z4YDhGkQvP9mWJbVyahdtU5wQA+A==}
@@ -5447,7 +5447,7 @@ snapshots:
       error-stack-parser: 2.1.4
       react-refresh: 0.18.0
 
-  '@shz/components@0.0.5(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(lucide-react@0.487.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-is@19.2.7)(react@19.2.7)(redux@5.0.1)':
+  '@shz/components@0.0.6(@rspack/core@1.7.12(@swc/helpers@0.5.23))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(lucide-react@0.487.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-is@19.2.7)(react@19.2.7)(redux@5.0.1)(typescript@5.8.3)':
     dependencies:
       '@dnd-kit/core': 6.3.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@dnd-kit/sortable': 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)
@@ -5478,7 +5478,7 @@ snapshots:
       '@radix-ui/react-toggle': 1.1.12(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@radix-ui/react-toggle-group': 1.1.13(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@radix-ui/react-tooltip': 1.2.10(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      '@shz/core': 0.0.5
+      '@shz/core': 0.0.6(@rspack/core@1.7.12(@swc/helpers@0.5.23))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.8.3)
       '@tanstack/react-table': 8.21.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       class-variance-authority: 0.7.1
       clsx: 2.1.1
@@ -5497,14 +5497,35 @@ snapshots:
       tailwind-merge: 3.6.0
       vaul: 1.1.2(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
     transitivePeerDependencies:
+      - '@rspack/core'
       - '@types/react'
       - '@types/react-dom'
+      - bufferutil
+      - debug
       - react-is
       - redux
+      - supports-color
+      - typescript
+      - utf-8-validate
+      - vue-tsc
+      - webpack
 
-  '@shz/core@0.0.5': {}
+  '@shz/core@0.0.6(@rspack/core@1.7.12(@swc/helpers@0.5.23))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.8.3)':
+    dependencies:
+      '@module-federation/enhanced': 0.9.1(@rspack/core@1.7.12(@swc/helpers@0.5.23))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.8.3)
+    transitivePeerDependencies:
+      - '@rspack/core'
+      - bufferutil
+      - debug
+      - react
+      - react-dom
+      - supports-color
+      - typescript
+      - utf-8-validate
+      - vue-tsc
+      - webpack
 
-  '@shz/nx-generators@0.0.5': {}
+  '@shz/nx-generators@0.0.6': {}
 
   '@sinclair/typebox@0.34.49': {}
 

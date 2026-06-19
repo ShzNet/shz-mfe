@@ -1,15 +1,13 @@
 import type { ComponentType } from 'react'
-import { Suspense, useEffect, useEffectEvent, useMemo, useState, useSyncExternalStore } from 'react'
-import type { ShellMenuConfig } from '@shz/core'
+import { Suspense, useEffect, useState } from 'react'
 import { loadRemoteModule } from '../lib/remote-loader'
 
-type RemoteShellProps = {
-  onMenuChange?: (menu: ShellMenuConfig) => void
-}
+type RemoteShellProps = Record<string, never>
+type RemoteMenuProps = Record<string, never>
 
 type RemoteShellModule = {
   default: ComponentType<RemoteShellProps>
-  getInitialMenu?: () => ShellMenuConfig
+  Menu?: ComponentType<RemoteMenuProps>
 }
 
 type RemoteShellState = {
@@ -19,42 +17,11 @@ type RemoteShellState = {
 }
 
 type RemoteShellPageProps = {
-  remoteName: string
   state: RemoteShellState
 }
 
 const shellModuleCache = new Map<string, RemoteShellModule>()
 const shellPromiseCache = new Map<string, Promise<RemoteShellModule>>()
-const remoteMenuStore = new Map<string, ShellMenuConfig | null>()
-const remoteMenuListeners = new Map<string, Set<() => void>>()
-
-function getRemoteMenu(remoteName: string) {
-  return remoteMenuStore.get(remoteName) ?? null
-}
-
-function subscribeRemoteMenu(remoteName: string, listener: () => void) {
-  const listeners = remoteMenuListeners.get(remoteName) ?? new Set<() => void>()
-  listeners.add(listener)
-  remoteMenuListeners.set(remoteName, listeners)
-  return () => {
-    listeners.delete(listener)
-    if (listeners.size === 0) remoteMenuListeners.delete(remoteName)
-  }
-}
-
-function notifyRemoteMenu(remoteName: string) {
-  remoteMenuListeners.get(remoteName)?.forEach((listener) => listener())
-}
-
-function ensureInitialMenu(remoteName: string, mod: RemoteShellModule) {
-  if (remoteMenuStore.has(remoteName)) return
-  remoteMenuStore.set(remoteName, mod.getInitialMenu?.() ?? null)
-}
-
-function setRemoteMenu(remoteName: string, menu: ShellMenuConfig) {
-  remoteMenuStore.set(remoteName, menu)
-  notifyRemoteMenu(remoteName)
-}
 
 async function loadShellModule(remoteName: string, entry: string) {
   if (shellModuleCache.has(remoteName)) return shellModuleCache.get(remoteName)!
@@ -66,7 +33,6 @@ async function loadShellModule(remoteName: string, entry: string) {
         .then((mod) => {
           if (!mod?.default) throw new Error(`Remote shell "${remoteName}" has no default export`)
           shellModuleCache.set(remoteName, mod)
-          ensureInitialMenu(remoteName, mod)
           return mod
         })
         .catch((error) => {
@@ -111,31 +77,11 @@ function useRemoteShellModule(remoteName: string, entry: string): RemoteShellSta
 }
 
 export function useRemoteShell(remoteName: string, entry: string) {
-  const state = useRemoteShellModule(remoteName, entry)
-
-  useEffect(() => {
-    if (state.module) ensureInitialMenu(remoteName, state.module)
-  }, [remoteName, state.module])
-
-  const menu = useSyncExternalStore(
-    (listener) => subscribeRemoteMenu(remoteName, listener),
-    () => getRemoteMenu(remoteName),
-    () => getRemoteMenu(remoteName)
-  )
-
-  return { ...state, menu }
+  return useRemoteShellModule(remoteName, entry)
 }
 
-export function RemoteShellPage({ remoteName, state }: RemoteShellPageProps) {
+export function RemoteShellPage({ state }: RemoteShellPageProps) {
   const { module, loading, error } = state
-  const onMenuChange = useEffectEvent((menu: ShellMenuConfig) => {
-    setRemoteMenu(remoteName, menu)
-  })
-
-  const shellProps = useMemo<RemoteShellProps>(
-    () => ({ onMenuChange }),
-    [onMenuChange]
-  )
 
   if (error) {
     return <div className='p-6 text-sm text-destructive'>{error.message}</div>
@@ -149,11 +95,29 @@ export function RemoteShellPage({ remoteName, state }: RemoteShellPageProps) {
 
   return (
     <Suspense fallback={<RemoteFallback />}>
-      <Component {...shellProps} />
+      <Component />
+    </Suspense>
+  )
+}
+
+export function RemoteShellMenu({ state }: { state: RemoteShellState }) {
+  const { module, loading, error } = state
+
+  if (error || loading || !module?.Menu) return null
+
+  const Component = module.Menu
+
+  return (
+    <Suspense fallback={<RemoteMenuFallback />}>
+      <Component />
     </Suspense>
   )
 }
 
 function RemoteFallback() {
   return <div className='p-6 text-sm text-muted-foreground'>Loading module...</div>
+}
+
+function RemoteMenuFallback() {
+  return <div className='px-3 py-2 text-sm text-muted-foreground'>Loading menu...</div>
 }

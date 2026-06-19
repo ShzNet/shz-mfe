@@ -45,6 +45,7 @@ export default defineConfig({
       name: '${options.name.replace(/-/g, '_')}',
       remotes: {},
       shared: {
+        '${options.corePackage}': { singleton: true, eager: true, requiredVersion: false },
         react: { singleton: true, eager: true, requiredVersion: false },
         'react-dom': { singleton: true, eager: true, requiredVersion: false },
         'react-router-dom': { singleton: true, eager: true, requiredVersion: false },
@@ -130,6 +131,13 @@ import {
   Sparkles,
   Sun,
 } from 'lucide-react'
+import {
+  clearShellRemoteContext,
+  setShellRemoteContext,
+  type ShellRemoteComponentProps,
+  type ShellRemoteContextValue,
+  type ShellRemoteModuleMeta,
+} from '${options.corePackage}'
 import { apps } from './remotes'
 
 const AUTH_KEY = '${options.name}-auth'
@@ -142,11 +150,11 @@ type AuthState = {
 type ThemeMode = 'light' | 'dark' | 'system'
 
 type RemotePageModule = {
-  default: ComponentType
+  default: ComponentType<ShellRemoteComponentProps>
 }
 
 type RemoteNavModule = {
-  default: ComponentType
+  default: ComponentType<ShellRemoteComponentProps>
 }
 
 type RemoteManifest = {
@@ -524,28 +532,80 @@ function HeaderUser({ auth, onSignOut }: { auth: AuthState; onSignOut: () => voi
   )
 }
 
-function RemotePage({ remoteName, exposedModule, entry }: { remoteName: string; exposedModule: string; entry: string }) {
+function RemotePage({
+  remoteName,
+  exposedModule,
+  entry,
+  remote,
+  contextData,
+}: {
+  remoteName: string
+  exposedModule: string
+  entry: string
+  remote?: Partial<ShellRemoteModuleMeta>
+  contextData?: unknown
+}) {
   const LazyComp = lazy(async () => {
     const mod = await loadRemoteModule<RemotePageModule>(remoteName, exposedModule, entry)
     return { default: mod.default }
-  })
+  }) as ComponentType<ShellRemoteComponentProps>
+
+  const shellContext = useMemo<ShellRemoteContextValue>(
+    () => ({
+      remote: { ...remote, remoteName },
+      exposedModule,
+      data: contextData,
+    }),
+    [contextData, exposedModule, remote, remoteName]
+  )
+
+  setShellRemoteContext(shellContext)
+
+  useEffect(() => () => {
+    clearShellRemoteContext(remoteName, exposedModule)
+  }, [exposedModule, remoteName])
 
   return (
     <Suspense fallback={<div className='p-6 text-sm text-muted-foreground'>Loading module...</div>}>
-      <LazyComp />
+      <LazyComp shellContext={shellContext} />
     </Suspense>
   )
 }
 
-function RemoteNav({ remoteName, entry }: { remoteName: string; entry: string }) {
+function RemoteNav({
+  remoteName,
+  entry,
+  remote,
+  contextData,
+}: {
+  remoteName: string
+  entry: string
+  remote?: Partial<ShellRemoteModuleMeta>
+  contextData?: unknown
+}) {
   const LazyComp = lazy(async () => {
     const mod = await loadRemoteModule<RemoteNavModule>(remoteName, './Nav', entry)
     return { default: mod.default }
-  })
+  }) as ComponentType<ShellRemoteComponentProps>
+
+  const shellContext = useMemo<ShellRemoteContextValue>(
+    () => ({
+      remote: { ...remote, remoteName },
+      exposedModule: './Nav',
+      data: contextData,
+    }),
+    [contextData, remote, remoteName]
+  )
+
+  setShellRemoteContext(shellContext)
+
+  useEffect(() => () => {
+    clearShellRemoteContext(remoteName, './Nav')
+  }, [remoteName])
 
   return (
     <Suspense fallback={<div className='p-6 text-sm text-muted-foreground'>Loading module...</div>}>
-      <LazyComp />
+      <LazyComp shellContext={shellContext} />
     </Suspense>
   )
 }
@@ -618,7 +678,7 @@ function AppSidebarNav({ app }: { app: (typeof apps)[number] }) {
         </DropdownMenu>
       </SidebarMenuItem>
       <Separator />
-      <RemoteNav remoteName={app.remoteName} entry={app.entry} />
+      <RemoteNav remoteName={app.remoteName} entry={app.entry} remote={app} contextData={{ app, auth: readAuthState() }} />
     </SidebarMenu>
   )
 }
@@ -650,7 +710,13 @@ function AppFrame({ app }: { app: (typeof apps)[number] }) {
         <SidebarInset>
           <AppHeader app={app} auth={auth!} onSignOut={handleSignOut} />
           <main className='flex min-h-0 flex-1 flex-col'>
-            <RemotePage remoteName={app.remoteName} exposedModule='./Page' entry={app.entry} />
+            <RemotePage
+              remoteName={app.remoteName}
+              exposedModule='./Page'
+              entry={app.entry}
+              remote={app}
+              contextData={{ app, auth }}
+            />
           </main>
         </SidebarInset>
       </SidebarProvider>

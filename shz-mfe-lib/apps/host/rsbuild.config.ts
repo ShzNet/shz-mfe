@@ -49,6 +49,7 @@ export default defineConfig({
       // No static remotes — all registered at runtime via registerRemotes()
       remotes: {},
       shared: {
+        '@shz/core': { singleton: true, eager: true, requiredVersion: false },
         react: { singleton: true, eager: true, requiredVersion: false },
         'react-dom': { singleton: true, eager: true, requiredVersion: false },
         'react-router-dom': { singleton: true, eager: true, requiredVersion: false },

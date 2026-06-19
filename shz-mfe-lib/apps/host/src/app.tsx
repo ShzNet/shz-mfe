@@ -26,6 +26,19 @@ function AppLoading() {
   )
 }
 
+function RemotePageRoute({ app }: { app: (ReturnType<typeof useRemoteRoutes>)['apps'][number] }) {
+  const { auth } = useAuthStore()
+
+  return (
+    <RemoteModule
+      remoteName={app.remoteName}
+      exposedModule='./Page'
+      remote={app}
+      contextData={{ app, auth }}
+    />
+  )
+}
+
 export function App() {
   const { apps, loading, error } = useRemoteRoutes()
 
@@ -69,12 +82,7 @@ export function App() {
             <Route
               key={app.id}
               path={`${app.basePath}/*`}
-              element={
-                <RemoteModule
-                  remoteName={app.remoteName}
-                  exposedModule='./Page'
-                />
-              }
+              element={<RemotePageRoute app={app} />}
             />
           ))}
           <Route path='*' element={<Navigate to='/' replace />} />

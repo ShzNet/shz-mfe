@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { cn, SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuItem } from '@shz/components'
+import { getShellRemoteContextData } from '@shz/core'
 
 const BASE = '/app/admin'
 
@@ -65,6 +66,8 @@ export default function AdminNav() {
   // Logic is entirely inside the remote — host has no knowledge of this state
   const [showDev, setShowDev] = useState(false)
   const { pathname } = useLocation()
+  const shellData = getShellRemoteContextData<{ app?: { name?: string } }>('remote_admin', './Nav')
+  const primaryGroupLabel = shellData?.app?.name ?? 'General'
 
   const visibleItems = ALL_ITEMS.filter((item) => !item.devOnly || showDev)
   const groups = buildGroups(visibleItems)
@@ -73,7 +76,7 @@ export default function AdminNav() {
     <>
       {groups.map((group) => (
         <SidebarGroup key={group.title}>
-          <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
+          <SidebarGroupLabel>{group.title === 'General' ? primaryGroupLabel : group.title}</SidebarGroupLabel>
           <SidebarMenu>
             {group.items.map(({ title, fullPath, icon: Icon }) => {
               const isActive = pathname === fullPath || pathname.startsWith(`${fullPath}/`)

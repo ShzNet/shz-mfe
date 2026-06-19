@@ -12,8 +12,8 @@ importers:
         specifier: ^21.0.0
         version: 21.6.11(@babel/traverse@7.29.7)(nx@21.6.11)
       '@shz/nx-generators':
-        specifier: 0.0.2
-        version: 0.0.2
+        specifier: 0.0.3
+        version: 0.0.3
       nx:
         specifier: ^21.0.0
         version: 21.6.11
@@ -27,11 +27,11 @@ importers:
         specifier: ^0.9.0
         version: 0.9.1(@rspack/core@1.7.12(@swc/helpers@0.5.23))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.8.3)
       '@shz/components':
-        specifier: ^0.0.2
-        version: 0.0.2(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(lucide-react@0.487.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-is@19.2.7)(react@19.2.7)(redux@5.0.1)
+        specifier: ^0.0.3
+        version: 0.0.3(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(lucide-react@0.487.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-is@19.2.7)(react@19.2.7)(redux@5.0.1)
       '@shz/core':
-        specifier: ^0.0.1
-        version: 0.0.1
+        specifier: ^0.0.3
+        version: 0.0.3
       lucide-react:
         specifier: ^0.487.0
         version: 0.487.0(react@19.2.7)
@@ -1732,18 +1732,18 @@ packages:
       webpack-hot-middleware:
         optional: true
 
-  '@shz/components@0.0.2':
-    resolution: {integrity: sha512-ZKNAqY76lPGuqfpNY55/+3VvvCV1l0/D1Db26+0nV1Me+hPjhsvfLqrWDFpJCC5wT6hwvzOYd4NQ1KhB4vW9gA==}
+  '@shz/components@0.0.3':
+    resolution: {integrity: sha512-hkwo5LBJ3JweAGdoj1tx969BFu8WTs0mmwQlnuwpfiRaKS6335+m+ovF/ANXcrC9sWH2gWJBmg6762AGZudFeA==}
     peerDependencies:
       lucide-react: '>=0.400.0'
       react: ^19.0.0
       react-dom: ^19.0.0
 
-  '@shz/core@0.0.1':
-    resolution: {integrity: sha512-LJA412zS0E/QtCZjXi6xkpttWB3ali/LqZpvzgA6+6d8O4R5n0dhIV2vTvQy1dli6Our4htT2cX3imTaqi4yfA==}
+  '@shz/core@0.0.3':
+    resolution: {integrity: sha512-E35ZoxLkY8eOyQojH4Qi1q88wZ7G6CldeTe15KgcPC35XI29GylzbOcIV1kRBBOCrw+TLhkrCm5n++CE2Da8Kw==}
 
-  '@shz/nx-generators@0.0.2':
-    resolution: {integrity: sha512-4cAuZofDUIyGSg9wUWVaMuSoLrIG2NB4AFMMjX7L2XuS79kbLCyOiLo4WF6jYFK/J8VB2XrB4nN9PjC5eQKyQQ==}
+  '@shz/nx-generators@0.0.3':
+    resolution: {integrity: sha512-PNVsZXawRBVrAo63XDp18LynVvHUASlR6f/qC1Hs0k8dbcu33QdeXr/TkK/3NM91X6wxz5bJntB/gayxpBa8KA==}
 
   '@sinclair/typebox@0.34.49':
     resolution: {integrity: sha512-brySQQs7Jtn0joV8Xh9ZV/hZb9Ozb0pmazDIASBkYKCjXrXU3mpcFahmK/z4YDhGkQvP9mWJbVyahdtU5wQA+A==}
@@ -5447,7 +5447,7 @@ snapshots:
       error-stack-parser: 2.1.4
       react-refresh: 0.18.0
 
-  '@shz/components@0.0.2(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(lucide-react@0.487.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-is@19.2.7)(react@19.2.7)(redux@5.0.1)':
+  '@shz/components@0.0.3(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(lucide-react@0.487.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-is@19.2.7)(react@19.2.7)(redux@5.0.1)':
     dependencies:
       '@dnd-kit/core': 6.3.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@dnd-kit/sortable': 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)
@@ -5478,7 +5478,7 @@ snapshots:
       '@radix-ui/react-toggle': 1.1.12(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@radix-ui/react-toggle-group': 1.1.13(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@radix-ui/react-tooltip': 1.2.10(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      '@shz/core': 0.0.1
+      '@shz/core': 0.0.3
       '@tanstack/react-table': 8.21.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       class-variance-authority: 0.7.1
       clsx: 2.1.1
@@ -5502,9 +5502,9 @@ snapshots:
       - react-is
       - redux
 
-  '@shz/core@0.0.1': {}
+  '@shz/core@0.0.3': {}
 
-  '@shz/nx-generators@0.0.2': {}
+  '@shz/nx-generators@0.0.3': {}
 
   '@sinclair/typebox@0.34.49': {}
 

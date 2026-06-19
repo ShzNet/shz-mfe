@@ -31,6 +31,7 @@ import {
   Button,
   StatsCard,
 } from '@shz/components'
+import { getShellRemoteContextData } from '@shz/core'
 import {
   DollarSign, Users, ShoppingCart, Activity,
   Bold, Italic, Underline,
@@ -881,12 +882,20 @@ function DisplayTab() {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function AdminDashboardPage() {
+  const shellData = getShellRemoteContextData<{
+    app?: { name?: string }
+    auth?: { user?: { email?: string } | null }
+  }>('remote_admin', './Page')
+  const hostAppName = shellData?.app?.name ?? 'Component Demo'
+  const hostUserEmail = shellData?.auth?.user?.email ?? 'standalone mode'
+
   return (
     <div className='flex flex-1 flex-col gap-6 p-4 pt-0'>
       <div className='flex items-center justify-between pt-4'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Component Demo</h1>
+          <h1 className='text-2xl font-bold tracking-tight'>{hostAppName}</h1>
           <p className='text-sm text-muted-foreground'>Full showcase of @shz/components — remote_admin · port 3003</p>
+          <p className='text-xs text-muted-foreground'>Host context: {hostUserEmail}</p>
         </div>
         <Badge variant='secondary' className='text-xs'>33 components</Badge>
       </div>

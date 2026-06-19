@@ -50,6 +50,7 @@ export default defineConfig({
         './Nav': './src/nav.tsx',
       },
       shared: {
+        '${options.corePackage}': { singleton: true, requiredVersion: false },
         react: { singleton: true, requiredVersion: false },
         'react-dom': { singleton: true, requiredVersion: false },
         'react-router-dom': { singleton: true, requiredVersion: false },

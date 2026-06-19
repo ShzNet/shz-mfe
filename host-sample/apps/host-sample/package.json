@@ -1,6 +1,6 @@
 {
   "name": "@shz/host-sample",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,8 +9,8 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
-    "@shz/components": "^0.0.2",
-    "@shz/core": "^0.0.1",
+    "@shz/components": "^0.0.3",
+    "@shz/core": "^0.0.3",
     "lucide-react": "^0.487.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

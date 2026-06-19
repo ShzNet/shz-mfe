@@ -1,9 +1,18 @@
 import { Suspense, lazy, useMemo, ComponentType, useState, useEffect } from 'react'
 import { loadRemote } from '@module-federation/enhanced/runtime'
+import {
+  clearShellRemoteContext,
+  setShellRemoteContext,
+  type ShellRemoteComponentProps,
+  type ShellRemoteContextValue,
+  type ShellRemoteModuleMeta,
+} from '@shz/core'
 
-interface RemoteModuleProps {
+interface RemoteModuleProps<TContextData = unknown> {
   remoteName: string
   exposedModule: string
+  remote?: Partial<ShellRemoteModuleMeta>
+  contextData?: TContextData
 }
 
 const moduleCache = new Map<string, ComponentType>()
@@ -14,7 +23,7 @@ function buildModuleId(remoteName: string, exposedModule: string) {
 
 function createLazy(moduleId: string): ComponentType {
   const LazyComp = lazy(() =>
-    loadRemote<{ default: ComponentType }>(moduleId).then((m) => {
+    loadRemote<{ default: ComponentType<ShellRemoteComponentProps> }>(moduleId).then((m) => {
       if (!m?.default) throw new Error(`Remote module "${moduleId}" has no default export`)
       return { default: m.default }
     })
@@ -22,7 +31,12 @@ function createLazy(moduleId: string): ComponentType {
   return LazyComp as unknown as ComponentType
 }
 
-export function RemoteModule({ remoteName, exposedModule }: RemoteModuleProps) {
+export function RemoteModule<TContextData = unknown>({
+  remoteName,
+  exposedModule,
+  remote,
+  contextData,
+}: RemoteModuleProps<TContextData>) {
   const moduleId = buildModuleId(remoteName, exposedModule)
 
   // Version key increments on HMR update to force Suspense remount
@@ -42,11 +56,26 @@ export function RemoteModule({ remoteName, exposedModule }: RemoteModuleProps) {
     }
     return moduleCache.get(moduleId)!
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [moduleId, version])
+  }, [moduleId, version]) as ComponentType<ShellRemoteComponentProps<TContextData>>
+
+  const shellContext = useMemo<ShellRemoteContextValue<TContextData>>(
+    () => ({
+      remote: { ...remote, remoteName },
+      exposedModule,
+      data: contextData as TContextData,
+    }),
+    [contextData, exposedModule, remote, remoteName]
+  )
+
+  setShellRemoteContext(shellContext)
+
+  useEffect(() => () => {
+    clearShellRemoteContext(remoteName, exposedModule)
+  }, [exposedModule, remoteName])
 
   return (
     <Suspense fallback={<ModuleLoading />}>
-      <Component />
+      <Component shellContext={shellContext} />
     </Suspense>
   )
 }

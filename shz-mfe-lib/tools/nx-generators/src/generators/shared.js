@@ -160,6 +160,8 @@ function buildStylesCss(componentsPackage) {
   return `@import "tailwindcss";
 @import "${componentsPackage}/styles/theme.css";
 
+@source "../node_modules/@shz/components/dist";
+
 @custom-variant dark (&:is(.dark *));
 
 @layer base {

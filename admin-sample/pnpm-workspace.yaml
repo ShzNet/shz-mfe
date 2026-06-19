@@ -1,0 +1,10 @@
+packages:
+  - apps/*
+
+allowBuilds:
+  core-js: true
+  nx: true
+minimumReleaseAgeExclude:
+  - '@shz/nx-generators'
+  - '@shz/components'
+  - '@shz/core'

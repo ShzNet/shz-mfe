@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard, TrendingUp, FolderKanban, CheckSquare, Users,
   Table2, FileText, MessageSquare, GitBranch, LayoutGrid, CalendarDays,
-  Settings, Package, FormInput, BarChart3, Layers, Navigation, Bell,
+  Settings, Package, FormInput, BarChart3, Layers, Navigation, Bell, ShoppingCart,
   ClipboardList, Database, ChevronDown,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -27,6 +27,7 @@ const ALL_ITEMS: NavItemDef[] = [
   { title: 'Tasks', path: '/tasks', icon: CheckSquare, group: 'Management' },
   { title: 'Users', path: '/users', icon: Users, group: 'Management' },
   { title: 'Users Table', path: '/users-table', icon: Table2, group: 'Management' },
+  { title: 'Orders Table', path: '/orders-table', icon: ShoppingCart, group: 'Management' },
   { title: 'Reports', path: '/reports', icon: FileText, group: 'Management' },
   { title: 'Messages', path: '/messages', icon: MessageSquare, group: 'Management' },
 

@@ -5,6 +5,7 @@ import ProjectsPage from './projects'
 import ReportsPage from './reports'
 import UsersPage from './users'
 import UsersTablePage from './users-table'
+import OrdersTablePage from './orders-table'
 import TasksPage from './tasks'
 import MessagesPage from './messages'
 import TreeExplorerPage from './tree-explorer'
@@ -29,6 +30,7 @@ export default function AdminAppPage() {
       <Route path='reports' element={<ReportsPage />} />
       <Route path='users' element={<UsersPage />} />
       <Route path='users-table' element={<UsersTablePage />} />
+      <Route path='orders-table' element={<OrdersTablePage />} />
       <Route path='tasks' element={<TasksPage />} />
       <Route path='messages' element={<MessagesPage />} />
       <Route path='tree' element={<TreeExplorerPage />} />

@@ -29,10 +29,10 @@ importers:
       '@module-federation/enhanced':
         specifier: ^0.9.0
         version: 0.9.1(@rspack/core@1.7.11(@swc/helpers@0.5.21))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@5.8.3)
-      '@shz/components':
+      '@shznet/components':
         specifier: workspace:*
         version: link:../../libs/components
-      '@shz/core':
+      '@shznet/core':
         specifier: workspace:*
         version: link:../../libs/core
       lucide-react:
@@ -84,10 +84,10 @@ importers:
       '@module-federation/enhanced':
         specifier: ^0.9.0
         version: 0.9.1(@rspack/core@1.7.11(@swc/helpers@0.5.21))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@5.8.3)
-      '@shz/components':
+      '@shznet/components':
         specifier: workspace:*
         version: link:../../libs/components
-      '@shz/core':
+      '@shznet/core':
         specifier: workspace:*
         version: link:../../libs/core
       lucide-react:
@@ -136,10 +136,10 @@ importers:
 
   apps/remote-admin:
     dependencies:
-      '@shz/components':
+      '@shznet/components':
         specifier: workspace:*
         version: link:../../libs/components
-      '@shz/core':
+      '@shznet/core':
         specifier: workspace:*
         version: link:../../libs/core
       lucide-react:
@@ -185,10 +185,10 @@ importers:
 
   apps/remote-demo:
     dependencies:
-      '@shz/components':
+      '@shznet/components':
         specifier: workspace:*
         version: link:../../libs/components
-      '@shz/core':
+      '@shznet/core':
         specifier: workspace:*
         version: link:../../libs/core
       lucide-react:
@@ -321,7 +321,7 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.1.8
         version: 1.2.8(@types/react-dom@19.2.3(@types/react@19.2.15))(@types/react@19.2.15)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
-      '@shz/core':
+      '@shznet/core':
         specifier: workspace:*
         version: link:../core
       '@tanstack/react-table':

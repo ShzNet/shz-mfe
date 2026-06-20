@@ -10,7 +10,7 @@ function buildGroups() {
 
   for (const item of menuItems) {
     if (item.hidden) continue
-    const url = item.path ? `${BASE}/${item.path.replace(/^/+/, '')}` : BASE
+    const url = item.path ? `${BASE}/${item.path.replace(/^\/+/, '')}` : BASE
     const groupItems = groups.get(item.group) ?? []
     groupItems.push({ ...item, url })
     groups.set(item.group, groupItems)

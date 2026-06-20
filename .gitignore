@@ -2,3 +2,9 @@
 
 # Local Verdaccio packages
 verdaccio/storage/
+
+# Sample workspace generated artifacts
+sample/node_modules/
+sample/.nx/
+sample/apps/*/node_modules/
+sample/apps/*/dist/

@@ -9,7 +9,7 @@
   "scripts": {
     "dev:sample-host": "nx dev sample-host",
     "dev": "nx run-many -t dev --parallel=10",
-    "build": "nx run-many -t build",
+    "build": "nx run-many -t build --output-style=static",
     "build:sample-host": "nx build sample-host"
   }
 }

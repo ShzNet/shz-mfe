@@ -15,11 +15,18 @@ function withRemoteCacheBuster(entry: string) {
 }
 
 export const apps: HostRemoteApp[] = [
-  // {
-  //   id: 'remote-admin',
-  //   name: 'Remote Admin',
-  //   basePath: '/app/admin',
-  //   remoteName: 'remote_admin',
-  //   entry: withRemoteCacheBuster('http://localhost:3001/mf-manifest.json'),
-  // },
+  {
+    id: 'remote-sales',
+    name: 'Sales',
+    basePath: '/app/sales',
+    remoteName: 'remote_sales',
+    entry: withRemoteCacheBuster('http://localhost:3001/mf-manifest.json'),
+  },
+  {
+    id: 'remote-hr',
+    name: 'HR',
+    basePath: '/app/hr',
+    remoteName: 'remote_hr',
+    entry: withRemoteCacheBuster('http://localhost:3002/mf-manifest.json'),
+  },
 ]

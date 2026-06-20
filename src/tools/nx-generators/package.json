@@ -1,6 +1,6 @@
 {
   "name": "@shznet/nx-generators",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "commonjs",
   "main": "./src/generators/shared.js",
   "bin": {

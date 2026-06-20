@@ -128,6 +128,7 @@ export {
   type FilterBuilderDataType,
   type FilterBuilderField,
   type FilterBuilderGroup,
+  type FilterBuilderMessages,
   type FilterBuilderGroupOperator,
   type FilterBuilderNode,
   type FilterBuilderOption,

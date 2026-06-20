@@ -17,7 +17,8 @@
     "publish:local:core": "pnpm --filter @shz/core build && pnpm --filter @shz/core publish --registry http://localhost:4873 --access public --no-git-checks",
     "publish:local:components": "pnpm --filter @shz/components build && pnpm --filter @shz/components publish --registry http://localhost:4873 --access public --no-git-checks",
     "publish:local:nx-generators": "pnpm --filter @shz/nx-generators build && node ./tools/nx-generators/scripts/publish-local.mjs",
-    "publish:local": "pnpm publish:local:core && pnpm publish:local:components && pnpm publish:local:nx-generators"
+    "publish:local": "pnpm publish:local:core && pnpm publish:local:components && pnpm publish:local:nx-generators",
+    "publish:local:auto": "node ./scripts/publish-local-auto.mjs"
   },
   "devDependencies": {
     "@nx/js": "^21.0.0",

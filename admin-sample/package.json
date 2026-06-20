@@ -9,11 +9,12 @@
     "dev": "pnpm nx dev remote-admin",
     "build": "pnpm nx build remote-admin",
     "typecheck": "pnpm nx typecheck remote-admin",
-    "dev:remote-admin": "nx dev remote-admin"
+    "dev:remote-admin": "nx dev remote-admin",
+    "deps:local": "node ../scripts/update-local-shz-deps.mjs @shz/remote-admin"
   },
   "devDependencies": {
     "@nx/js": "^21.0.0",
-    "@shz/nx-generators": "0.0.6",
+    "@shz/nx-generators": "0.0.6-local.4",
     "nx": "^21.0.0",
     "typescript": "~5.8.0"
   }

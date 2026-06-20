@@ -1,4 +1,4 @@
-import { loadRemote, registerRemotes } from '@module-federation/enhanced/runtime'
+import { loadRemote, preloadRemote, registerRemotes } from '@module-federation/enhanced/runtime'
 
 type FederatedManifest = {
   exposes?: Array<{
@@ -19,9 +19,30 @@ export interface FederatedRemoteRegistration {
 
 const registeredRemotes = new Map<string, string>()
 const loadedRemoteStyles = new Set<string>()
+const manifestPromiseCache = new Map<string, Promise<FederatedManifest>>()
 
 function buildFederatedModuleId(remoteName: string, exposedModule: string) {
   return `${remoteName}${exposedModule.replace(/^\./, '')}`
+}
+
+async function loadFederatedManifest(manifestUrl: string) {
+  if (!manifestPromiseCache.has(manifestUrl)) {
+    manifestPromiseCache.set(
+      manifestUrl,
+      fetch(manifestUrl).then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to load federated manifest: ${manifestUrl} (${response.status})`)
+        }
+
+        return (await response.json()) as FederatedManifest
+      }).catch((error) => {
+        manifestPromiseCache.delete(manifestUrl)
+        throw error
+      })
+    )
+  }
+
+  return manifestPromiseCache.get(manifestUrl)!
 }
 
 export async function ensureFederatedRemoteRegistered({ name, entry }: FederatedRemoteRegistration) {
@@ -37,7 +58,7 @@ export async function ensureFederatedRemoteRegistered({ name, entry }: Federated
 }
 
 export async function loadFederatedStyles(manifestUrl: string, exposedModule: string) {
-  const manifest = (await fetch(manifestUrl).then((response) => response.json())) as FederatedManifest
+  const manifest = await loadFederatedManifest(manifestUrl)
   const expose = manifest.exposes?.find((item) => item.path === exposedModule)
   const cssAssets = [...(expose?.assets?.css?.sync ?? []), ...(expose?.assets?.css?.async ?? [])]
   const baseUrl = new URL(manifestUrl)
@@ -75,7 +96,7 @@ export async function loadFederatedModule<TModule = unknown>(
   entry: string
 ): Promise<TModule> {
   await ensureFederatedRemoteRegistered({ name: remoteName, entry })
-  await loadFederatedStyles(entry, exposedModule)
+  await preloadRemote([{ nameOrAlias: remoteName, exposes: [exposedModule] }])
 
   const moduleId = buildFederatedModuleId(remoteName, exposedModule)
   const remoteModule = await loadRemote<TModule>(moduleId)

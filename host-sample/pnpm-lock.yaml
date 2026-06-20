@@ -12,8 +12,8 @@ importers:
         specifier: ^21.0.0
         version: 21.6.11(@babel/traverse@7.29.7)(nx@21.6.11)
       '@shz/nx-generators':
-        specifier: 0.0.6
-        version: 0.0.6
+        specifier: 0.0.6-local.4
+        version: 0.0.6-local.4
       nx:
         specifier: ^21.0.0
         version: 21.6.11
@@ -27,11 +27,11 @@ importers:
         specifier: ^0.9.0
         version: 0.9.1(@rspack/core@1.7.12(@swc/helpers@0.5.23))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.8.3)
       '@shz/components':
-        specifier: ^0.0.6
-        version: 0.0.6(@rspack/core@1.7.12(@swc/helpers@0.5.23))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(lucide-react@0.487.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-is@19.2.7)(react@19.2.7)(redux@5.0.1)(typescript@5.8.3)
+        specifier: 0.0.6-local.4
+        version: 0.0.6-local.4(@rspack/core@1.7.12(@swc/helpers@0.5.23))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(lucide-react@0.487.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-is@19.2.7)(react@19.2.7)(redux@5.0.1)(typescript@5.8.3)
       '@shz/core':
-        specifier: ^0.0.6
-        version: 0.0.6(@rspack/core@1.7.12(@swc/helpers@0.5.23))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.8.3)
+        specifier: 0.0.6-local.4
+        version: 0.0.6-local.4(@rspack/core@1.7.12(@swc/helpers@0.5.23))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.8.3)
       lucide-react:
         specifier: ^0.487.0
         version: 0.487.0(react@19.2.7)
@@ -1732,18 +1732,18 @@ packages:
       webpack-hot-middleware:
         optional: true
 
-  '@shz/components@0.0.6':
-    resolution: {integrity: sha512-2hRBDME2W/dHchoFnwZ3jyDWWjXFf1wfO0Pxjitfv7+VHr6M+tcvuOSPdCSUuvbunqxlLdQlheLReJByLUJ/sQ==}
+  '@shz/components@0.0.6-local.4':
+    resolution: {integrity: sha512-/vmtbEJ9ScXOAWov911rxdfOoncPLcUfA0kronZPe1KTOUwQocahzsymbcIPDWIsKa2VQBOJ5DgQcN8ilkxBtA==}
     peerDependencies:
       lucide-react: '>=0.400.0'
       react: ^19.0.0
       react-dom: ^19.0.0
 
-  '@shz/core@0.0.6':
-    resolution: {integrity: sha512-85lweY7s8Ed43fr9Li/9vQseaMQ7UG+po05uVd3yNLLsCOeaEs1QhSZW5/1UmBL70vAbwfG22hIv/Ef+2GAFUg==}
+  '@shz/core@0.0.6-local.4':
+    resolution: {integrity: sha512-iUxQSNATWqblc2zRUWhJRkgSSdv2yiOOAm6RU5rXcNE7Fah98xbTWuydQkUKD4ziT1OlQ8tbIaw1RoEG/JACSw==}
 
-  '@shz/nx-generators@0.0.6':
-    resolution: {integrity: sha512-nYZEqbXkt/yUM0AhT/zeaHMA12fzQwtq3kft3mkLirakebxT1E48bPkm0PLiNEfI8AoStfD9SSdgXex9AFAlOA==}
+  '@shz/nx-generators@0.0.6-local.4':
+    resolution: {integrity: sha512-tK+eSuOrBWVNHpkrmNyZQZz/+kIKXib/zZ2ujqvPYf9TAeyfx8Z+EgYN08iCEahhNVXZxVjvi+Uuf2mwc4aXLA==}
 
   '@sinclair/typebox@0.34.49':
     resolution: {integrity: sha512-brySQQs7Jtn0joV8Xh9ZV/hZb9Ozb0pmazDIASBkYKCjXrXU3mpcFahmK/z4YDhGkQvP9mWJbVyahdtU5wQA+A==}
@@ -2860,8 +2860,8 @@ packages:
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
-  nanoid@3.3.12:
-    resolution: {integrity: sha512-ZB9RH/39qpq5Vu6Y+NmUaFhQR6pp+M2Xt76XBnEwDaGcVAqhlvxrl3B2bKS5D3NH3QR76v3aSrKaF/Kiy7lEtQ==}
+  nanoid@3.3.13:
+    resolution: {integrity: sha512-sPdqC6ByMVVGvF1ynvvMo0/o+oD1VX7DaHhijt1bFgjvBkHBib4t49GoNDhf2NDta4oeUNlaGbSt5K7qjZ955Q==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
@@ -5447,7 +5447,7 @@ snapshots:
       error-stack-parser: 2.1.4
       react-refresh: 0.18.0
 
-  '@shz/components@0.0.6(@rspack/core@1.7.12(@swc/helpers@0.5.23))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(lucide-react@0.487.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-is@19.2.7)(react@19.2.7)(redux@5.0.1)(typescript@5.8.3)':
+  '@shz/components@0.0.6-local.4(@rspack/core@1.7.12(@swc/helpers@0.5.23))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(lucide-react@0.487.0(react@19.2.7))(react-dom@19.2.7(react@19.2.7))(react-is@19.2.7)(react@19.2.7)(redux@5.0.1)(typescript@5.8.3)':
     dependencies:
       '@dnd-kit/core': 6.3.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@dnd-kit/sortable': 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(react@19.2.7)
@@ -5478,7 +5478,7 @@ snapshots:
       '@radix-ui/react-toggle': 1.1.12(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@radix-ui/react-toggle-group': 1.1.13(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@radix-ui/react-tooltip': 1.2.10(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
-      '@shz/core': 0.0.6(@rspack/core@1.7.12(@swc/helpers@0.5.23))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.8.3)
+      '@shz/core': 0.0.6-local.4(@rspack/core@1.7.12(@swc/helpers@0.5.23))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.8.3)
       '@tanstack/react-table': 8.21.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       class-variance-authority: 0.7.1
       clsx: 2.1.1
@@ -5510,7 +5510,7 @@ snapshots:
       - vue-tsc
       - webpack
 
-  '@shz/core@0.0.6(@rspack/core@1.7.12(@swc/helpers@0.5.23))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.8.3)':
+  '@shz/core@0.0.6-local.4(@rspack/core@1.7.12(@swc/helpers@0.5.23))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.8.3)':
     dependencies:
       '@module-federation/enhanced': 0.9.1(@rspack/core@1.7.12(@swc/helpers@0.5.23))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@5.8.3)
     transitivePeerDependencies:
@@ -5525,7 +5525,7 @@ snapshots:
       - vue-tsc
       - webpack
 
-  '@shz/nx-generators@0.0.6': {}
+  '@shz/nx-generators@0.0.6-local.4': {}
 
   '@sinclair/typebox@0.34.49': {}
 
@@ -6560,7 +6560,7 @@ snapshots:
 
   ms@2.1.3: {}
 
-  nanoid@3.3.12: {}
+  nanoid@3.3.13: {}
 
   negotiator@0.6.3: {}
 
@@ -6701,7 +6701,7 @@ snapshots:
 
   postcss@8.5.15:
     dependencies:
-      nanoid: 3.3.12
+      nanoid: 3.3.13
       picocolors: 1.1.1
       source-map-js: 1.2.1
 

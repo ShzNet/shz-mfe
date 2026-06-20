@@ -62,9 +62,53 @@ export interface FilterBuilderProps<TCode extends string = string> {
   className?: string
   rootOperator?: FilterBuilderGroupOperator
   showRootOperator?: boolean
+  messages?: Partial<FilterBuilderMessages>
+}
+
+export interface FilterBuilderMessages {
+  fieldColumnLabel: string
+  operatorColumnLabel: string
+  valueColumnLabel: string
+  actionsColumnLabel: string
+  andOperatorLabel: string
+  orOperatorLabel: string
+  addButtonLabel: string
+  addConditionLabel: string
+  addGroupLabel: string
+  removeGroupLabel: string
+  removeConditionLabel: string
+  selectFieldPlaceholder: string
+  selectFieldFirstPlaceholder: string
+  selectValuePlaceholder: string
+  enterValuePlaceholder: string
+  loadingLabel: string
+  noOptionsLabel: string
+  rootEmptyStateLabel: string
+  nestedEmptyStateLabel: string
 }
 
 const UNSET_FILTER_FIELD = '__unset__'
+const defaultFilterBuilderMessages: FilterBuilderMessages = {
+  fieldColumnLabel: 'Field',
+  operatorColumnLabel: 'Operator',
+  valueColumnLabel: 'Value',
+  actionsColumnLabel: 'Actions',
+  andOperatorLabel: 'AND',
+  orOperatorLabel: 'OR',
+  addButtonLabel: 'Add',
+  addConditionLabel: 'Add condition',
+  addGroupLabel: 'Add group',
+  removeGroupLabel: 'Remove group',
+  removeConditionLabel: 'Remove condition',
+  selectFieldPlaceholder: 'Select field',
+  selectFieldFirstPlaceholder: 'Select field first',
+  selectValuePlaceholder: 'Select value',
+  enterValuePlaceholder: 'Enter value',
+  loadingLabel: 'Loading...',
+  noOptionsLabel: 'No options',
+  rootEmptyStateLabel: 'No groups yet. Add a group or condition to start building logic.',
+  nestedEmptyStateLabel: 'No conditions yet. Add a condition or nested group to start building logic.',
+}
 
 export function createFilterBuilderRule<TCode extends string = string>(): FilterBuilderRule<TCode> {
   return {
@@ -117,10 +161,15 @@ export function FilterBuilder<TCode extends string = string>({
   className,
   rootOperator = 'and',
   showRootOperator = false,
+  messages,
 }: FilterBuilderProps<TCode>) {
   const fieldsByCode = React.useMemo(
     () => new Map(fields.map((field) => [field.code, field])),
     [fields],
+  )
+  const resolvedMessages = React.useMemo(
+    () => ({ ...defaultFilterBuilderMessages, ...messages }),
+    [messages],
   )
 
   function emit(next: FilterBuilderGroup<TCode>) {
@@ -130,15 +179,16 @@ export function FilterBuilder<TCode extends string = string>({
   return (
     <div className={cn('space-y-5', className)}>
       <div className='hidden grid-cols-[1.2fr_1fr_1.2fr_auto] items-center gap-2 px-3 text-xs font-medium text-muted-foreground md:grid'>
-        <span>Field</span>
-        <span>Operator</span>
-        <span>Value</span>
-        <span className='sr-only'>Actions</span>
+        <span>{resolvedMessages.fieldColumnLabel}</span>
+        <span>{resolvedMessages.operatorColumnLabel}</span>
+        <span>{resolvedMessages.valueColumnLabel}</span>
+        <span className='sr-only'>{resolvedMessages.actionsColumnLabel}</span>
       </div>
 
       <FilterBuilderGroupEditor
         fieldsByCode={fieldsByCode}
         fields={fields}
+        messages={resolvedMessages}
         group={{ ...value, operator: showRootOperator ? value.operator : rootOperator }}
         onChange={emit}
         isRoot
@@ -151,6 +201,7 @@ export function FilterBuilder<TCode extends string = string>({
 function FilterBuilderGroupEditor<TCode extends string = string>({
   fields,
   fieldsByCode,
+  messages,
   group,
   onChange,
   isRoot = false,
@@ -159,6 +210,7 @@ function FilterBuilderGroupEditor<TCode extends string = string>({
 }: {
   fields: Array<FilterBuilderField<TCode>>
   fieldsByCode: Map<TCode, FilterBuilderField<TCode>>
+  messages: FilterBuilderMessages
   group: FilterBuilderGroup<TCode>
   onChange: (group: FilterBuilderGroup<TCode>) => void
   isRoot?: boolean
@@ -185,7 +237,7 @@ function FilterBuilderGroupEditor<TCode extends string = string>({
     <div className={wrapperClassName}>
       <div className='flex flex-wrap items-center justify-between gap-2'>
         <div className='flex items-center gap-2'>
-          {!isRoot && showOperator ? (
+          {showOperator ? (
             <Select
               value={group.operator}
               onValueChange={(value) => onChange({ ...group, operator: value as FilterBuilderGroupOperator })}
@@ -194,8 +246,8 @@ function FilterBuilderGroupEditor<TCode extends string = string>({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='and'>AND</SelectItem>
-                <SelectItem value='or'>OR</SelectItem>
+                <SelectItem value='and'>{messages.andOperatorLabel}</SelectItem>
+                <SelectItem value='or'>{messages.orOperatorLabel}</SelectItem>
               </SelectContent>
             </Select>
           ) : null}
@@ -209,7 +261,7 @@ function FilterBuilderGroupEditor<TCode extends string = string>({
             onClick={onRemove}
           >
             <Trash2 className='size-3.5' />
-            <span className='sr-only'>Remove group</span>
+            <span className='sr-only'>{messages.removeGroupLabel}</span>
           </Button>
         ) : null}
       </div>
@@ -221,6 +273,7 @@ function FilterBuilderGroupEditor<TCode extends string = string>({
               <FilterBuilderRuleEditor
                 fields={fields}
                 fieldsByCode={fieldsByCode}
+                messages={messages}
                 rule={child}
                 onChange={(rule) => onChange(updateGroupNode(group, child.id, () => rule) as FilterBuilderGroup<TCode>)}
                 onRemove={() => onChange(removeNodeFromGroup(group, child.id))}
@@ -231,6 +284,7 @@ function FilterBuilderGroupEditor<TCode extends string = string>({
               <FilterBuilderGroupEditor
                 fields={fields}
                 fieldsByCode={fieldsByCode}
+                messages={messages}
                 group={child}
                 onChange={(nextGroup) => onChange(
                   nextGroup.children.length
@@ -244,6 +298,7 @@ function FilterBuilderGroupEditor<TCode extends string = string>({
 
           <div className={getConnectorItemClassName(totalConnectorItems - 1)}>
             <AddNodeButton
+              messages={messages}
               onAddCondition={() => onChange(appendNodeToGroup(group, group.id, createFilterBuilderRule<TCode>()))}
               onAddGroup={() => onChange(appendNodeToGroup(group, group.id, createFilterBuilderGroup<TCode>('and', true)))}
             />
@@ -251,13 +306,14 @@ function FilterBuilderGroupEditor<TCode extends string = string>({
         </div>
       ) : (
         <div className='px-1 py-1 text-xs text-muted-foreground'>
-          {isRoot ? 'No groups yet. Add a group or condition to start building logic.' : 'No conditions yet. Add a condition or nested group to start building logic.'}
+          {isRoot ? messages.rootEmptyStateLabel : messages.nestedEmptyStateLabel}
         </div>
       )}
 
       {!group.children.length ? (
         <div className='flex justify-start'>
           <AddNodeButton
+            messages={messages}
             onAddCondition={() => onChange(appendNodeToGroup(group, group.id, createFilterBuilderRule<TCode>()))}
             onAddGroup={() => onChange(appendNodeToGroup(group, group.id, createFilterBuilderGroup<TCode>('and', true)))}
           />
@@ -270,12 +326,14 @@ function FilterBuilderGroupEditor<TCode extends string = string>({
 function FilterBuilderRuleEditor<TCode extends string = string>({
   fields,
   fieldsByCode,
+  messages,
   rule,
   onChange,
   onRemove,
 }: {
   fields: Array<FilterBuilderField<TCode>>
   fieldsByCode: Map<TCode, FilterBuilderField<TCode>>
+  messages: FilterBuilderMessages
   rule: FilterBuilderRule<TCode>
   onChange: (rule: FilterBuilderRule<TCode>) => void
   onRemove: () => void
@@ -303,10 +361,10 @@ function FilterBuilderRuleEditor<TCode extends string = string>({
         }}
       >
         <SelectTrigger className='h-9 bg-background'>
-          <SelectValue placeholder='Select field' />
+          <SelectValue placeholder={messages.selectFieldPlaceholder} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={UNSET_FILTER_FIELD}>Select field</SelectItem>
+          <SelectItem value={UNSET_FILTER_FIELD}>{messages.selectFieldPlaceholder}</SelectItem>
           {fields.map((item) => (
             <SelectItem key={item.code} value={item.code}>{item.name}</SelectItem>
           ))}
@@ -329,13 +387,14 @@ function FilterBuilderRuleEditor<TCode extends string = string>({
 
       <FilterBuilderValueInput
         field={field}
+        messages={messages}
         value={rule.value}
         onChange={(value) => onChange({ ...rule, value })}
       />
 
       <Button variant='ghost' size='icon' className='size-8 text-muted-foreground' onClick={onRemove}>
         <Trash2 className='size-3.5' />
-        <span className='sr-only'>Remove condition</span>
+        <span className='sr-only'>{messages.removeConditionLabel}</span>
       </Button>
     </div>
   )
@@ -343,10 +402,12 @@ function FilterBuilderRuleEditor<TCode extends string = string>({
 
 function FilterBuilderValueInput<TCode extends string = string>({
   field,
+  messages,
   value,
   onChange,
 }: {
   field?: FilterBuilderField<TCode>
+  messages: FilterBuilderMessages
   value: string
   onChange: (value: string) => void
 }) {
@@ -382,7 +443,7 @@ function FilterBuilderValueInput<TCode extends string = string>({
       <Input
         className='h-9 bg-background'
         value=''
-        placeholder='Select field first'
+        placeholder={messages.selectFieldFirstPlaceholder}
         disabled
         readOnly
       />
@@ -393,20 +454,20 @@ function FilterBuilderValueInput<TCode extends string = string>({
     return (
       <Select value={value || undefined} open={open} onOpenChange={setOpen} onValueChange={onChange}>
         <SelectTrigger className='h-9 bg-background'>
-          <SelectValue placeholder='Select value' />
+          <SelectValue placeholder={messages.selectValuePlaceholder} />
         </SelectTrigger>
         <SelectContent>
           {loading ? (
             <div className='flex items-center gap-2 px-2 py-2 text-sm text-muted-foreground'>
               <LoaderCircle className='size-4 animate-spin' />
-              Loading...
+              {messages.loadingLabel}
             </div>
           ) : options.length ? (
             options.map((option) => (
               <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
             ))
           ) : (
-            <div className='px-2 py-2 text-sm text-muted-foreground'>No options</div>
+            <div className='px-2 py-2 text-sm text-muted-foreground'>{messages.noOptionsLabel}</div>
           )}
         </SelectContent>
       </Select>
@@ -422,15 +483,17 @@ function FilterBuilderValueInput<TCode extends string = string>({
       className='h-9 bg-background'
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      placeholder='Enter value'
+      placeholder={messages.enterValuePlaceholder}
     />
   )
 }
 
 function AddNodeButton({
+  messages,
   onAddCondition,
   onAddGroup,
 }: {
+  messages: FilterBuilderMessages
   onAddCondition: () => void
   onAddGroup: () => void
 }) {
@@ -439,12 +502,12 @@ function AddNodeButton({
       <DropdownMenuTrigger asChild>
         <Button variant='outline' size='sm' className='h-8 gap-1.5 bg-background'>
           <Plus className='size-4' />
-          Add
+          {messages.addButtonLabel}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='start'>
-        <DropdownMenuItem onClick={onAddCondition}>Add condition</DropdownMenuItem>
-        <DropdownMenuItem onClick={onAddGroup}>Add group</DropdownMenuItem>
+        <DropdownMenuItem onClick={onAddCondition}>{messages.addConditionLabel}</DropdownMenuItem>
+        <DropdownMenuItem onClick={onAddGroup}>{messages.addGroupLabel}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

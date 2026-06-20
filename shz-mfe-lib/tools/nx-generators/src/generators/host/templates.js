@@ -237,9 +237,9 @@ async function loadRemoteStyles(manifestUrl: string, exposedModule: string) {
   )
 }
 
-async function loadRemoteModule<T>(remoteName: string, exposedModule: string, entry: string) {
-  const { loadRemote } = await import('@module-federation/enhanced/runtime')
-  await loadRemoteStyles(entry, exposedModule)
+async function loadRemoteModule<T>(remoteName: string, exposedModule: string, _entry: string) {
+  const { loadRemote, preloadRemote } = await import('@module-federation/enhanced/runtime')
+  await preloadRemote([{ nameOrAlias: remoteName, exposes: [exposedModule] }])
   const moduleId = buildModuleId(remoteName, exposedModule)
   return (await loadRemote(moduleId)) as T
 }

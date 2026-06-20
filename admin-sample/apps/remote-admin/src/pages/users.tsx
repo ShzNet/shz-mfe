@@ -619,7 +619,7 @@ export default function UsersPage() {
           </SheetHeader>
 
           <div className='flex-1 overflow-y-auto px-6 py-5'>
-            <FilterBuilder fields={FILTER_FIELDS} value={draftFilters} onChange={setDraftFilters} />
+            <FilterBuilder fields={FILTER_FIELDS} value={draftFilters} onChange={setDraftFilters} showRootOperator />
           </div>
 
           <SheetFooter className='border-t px-6 py-4 sm:flex-row sm:justify-between'>

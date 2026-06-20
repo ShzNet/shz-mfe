@@ -1,1 +1,4 @@
 .pnpm-store/
+
+# Local Verdaccio packages
+verdaccio/storage/

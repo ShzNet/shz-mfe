@@ -5,8 +5,8 @@ services:
     ports:
       - "4873:4873"
     volumes:
-      - ./shz-mfe-lib/verdaccio/storage:/verdaccio/storage
-      - ./shz-mfe-lib/verdaccio/conf:/verdaccio/conf
+      - ./verdaccio/storage:/verdaccio/storage
+      - ./verdaccio/conf:/verdaccio/conf
     environment:
       VERDACCIO_APPDIR: /verdaccio
     restart: unless-stopped

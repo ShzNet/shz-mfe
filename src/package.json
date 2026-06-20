@@ -1,0 +1,30 @@
+{
+  "name": "shz-mfe",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "nx run-many -t dev --parallel=10",
+    "dev:host-sample": "nx dev host-sample",
+    "dev:remote-admin": "nx dev remote-admin",
+    "start:all": "nx run-many -t dev --parallel=2",
+    "preview:all": "nx run-many -t preview --parallel=2",
+    "build": "nx run-many -t build",
+    "build:all": "nx run-many -t build --parallel=2",
+    "typecheck": "nx run-many -t typecheck --projects=core,components,host-sample,remote-admin",
+    "typecheck:all": "nx run-many -t typecheck --projects=core,components,host-sample,remote-admin --parallel=2",
+    "publish:local:core": "pnpm --filter @shz/core build && pnpm --filter @shz/core publish --registry http://localhost:4873 --access public --no-git-checks",
+    "publish:local:components": "pnpm --filter @shz/components build && pnpm --filter @shz/components publish --registry http://localhost:4873 --access public --no-git-checks",
+    "publish:local:nx-generators": "pnpm --filter @shz/nx-generators build && node ./tools/nx-generators/scripts/publish-local.mjs",
+    "publish:local": "pnpm publish:local:core && pnpm publish:local:components && pnpm publish:local:nx-generators",
+    "publish:local:auto": "node ./scripts/publish-local-auto.mjs",
+    "dev:demo-host": "nx dev demo-host",
+    "dev:remote-demo": "nx dev remote-demo"
+  },
+  "devDependencies": {
+    "@nx/js": "^21.0.0",
+    "@swc-node/register": "^1.10.0",
+    "@swc/core": "^1.11.0",
+    "nx": "^21.0.0",
+    "typescript": "~5.8.0"
+  }
+}

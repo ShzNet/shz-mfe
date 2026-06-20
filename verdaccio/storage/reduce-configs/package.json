@@ -1,0 +1,654 @@
+{
+	"name": "reduce-configs",
+	"versions": {
+		"0.0.0": {
+			"name": "reduce-configs",
+			"version": "0.0.0",
+			"author": "",
+			"license": "MIT",
+			"_id": "reduce-configs@0.0.0",
+			"maintainers": [
+				{
+					"name": "chenjiahan",
+					"email": "416417567@163.com"
+				}
+			],
+			"dist": {
+				"shasum": "dd6dc481667144dc5e433f6dc16e14b8e501d71f",
+				"tarball": "https://registry.npmjs.org/reduce-configs/-/reduce-configs-0.0.0.tgz",
+				"fileCount": 1,
+				"integrity": "sha512-UfRPaWcXK0mHsYM01ehnX8lowMjZbs/zkXJ/Oek/pMtSxmCZo1NrkBvokdOgoVv2HP2gA6E+fy6fHWAUliby0w==",
+				"signatures": [
+					{
+						"sig": "MEUCIQCbvR94fXqiCDHF2Wss/wUSjX+ld46gRsdlFBAufM4UdwIgZl0TcsPbB7PTK7VmqpVFyRJFpIOD4LwpR84edazTNZU=",
+						"keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+					}
+				],
+				"unpackedSize": 132
+			},
+			"main": "index.js",
+			"_npmUser": {
+				"name": "chenjiahan",
+				"email": "416417567@163.com"
+			},
+			"_npmVersion": "10.5.0",
+			"directories": {},
+			"_nodeVersion": "18.20.2",
+			"_hasShrinkwrap": false,
+			"_npmOperationalInternal": {
+				"tmp": "tmp/reduce-configs_0.0.0_1720011792095_0.30770736733892545",
+				"host": "s3://npm-registry-packages"
+			},
+			"contributors": []
+		},
+		"1.0.0": {
+			"name": "reduce-configs",
+			"version": "1.0.0",
+			"license": "MIT",
+			"_id": "reduce-configs@1.0.0",
+			"maintainers": [
+				{
+					"name": "chenjiahan",
+					"email": "416417567@163.com"
+				}
+			],
+			"homepage": "https://github.com/rspack-contrib/reduce-configs#readme",
+			"bugs": {
+				"url": "https://github.com/rspack-contrib/reduce-configs/issues"
+			},
+			"dist": {
+				"shasum": "8686ed87104ed32d22051dcd652d0f4db876b429",
+				"tarball": "https://registry.npmjs.org/reduce-configs/-/reduce-configs-1.0.0.tgz",
+				"fileCount": 7,
+				"integrity": "sha512-/JCYSgL/QeXXsq0Lv/7kOZfqvof7vyzHWfyNQPt3c6vc73mU4WRyT8RJ6ZH5Ci08vUOqXwk7jkZy6BycHTDD9w==",
+				"signatures": [
+					{
+						"sig": "MEQCID7u9WEBryZ5NvU3Gxt98lEdjI0yqxkMXsNff4GswsSuAiBIVK60wV88GOglrVZ6TxZR+OyqWTsLXad00MrgMsqc1w==",
+						"keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+					}
+				],
+				"unpackedSize": 17443
+			},
+			"main": "./dist/index.js",
+			"type": "module",
+			"types": "./dist/index.d.ts",
+			"module": "./dist/index.mjs",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"import": "./dist/index.js",
+					"require": "./dist/index.cjs"
+				}
+			},
+			"gitHead": "fc5fe7460ca9851d8c4e3ba716015773e3462fe7",
+			"scripts": {
+				"dev": "tsup --watch",
+				"lint": "biome check .",
+				"test": "node ./test/index.js",
+				"build": "tsup",
+				"prepare": "simple-git-hooks && npm run build",
+				"lint:write": "biome check . --write"
+			},
+			"_npmUser": {
+				"name": "chenjiahan",
+				"email": "416417567@163.com"
+			},
+			"repository": {
+				"url": "git+https://github.com/rspack-contrib/reduce-configs.git",
+				"type": "git"
+			},
+			"_npmVersion": "10.5.0",
+			"description": "Merge an initial configuration object with one or more configuration objects, functions, or arrays of configuration objects/functions.",
+			"directories": {},
+			"nano-staged": {
+				"*.{js,jsx,ts,tsx,mjs,cjs}": [
+					"biome check --write --no-errors-on-unmatched"
+				]
+			},
+			"_nodeVersion": "18.20.2",
+			"dependencies": {
+				"browserslist": "^4.23.1"
+			},
+			"publishConfig": {
+				"access": "public",
+				"registry": "https://registry.npmjs.org/"
+			},
+			"_hasShrinkwrap": false,
+			"packageManager": "pnpm@9.2.0",
+			"devDependencies": {
+				"tsup": "^8.0.2",
+				"typescript": "^5.5.2",
+				"@types/node": "^20.14.1",
+				"nano-staged": "^0.8.0",
+				"@biomejs/biome": "^1.8.3",
+				"simple-git-hooks": "^2.11.1"
+			},
+			"simple-git-hooks": {
+				"pre-commit": "npx nano-staged"
+			},
+			"_npmOperationalInternal": {
+				"tmp": "tmp/reduce-configs_1.0.0_1720016147693_0.2376513340832096",
+				"host": "s3://npm-registry-packages"
+			},
+			"contributors": []
+		},
+		"1.1.0": {
+			"name": "reduce-configs",
+			"version": "1.1.0",
+			"license": "MIT",
+			"_id": "reduce-configs@1.1.0",
+			"maintainers": [
+				{
+					"name": "chenjiahan",
+					"email": "416417567@163.com"
+				}
+			],
+			"homepage": "https://github.com/rspack-contrib/reduce-configs#readme",
+			"bugs": {
+				"url": "https://github.com/rspack-contrib/reduce-configs/issues"
+			},
+			"dist": {
+				"shasum": "6601bc10bbe60ec0900763c67680d56e3e9d356e",
+				"tarball": "https://registry.npmjs.org/reduce-configs/-/reduce-configs-1.1.0.tgz",
+				"fileCount": 6,
+				"integrity": "sha512-DQxy6liNadHfrLahZR7lMdc227NYVaQZhY5FMsxLEjX8X0SCuH+ESHSLCoz2yDZFq1/CLMDOAHdsEHwOEXKtvg==",
+				"signatures": [
+					{
+						"sig": "MEUCICxs4x96aALBbOQXVvGARTBHNmQ7K7hmY+NewnBX6Dm2AiEA4USAgRn/eXC33/vJ47F0Gi4Dt09EXMI+PgSil2oOF4k=",
+						"keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+					}
+				],
+				"attestations": {
+					"url": "https://registry.npmjs.org/-/npm/v1/attestations/reduce-configs@1.1.0",
+					"provenance": {
+						"predicateType": "https://slsa.dev/provenance/v1"
+					}
+				},
+				"unpackedSize": 15902
+			},
+			"main": "./dist/index.js",
+			"type": "module",
+			"types": "./dist/index.d.ts",
+			"module": "./dist/index.mjs",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"import": "./dist/index.js",
+					"require": "./dist/index.cjs"
+				}
+			},
+			"gitHead": "8ead62caa244984a8078e92beb4ce977bd34abd1",
+			"scripts": {
+				"dev": "rslib build --watch",
+				"bump": "npx bumpp",
+				"lint": "biome check .",
+				"test": "node ./test/index.js",
+				"build": "rslib build",
+				"prepare": "simple-git-hooks && npm run build",
+				"lint:write": "biome check . --write"
+			},
+			"_npmUser": {
+				"name": "chenjiahan",
+				"email": "416417567@163.com"
+			},
+			"repository": {
+				"url": "git+https://github.com/rspack-contrib/reduce-configs.git",
+				"type": "git"
+			},
+			"_npmVersion": "10.9.0",
+			"description": "Merge an initial configuration object with one or more configuration objects, functions, or arrays of configuration objects/functions.",
+			"directories": {},
+			"nano-staged": {
+				"*.{js,jsx,ts,tsx,mjs,cjs}": [
+					"biome check --write --no-errors-on-unmatched"
+				]
+			},
+			"_nodeVersion": "22.11.0",
+			"publishConfig": {
+				"access": "public",
+				"registry": "https://registry.npmjs.org/",
+				"provenance": true
+			},
+			"_hasShrinkwrap": false,
+			"packageManager": "pnpm@9.2.0",
+			"devDependencies": {
+				"typescript": "^5.5.2",
+				"@rslib/core": "^0.1.0",
+				"@types/node": "^20.14.1",
+				"nano-staged": "^0.8.0",
+				"@biomejs/biome": "^1.8.3",
+				"simple-git-hooks": "^2.11.1"
+			},
+			"simple-git-hooks": {
+				"pre-commit": "npx nano-staged"
+			},
+			"_npmOperationalInternal": {
+				"tmp": "tmp/reduce-configs_1.1.0_1732241906577_0.8226138611612863",
+				"host": "s3://npm-registry-packages"
+			},
+			"contributors": []
+		},
+		"1.1.1": {
+			"name": "reduce-configs",
+			"version": "1.1.1",
+			"license": "MIT",
+			"_id": "reduce-configs@1.1.1",
+			"maintainers": [
+				{
+					"name": "chenjiahan",
+					"email": "416417567@163.com"
+				}
+			],
+			"homepage": "https://github.com/rspack-contrib/reduce-configs#readme",
+			"bugs": {
+				"url": "https://github.com/rspack-contrib/reduce-configs/issues"
+			},
+			"dist": {
+				"shasum": "b6d920e79cdf9f88c3daaabddf06f93a749334be",
+				"tarball": "https://registry.npmjs.org/reduce-configs/-/reduce-configs-1.1.1.tgz",
+				"fileCount": 6,
+				"integrity": "sha512-EYtsVGAQarE8daT54cnaY1PIknF2VB78ug6Zre2rs36EsJfC40EG6hmTU2A2P1ZuXnKAt2KI0fzOGHcX7wzdPw==",
+				"signatures": [
+					{
+						"sig": "MEUCIQCMqsmXfgIyWbMa3GQWogJjsPdxl6KSWgRdihYgWP9jIwIgdRQ73BUMBkzbfbvzZ/uK41uSxUllIzjRCcrxFLZBmlQ=",
+						"keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+					}
+				],
+				"attestations": {
+					"url": "https://registry.npmjs.org/-/npm/v1/attestations/reduce-configs@1.1.1",
+					"provenance": {
+						"predicateType": "https://slsa.dev/provenance/v1"
+					}
+				},
+				"unpackedSize": 14623
+			},
+			"main": "./dist/index.js",
+			"type": "module",
+			"types": "./dist/index.d.ts",
+			"module": "./dist/index.mjs",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"import": "./dist/index.js",
+					"require": "./dist/index.cjs"
+				}
+			},
+			"gitHead": "a629a3e093d4237e9e4bb0c4846b4d40446425b5",
+			"scripts": {
+				"dev": "rslib build --watch",
+				"bump": "npx bumpp",
+				"lint": "biome check .",
+				"test": "rstest run",
+				"build": "rslib build",
+				"prepare": "simple-git-hooks && npm run build",
+				"lint:write": "biome check . --write"
+			},
+			"_npmUser": {
+				"name": "GitHub Actions",
+				"email": "npm-oidc-no-reply@github.com",
+				"trustedPublisher": {
+					"id": "github",
+					"oidcConfigId": "oidc:843099e3-b0b2-472a-8cc4-ba52d3ffbe25"
+				}
+			},
+			"repository": {
+				"url": "git+https://github.com/rspack-contrib/reduce-configs.git",
+				"type": "git"
+			},
+			"_npmVersion": "11.5.2",
+			"description": "Merge an initial configuration object with one or more configuration objects, functions, or arrays of configuration objects/functions.",
+			"directories": {},
+			"nano-staged": {
+				"*.{js,jsx,ts,tsx,mjs,cjs}": [
+					"biome check --write --no-errors-on-unmatched"
+				]
+			},
+			"_nodeVersion": "22.17.1",
+			"publishConfig": {
+				"access": "public",
+				"registry": "https://registry.npmjs.org/"
+			},
+			"_hasShrinkwrap": false,
+			"packageManager": "pnpm@10.14.0",
+			"devDependencies": {
+				"typescript": "^5.9.2",
+				"@rslib/core": "^0.11.0",
+				"@types/node": "^22.17.0",
+				"nano-staged": "^0.8.0",
+				"@rstest/core": "0.0.10",
+				"@biomejs/biome": "^1.9.4",
+				"simple-git-hooks": "^2.13.1"
+			},
+			"simple-git-hooks": {
+				"pre-commit": "npx nano-staged"
+			},
+			"_npmOperationalInternal": {
+				"tmp": "tmp/reduce-configs_1.1.1_1754283919786_0.3527931550179222",
+				"host": "s3://npm-registry-packages-npm-production"
+			},
+			"contributors": []
+		},
+		"1.1.2": {
+			"name": "reduce-configs",
+			"version": "1.1.2",
+			"license": "MIT",
+			"_id": "reduce-configs@1.1.2",
+			"maintainers": [
+				{
+					"name": "chenjiahan",
+					"email": "416417567@163.com"
+				}
+			],
+			"homepage": "https://github.com/rstackjs/reduce-configs#readme",
+			"bugs": {
+				"url": "https://github.com/rstackjs/reduce-configs/issues"
+			},
+			"dist": {
+				"shasum": "9a2a323429b025582f05e932870441114d4662a6",
+				"tarball": "https://registry.npmjs.org/reduce-configs/-/reduce-configs-1.1.2.tgz",
+				"fileCount": 6,
+				"integrity": "sha512-AgBP55V8FC7NaqoOP2RCbTpu6LE+YuX3LUZkNAoitcfyS3/PIC8Obg/TJrBzTkJ+lDvZv0TTAeDpLkzjTtYlbw==",
+				"signatures": [
+					{
+						"sig": "MEYCIQD1Enh68xMm8W88UlxE4b3V9zPxdqpMwDoRssNa6M8r0gIhAPPHRk/nryhoIEEcDrqDLfvr+F5TKFSA/ZQ/XaznngS5",
+						"keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+					}
+				],
+				"attestations": {
+					"url": "https://registry.npmjs.org/-/npm/v1/attestations/reduce-configs@1.1.2",
+					"provenance": {
+						"predicateType": "https://slsa.dev/provenance/v1"
+					}
+				},
+				"unpackedSize": 14815
+			},
+			"main": "./dist/index.js",
+			"type": "module",
+			"types": "./dist/index.d.ts",
+			"module": "./dist/index.mjs",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"import": "./dist/index.js",
+					"require": "./dist/index.cjs"
+				}
+			},
+			"gitHead": "527231a7629a71235117229a9d661cb02f124894",
+			"scripts": {
+				"dev": "rslib -w",
+				"bump": "npx bumpp",
+				"lint": "biome check .",
+				"test": "rstest",
+				"build": "rslib",
+				"prepare": "simple-git-hooks && npm run build",
+				"lint:write": "biome check . --write"
+			},
+			"_npmUser": {
+				"name": "GitHub Actions",
+				"email": "npm-oidc-no-reply@github.com",
+				"trustedPublisher": {
+					"id": "github",
+					"oidcConfigId": "oidc:75090828-f347-41b1-b32a-fcda915764e6"
+				}
+			},
+			"repository": {
+				"url": "git+https://github.com/rstackjs/reduce-configs.git",
+				"type": "git"
+			},
+			"_npmVersion": "11.12.1",
+			"description": "Merge an initial configuration object with one or more configuration objects, functions, or arrays of configuration objects/functions.",
+			"directories": {},
+			"nano-staged": {
+				"*.{js,jsx,ts,tsx,mjs,cjs}": [
+					"biome check --write --no-errors-on-unmatched"
+				]
+			},
+			"_nodeVersion": "24.14.1",
+			"publishConfig": {
+				"access": "public",
+				"registry": "https://registry.npmjs.org/"
+			},
+			"_hasShrinkwrap": false,
+			"packageManager": "pnpm@10.33.0",
+			"devDependencies": {
+				"typescript": "6.0.2",
+				"@rslib/core": "^0.20.1",
+				"@types/node": "^24.12.0",
+				"nano-staged": "^0.9.0",
+				"@rstest/core": "0.9.5",
+				"@biomejs/biome": "^2.4.9",
+				"simple-git-hooks": "^2.13.1"
+			},
+			"simple-git-hooks": {
+				"pre-commit": "npx nano-staged"
+			},
+			"_npmOperationalInternal": {
+				"tmp": "tmp/reduce-configs_1.1.2_1775348112537_0.9756048032401436",
+				"host": "s3://npm-registry-packages-npm-production"
+			},
+			"contributors": []
+		},
+		"2.0.0": {
+			"name": "reduce-configs",
+			"version": "2.0.0",
+			"license": "MIT",
+			"_id": "reduce-configs@2.0.0",
+			"maintainers": [
+				{
+					"name": "chenjiahan",
+					"email": "416417567@163.com"
+				}
+			],
+			"dist": {
+				"shasum": "177651cdec20157964fb2fe141ca45433a77faeb",
+				"tarball": "https://registry.npmjs.org/reduce-configs/-/reduce-configs-2.0.0.tgz",
+				"fileCount": 5,
+				"integrity": "sha512-oKMHUDY3TBSsyv4AzzQBpB3lRgmCIcNb3Ax3cAmJWCyRkHLYh3BcwP2Ari3aVsw8N6hoft1qW9hxvnKBnSlqNw==",
+				"signatures": [
+					{
+						"sig": "MEYCIQDEZ1xBQILiSaedZqSy+tS7CViWPVRh6kf7QfQ9QfZevQIhAJmHlLURxk0YMhpD4+RcDja+Ivg4/iNu8NQpyASpJUd+",
+						"keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+					}
+				],
+				"attestations": {
+					"url": "https://registry.npmjs.org/-/npm/v1/attestations/reduce-configs@2.0.0",
+					"provenance": {
+						"predicateType": "https://slsa.dev/provenance/v1"
+					}
+				},
+				"unpackedSize": 11806
+			},
+			"type": "module",
+			"types": "./dist/index.d.ts",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"default": "./dist/index.js"
+				}
+			},
+			"scripts": {
+				"dev": "rslib -w",
+				"bump": "npx bumpp",
+				"lint": "rslint && prettier -c .",
+				"test": "rstest",
+				"build": "rslib",
+				"lint:write": "rslint --fix && prettier -w ."
+			},
+			"_npmUser": {
+				"name": "GitHub Actions",
+				"email": "npm-oidc-no-reply@github.com",
+				"trustedPublisher": {
+					"id": "github",
+					"oidcConfigId": "oidc:845ec42f-9752-4af9-a94c-707cc347cdb3"
+				}
+			},
+			"repository": "https://github.com/rstackjs/reduce-configs",
+			"directories": {},
+			"_nodeVersion": "24.15.0",
+			"publishConfig": {
+				"access": "public",
+				"registry": "https://registry.npmjs.org/"
+			},
+			"_hasShrinkwrap": false,
+			"devDependencies": {
+				"prettier": "^3.8.3",
+				"typescript": "6.0.3",
+				"@rslib/core": "^0.21.5",
+				"@types/node": "^24.12.4",
+				"@rslint/core": "^0.5.3",
+				"@rstest/core": "0.10.2"
+			},
+			"_npmOperationalInternal": {
+				"tmp": "tmp/reduce-configs_2.0.0_1779948885045_0.2695484712705487",
+				"host": "s3://npm-registry-packages-npm-production"
+			},
+			"contributors": []
+		},
+		"2.0.1": {
+			"_id": "reduce-configs@2.0.1",
+			"dist": {
+				"shasum": "bbf5a85d3893a6aa6bc10272c6b6ad7edfdb9a69",
+				"tarball": "https://registry.npmjs.org/reduce-configs/-/reduce-configs-2.0.1.tgz",
+				"integrity": "sha512-H9KTCWTEb1YM1OoOz0f6TeGZYlW82sIT1viNg3W8CjjY0pD3WI4MHs8GifKt5FKTVIfHh/DenfJqqY+FP9jF2A==",
+				"fileCount": 5,
+				"unpackedSize": 11806,
+				"attestations": {
+					"url": "https://registry.npmjs.org/-/npm/v1/attestations/reduce-configs@2.0.1",
+					"provenance": {
+						"predicateType": "https://slsa.dev/provenance/v1"
+					}
+				},
+				"signatures": [
+					{
+						"keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+						"sig": "MEUCIQDxJnR0BQjwXql/sRfZfuf5T3B4kAt/lXHZS30NhFpJCAIgTmY85BST4l0AhaPaGl43iOGQ97ozXTUjO6/J3PM/QlA="
+					}
+				]
+			},
+			"name": "reduce-configs",
+			"type": "module",
+			"types": "./dist/index.d.ts",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"default": "./dist/index.js"
+				}
+			},
+			"license": "MIT",
+			"scripts": {
+				"dev": "rslib -w",
+				"bump": "npx bumpp",
+				"lint": "rslint && prettier -c .",
+				"test": "rstest",
+				"build": "rslib",
+				"lint:write": "rslint --fix && prettier -w ."
+			},
+			"version": "2.0.1",
+			"_npmUser": {
+				"name": "GitHub Actions",
+				"email": "npm-oidc-no-reply@github.com",
+				"trustedPublisher": {
+					"id": "github",
+					"oidcConfigId": "oidc:845ec42f-9752-4af9-a94c-707cc347cdb3"
+				},
+				"approver": {
+					"name": "chenjiahan",
+					"email": "416417567@163.com"
+				}
+			},
+			"repository": "https://github.com/rstackjs/reduce-configs",
+			"directories": {},
+			"maintainers": [
+				{
+					"name": "chenjiahan",
+					"email": "416417567@163.com"
+				}
+			],
+			"_nodeVersion": "24.15.0",
+			"publishConfig": {
+				"access": "public",
+				"registry": "https://registry.npmjs.org/"
+			},
+			"devDependencies": {
+				"prettier": "^3.8.3",
+				"typescript": "6.0.3",
+				"@rslib/core": "^0.21.5",
+				"@types/node": "^24.12.4",
+				"@rslint/core": "^0.5.3",
+				"@rstest/core": "0.10.2"
+			},
+			"_npmOperationalInternal": {
+				"host": "s3://npm-registry-packages-npm-production",
+				"tmp": "tmp/reduce-configs_2.0.1_1780630345786_0.9049820263519164"
+			},
+			"_hasShrinkwrap": false,
+			"contributors": []
+		}
+	},
+	"time": {
+		"created": "2024-07-03T13:03:12.094Z",
+		"modified": "2026-06-05T03:32:26.134Z",
+		"0.0.0": "2024-07-03T13:03:12.263Z",
+		"1.0.0": "2024-07-03T14:15:47.862Z",
+		"1.1.0": "2024-11-22T02:18:26.751Z",
+		"1.1.1": "2025-08-04T05:05:19.964Z",
+		"1.1.2": "2026-04-05T00:15:12.687Z",
+		"2.0.0": "2026-05-28T06:14:45.149Z",
+		"2.0.1": "2026-06-05T03:32:25.866Z"
+	},
+	"users": {},
+	"dist-tags": {
+		"latest": "2.0.1"
+	},
+	"_uplinks": {
+		"npmjs": {
+			"etag": "W/\"4c2c394078a095a25afdc955337ec55e\"",
+			"fetched": 1781882186465
+		}
+	},
+	"_distfiles": {
+		"reduce-configs-0.0.0.tgz": {
+			"url": "https://registry.npmjs.org/reduce-configs/-/reduce-configs-0.0.0.tgz",
+			"sha": "dd6dc481667144dc5e433f6dc16e14b8e501d71f",
+			"registry": "npmjs"
+		},
+		"reduce-configs-1.0.0.tgz": {
+			"url": "https://registry.npmjs.org/reduce-configs/-/reduce-configs-1.0.0.tgz",
+			"sha": "8686ed87104ed32d22051dcd652d0f4db876b429",
+			"registry": "npmjs"
+		},
+		"reduce-configs-1.1.0.tgz": {
+			"url": "https://registry.npmjs.org/reduce-configs/-/reduce-configs-1.1.0.tgz",
+			"sha": "6601bc10bbe60ec0900763c67680d56e3e9d356e",
+			"registry": "npmjs"
+		},
+		"reduce-configs-1.1.1.tgz": {
+			"url": "https://registry.npmjs.org/reduce-configs/-/reduce-configs-1.1.1.tgz",
+			"sha": "b6d920e79cdf9f88c3daaabddf06f93a749334be",
+			"registry": "npmjs"
+		},
+		"reduce-configs-1.1.2.tgz": {
+			"url": "https://registry.npmjs.org/reduce-configs/-/reduce-configs-1.1.2.tgz",
+			"sha": "9a2a323429b025582f05e932870441114d4662a6",
+			"registry": "npmjs"
+		},
+		"reduce-configs-2.0.0.tgz": {
+			"url": "https://registry.npmjs.org/reduce-configs/-/reduce-configs-2.0.0.tgz",
+			"sha": "177651cdec20157964fb2fe141ca45433a77faeb",
+			"registry": "npmjs"
+		},
+		"reduce-configs-2.0.1.tgz": {
+			"url": "https://registry.npmjs.org/reduce-configs/-/reduce-configs-2.0.1.tgz",
+			"sha": "bbf5a85d3893a6aa6bc10272c6b6ad7edfdb9a69",
+			"registry": "npmjs"
+		}
+	},
+	"_attachments": {
+		"reduce-configs-1.1.2.tgz": {
+			"shasum": "9a2a323429b025582f05e932870441114d4662a6"
+		}
+	},
+	"_rev": "9-6b899ba42a526f1d",
+	"_id": "reduce-configs",
+	"readme": ""
+}

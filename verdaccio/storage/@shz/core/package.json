@@ -1,0 +1,498 @@
+{
+	"name": "@shz/core",
+	"versions": {
+		"0.0.1": {
+			"name": "@shz/core",
+			"version": "0.0.1",
+			"main": "./dist/index.js",
+			"module": "./dist/index.mjs",
+			"types": "./dist/index.d.ts",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"import": "./dist/index.mjs",
+					"require": "./dist/index.js"
+				}
+			},
+			"files": [
+				"dist"
+			],
+			"publishConfig": {
+				"registry": "http://localhost:4873/"
+			},
+			"devDependencies": {
+				"tsup": "^8.5.1"
+			},
+			"scripts": {
+				"build": "tsup",
+				"dev": "tsup --watch"
+			},
+			"_nodeVersion": "22.20.0",
+			"_id": "@shz/core@0.0.1",
+			"dist": {
+				"integrity": "sha512-LJA412zS0E/QtCZjXi6xkpttWB3ali/LqZpvzgA6+6d8O4R5n0dhIV2vTvQy1dli6Our4htT2cX3imTaqi4yfA==",
+				"shasum": "15a2e1ce196cda5351cefd3c28acf8de0d510e1d",
+				"tarball": "http://localhost:4873/@shz/core/-/@shz/core-0.0.1.tgz"
+			},
+			"contributors": []
+		},
+		"0.0.3": {
+			"name": "@shz/core",
+			"version": "0.0.3",
+			"main": "./dist/index.js",
+			"module": "./dist/index.mjs",
+			"types": "./dist/index.d.ts",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"import": "./dist/index.mjs",
+					"require": "./dist/index.js"
+				}
+			},
+			"files": [
+				"dist"
+			],
+			"publishConfig": {
+				"registry": "http://localhost:4873/"
+			},
+			"devDependencies": {
+				"tsup": "^8.5.1"
+			},
+			"scripts": {
+				"build": "tsup",
+				"dev": "tsup --watch"
+			},
+			"_nodeVersion": "22.20.0",
+			"_id": "@shz/core@0.0.3",
+			"dist": {
+				"integrity": "sha512-E35ZoxLkY8eOyQojH4Qi1q88wZ7G6CldeTe15KgcPC35XI29GylzbOcIV1kRBBOCrw+TLhkrCm5n++CE2Da8Kw==",
+				"shasum": "bf93021a0396d0370fbe7248e5e653f6fc84278c",
+				"tarball": "http://localhost:4873/@shz/core/-/@shz/core-0.0.3.tgz"
+			},
+			"contributors": []
+		},
+		"0.0.4": {
+			"name": "@shz/core",
+			"version": "0.0.4",
+			"main": "./dist/index.js",
+			"module": "./dist/index.mjs",
+			"types": "./dist/index.d.ts",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"import": "./dist/index.mjs",
+					"require": "./dist/index.js"
+				}
+			},
+			"files": [
+				"dist"
+			],
+			"publishConfig": {
+				"registry": "http://localhost:4873/"
+			},
+			"devDependencies": {
+				"@types/react": "^19.0.0",
+				"tsup": "^8.5.1"
+			},
+			"scripts": {
+				"build": "tsup",
+				"dev": "tsup --watch"
+			},
+			"_nodeVersion": "22.20.0",
+			"_id": "@shz/core@0.0.4",
+			"dist": {
+				"integrity": "sha512-13WR4/5pQQ1PLjA8eufiJ8R5Bap5zqgzr+5Oio686+qbqMI34cduo8IAtqYq5RTEskFRfQREdnGa6fzXx32lbQ==",
+				"shasum": "03b1809afd2d162d8f22f517f32229f0c2ae3484",
+				"tarball": "http://localhost:4873/@shz/core/-/@shz/core-0.0.4.tgz"
+			},
+			"contributors": []
+		},
+		"0.0.5": {
+			"name": "@shz/core",
+			"version": "0.0.5",
+			"main": "./dist/index.js",
+			"module": "./dist/index.mjs",
+			"types": "./dist/index.d.ts",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"import": "./dist/index.mjs",
+					"require": "./dist/index.js"
+				}
+			},
+			"files": [
+				"dist"
+			],
+			"publishConfig": {
+				"registry": "http://localhost:4873/"
+			},
+			"devDependencies": {
+				"@types/react": "^19.0.0",
+				"tsup": "^8.5.1"
+			},
+			"scripts": {
+				"build": "pnpm typecheck && tsup",
+				"dev": "tsup --watch",
+				"typecheck": "tsc -p tsconfig.json --noEmit && node ../../../scripts/check-no-explicit-any.mjs src"
+			},
+			"_nodeVersion": "22.20.0",
+			"_id": "@shz/core@0.0.5",
+			"dist": {
+				"integrity": "sha512-eenh0uf84NFisBa90drzrtFC7Hf/knP0V0MZ8F+7BsMYPlruECnX7qbs3SAMJGgq4EwfTo1F8A+Gz33ECmpD3w==",
+				"shasum": "29ad196fd5a43bcdce6be589b97746b943edbd72",
+				"tarball": "http://localhost:4873/@shz/core/-/@shz/core-0.0.5.tgz"
+			},
+			"contributors": []
+		},
+		"0.0.6": {
+			"name": "@shz/core",
+			"version": "0.0.6",
+			"main": "./dist/index.js",
+			"module": "./dist/index.mjs",
+			"types": "./dist/index.d.ts",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"import": "./dist/index.mjs",
+					"require": "./dist/index.js"
+				}
+			},
+			"files": [
+				"dist"
+			],
+			"publishConfig": {
+				"registry": "http://localhost:4873/"
+			},
+			"dependencies": {
+				"@module-federation/enhanced": "^0.9.0"
+			},
+			"devDependencies": {
+				"@types/react": "^19.0.0",
+				"tsup": "^8.5.1"
+			},
+			"scripts": {
+				"build": "pnpm typecheck && tsup",
+				"dev": "tsup --watch",
+				"typecheck": "tsc -p tsconfig.json --noEmit && node ../../../scripts/check-no-explicit-any.mjs src"
+			},
+			"_nodeVersion": "22.20.0",
+			"_id": "@shz/core@0.0.6",
+			"dist": {
+				"integrity": "sha512-85lweY7s8Ed43fr9Li/9vQseaMQ7UG+po05uVd3yNLLsCOeaEs1QhSZW5/1UmBL70vAbwfG22hIv/Ef+2GAFUg==",
+				"shasum": "5a81d536bb3b61daea20ee5b3352e4e8c50ec8e1",
+				"tarball": "http://localhost:4873/@shz/core/-/@shz/core-0.0.6.tgz"
+			},
+			"contributors": []
+		},
+		"0.0.6-local.1": {
+			"name": "@shz/core",
+			"version": "0.0.6-local.1",
+			"main": "./dist/index.js",
+			"module": "./dist/index.mjs",
+			"types": "./dist/index.d.ts",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"import": "./dist/index.mjs",
+					"require": "./dist/index.js"
+				}
+			},
+			"files": [
+				"dist"
+			],
+			"publishConfig": {
+				"registry": "http://localhost:4873/"
+			},
+			"dependencies": {
+				"@module-federation/enhanced": "^0.9.0"
+			},
+			"devDependencies": {
+				"@types/react": "^19.0.0",
+				"tsup": "^8.5.1"
+			},
+			"scripts": {
+				"build": "pnpm typecheck && tsup",
+				"dev": "tsup --watch",
+				"typecheck": "tsc -p tsconfig.json --noEmit && node ../../../scripts/check-no-explicit-any.mjs src"
+			},
+			"_nodeVersion": "22.20.0",
+			"_id": "@shz/core@0.0.6-local.1",
+			"dist": {
+				"integrity": "sha512-i6WdkZBjtYke9xuzZCzyZ0JXWxZ24K/B9wK0GgmWtrjJ3NSyAFw85hECk7QloYTkrFEA9Oxu0e1wd3pT8ukSyw==",
+				"shasum": "65fb298918fbe750712f01cef4f756ce20e3e5da",
+				"tarball": "http://localhost:4873/@shz/core/-/@shz/core-0.0.6-local.1.tgz"
+			},
+			"contributors": []
+		},
+		"0.0.6-local.2": {
+			"name": "@shz/core",
+			"version": "0.0.6-local.2",
+			"main": "./dist/index.js",
+			"module": "./dist/index.mjs",
+			"types": "./dist/index.d.ts",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"import": "./dist/index.mjs",
+					"require": "./dist/index.js"
+				}
+			},
+			"files": [
+				"dist"
+			],
+			"publishConfig": {
+				"registry": "http://localhost:4873/"
+			},
+			"dependencies": {
+				"@module-federation/enhanced": "^0.9.0"
+			},
+			"devDependencies": {
+				"@types/react": "^19.0.0",
+				"tsup": "^8.5.1"
+			},
+			"scripts": {
+				"build": "pnpm typecheck && tsup",
+				"dev": "tsup --watch",
+				"typecheck": "tsc -p tsconfig.json --noEmit && node ../../../scripts/check-no-explicit-any.mjs src"
+			},
+			"_nodeVersion": "22.20.0",
+			"_id": "@shz/core@0.0.6-local.2",
+			"dist": {
+				"integrity": "sha512-/6TzzuhbrY784c9w6qZ/kdYBQoXz7En+EBmuCdwv+Lij2NMz04QLrYrBcvBZnAtg6jH4GQuShG1sIoEGfLJB2A==",
+				"shasum": "d40366011e84157f1abb52cc897883231827885a",
+				"tarball": "http://localhost:4873/@shz/core/-/@shz/core-0.0.6-local.2.tgz"
+			},
+			"contributors": []
+		},
+		"0.0.6-local.3": {
+			"name": "@shz/core",
+			"version": "0.0.6-local.3",
+			"main": "./dist/index.js",
+			"module": "./dist/index.mjs",
+			"types": "./dist/index.d.ts",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"import": "./dist/index.mjs",
+					"require": "./dist/index.js"
+				}
+			},
+			"files": [
+				"dist"
+			],
+			"publishConfig": {
+				"registry": "http://localhost:4873/"
+			},
+			"dependencies": {
+				"@module-federation/enhanced": "^0.9.0"
+			},
+			"devDependencies": {
+				"@types/react": "^19.0.0",
+				"tsup": "^8.5.1"
+			},
+			"scripts": {
+				"build": "pnpm typecheck && tsup",
+				"dev": "tsup --watch",
+				"typecheck": "tsc -p tsconfig.json --noEmit && node ../../../scripts/check-no-explicit-any.mjs src"
+			},
+			"_nodeVersion": "22.20.0",
+			"_id": "@shz/core@0.0.6-local.3",
+			"dist": {
+				"integrity": "sha512-NTHtMuYng27z+xB19p43fo9u0VHX25AkT1uRXfgJN3vsNrjXamBM97gq1JhYvDfrsKm+8ocimg9u9PLoIho1bA==",
+				"shasum": "f8e55c20465fc1ca8f7333c1cc206efbc34f2e87",
+				"tarball": "http://localhost:4873/@shz/core/-/@shz/core-0.0.6-local.3.tgz"
+			},
+			"contributors": []
+		},
+		"0.0.6-local.4": {
+			"name": "@shz/core",
+			"version": "0.0.6-local.4",
+			"main": "./dist/index.js",
+			"module": "./dist/index.mjs",
+			"types": "./dist/index.d.ts",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"import": "./dist/index.mjs",
+					"require": "./dist/index.js"
+				}
+			},
+			"files": [
+				"dist"
+			],
+			"publishConfig": {
+				"registry": "http://localhost:4873/"
+			},
+			"dependencies": {
+				"@module-federation/enhanced": "^0.9.0"
+			},
+			"devDependencies": {
+				"@types/react": "^19.0.0",
+				"tsup": "^8.5.1"
+			},
+			"scripts": {
+				"build": "pnpm typecheck && tsup",
+				"dev": "tsup --watch",
+				"typecheck": "tsc -p tsconfig.json --noEmit && node ../../../scripts/check-no-explicit-any.mjs src"
+			},
+			"_nodeVersion": "22.20.0",
+			"_id": "@shz/core@0.0.6-local.4",
+			"dist": {
+				"integrity": "sha512-iUxQSNATWqblc2zRUWhJRkgSSdv2yiOOAm6RU5rXcNE7Fah98xbTWuydQkUKD4ziT1OlQ8tbIaw1RoEG/JACSw==",
+				"shasum": "1590f4107d03cd666c0563868d4c8a830642ecc9",
+				"tarball": "http://localhost:4873/@shz/core/-/@shz/core-0.0.6-local.4.tgz"
+			},
+			"contributors": []
+		},
+		"0.0.6-local.5": {
+			"name": "@shz/core",
+			"version": "0.0.6-local.5",
+			"main": "./dist/index.js",
+			"module": "./dist/index.mjs",
+			"types": "./dist/index.d.ts",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"import": "./dist/index.mjs",
+					"require": "./dist/index.js"
+				}
+			},
+			"files": [
+				"dist"
+			],
+			"publishConfig": {
+				"registry": "http://localhost:4873/"
+			},
+			"dependencies": {
+				"@module-federation/enhanced": "^0.9.0"
+			},
+			"devDependencies": {
+				"@types/react": "^19.0.0",
+				"tsup": "^8.5.1"
+			},
+			"scripts": {
+				"build": "pnpm typecheck && tsup",
+				"dev": "tsup --watch",
+				"typecheck": "tsc -p tsconfig.json --noEmit && node ../../../scripts/check-no-explicit-any.mjs src"
+			},
+			"_nodeVersion": "22.20.0",
+			"_id": "@shz/core@0.0.6-local.5",
+			"dist": {
+				"integrity": "sha512-CzcWapdOx3hhT0ZPzCby0q+IRKevlRTLaoV5Hf0rN6jtPp9TqVtGGr1eLm/BuFwR9NqART1PP2d8nxPWuD+XPg==",
+				"shasum": "3ca49ba9107a75a19d3c6c3ae88e3a34102b02e7",
+				"tarball": "http://localhost:4873/@shz/core/-/@shz/core-0.0.6-local.5.tgz"
+			},
+			"contributors": []
+		},
+		"0.0.6-local.6": {
+			"name": "@shz/core",
+			"version": "0.0.6-local.6",
+			"main": "./dist/index.js",
+			"module": "./dist/index.mjs",
+			"types": "./dist/index.d.ts",
+			"exports": {
+				".": {
+					"types": "./dist/index.d.ts",
+					"import": "./dist/index.mjs",
+					"require": "./dist/index.js"
+				}
+			},
+			"files": [
+				"dist"
+			],
+			"publishConfig": {
+				"registry": "http://localhost:4873/"
+			},
+			"dependencies": {
+				"@module-federation/enhanced": "^0.9.0"
+			},
+			"devDependencies": {
+				"@types/react": "^19.0.0",
+				"tsup": "^8.5.1"
+			},
+			"scripts": {
+				"build": "pnpm typecheck && tsup",
+				"dev": "tsup --watch",
+				"typecheck": "tsc -p tsconfig.json --noEmit && node ../../../scripts/check-no-explicit-any.mjs src"
+			},
+			"_nodeVersion": "22.20.0",
+			"_id": "@shz/core@0.0.6-local.6",
+			"dist": {
+				"integrity": "sha512-fmfsVRcFSHDqeiClksJvbjGGt1rk5KIhtwrwGFWcqHnkMctvfeThBLJ9iW3QyMnx4QQOojGo4v0afks4975QhQ==",
+				"shasum": "8a9540b5ee499fec6b88ad6befbde96710c5d2ef",
+				"tarball": "http://localhost:4873/@shz/core/-/@shz/core-0.0.6-local.6.tgz"
+			},
+			"contributors": []
+		}
+	},
+	"time": {
+		"modified": "2026-06-20T02:03:10.258Z",
+		"created": "2026-06-19T07:44:23.051Z",
+		"0.0.1": "2026-06-19T07:44:23.051Z",
+		"0.0.3": "2026-06-19T14:44:00.155Z",
+		"0.0.4": "2026-06-19T15:00:58.503Z",
+		"0.0.5": "2026-06-19T15:47:01.624Z",
+		"0.0.6": "2026-06-19T16:37:55.953Z",
+		"0.0.6-local.1": "2026-06-20T01:02:38.073Z",
+		"0.0.6-local.2": "2026-06-20T01:15:37.845Z",
+		"0.0.6-local.3": "2026-06-20T01:17:29.933Z",
+		"0.0.6-local.4": "2026-06-20T01:19:23.232Z",
+		"0.0.6-local.5": "2026-06-20T01:52:16.478Z",
+		"0.0.6-local.6": "2026-06-20T02:03:10.258Z"
+	},
+	"users": {},
+	"dist-tags": {
+		"latest": "0.0.6-local.6"
+	},
+	"_uplinks": {},
+	"_distfiles": {},
+	"_attachments": {
+		"core-0.0.1.tgz": {
+			"shasum": "15a2e1ce196cda5351cefd3c28acf8de0d510e1d",
+			"version": "0.0.1"
+		},
+		"core-0.0.3.tgz": {
+			"shasum": "bf93021a0396d0370fbe7248e5e653f6fc84278c",
+			"version": "0.0.3"
+		},
+		"core-0.0.4.tgz": {
+			"shasum": "03b1809afd2d162d8f22f517f32229f0c2ae3484",
+			"version": "0.0.4"
+		},
+		"core-0.0.5.tgz": {
+			"shasum": "29ad196fd5a43bcdce6be589b97746b943edbd72",
+			"version": "0.0.5"
+		},
+		"core-0.0.6.tgz": {
+			"shasum": "5a81d536bb3b61daea20ee5b3352e4e8c50ec8e1",
+			"version": "0.0.6"
+		},
+		"core-0.0.6-local.1.tgz": {
+			"shasum": "65fb298918fbe750712f01cef4f756ce20e3e5da",
+			"version": "0.0.6-local.1"
+		},
+		"core-0.0.6-local.2.tgz": {
+			"shasum": "d40366011e84157f1abb52cc897883231827885a",
+			"version": "0.0.6-local.2"
+		},
+		"core-0.0.6-local.3.tgz": {
+			"shasum": "f8e55c20465fc1ca8f7333c1cc206efbc34f2e87",
+			"version": "0.0.6-local.3"
+		},
+		"core-0.0.6-local.4.tgz": {
+			"shasum": "1590f4107d03cd666c0563868d4c8a830642ecc9",
+			"version": "0.0.6-local.4"
+		},
+		"core-0.0.6-local.5.tgz": {
+			"shasum": "3ca49ba9107a75a19d3c6c3ae88e3a34102b02e7",
+			"version": "0.0.6-local.5"
+		},
+		"core-0.0.6-local.6.tgz": {
+			"shasum": "8a9540b5ee499fec6b88ad6befbde96710c5d2ef",
+			"version": "0.0.6-local.6"
+		}
+	},
+	"_rev": "33-7c8b1caed4dc0167",
+	"_id": "@shz/core",
+	"readme": ""
+}

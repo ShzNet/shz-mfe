@@ -1,20 +1,53 @@
 # @shznet/nx-generators
 
-NX generators for scaffolding Micro-Frontend apps in the Shz MFE monorepo. Generates fully wired [Module Federation](https://module-federation.io/) apps built with RSBuild, React 19, Tailwind CSS v4, and `@shznet/core` / `@shznet/components`.
+NX generators for scaffolding micro-frontend apps in the Shz MFE workspace. Generated output is prewired with [Module Federation](https://module-federation.io/), RSBuild, React 19, Tailwind CSS v4, `@shznet/core`, and `@shznet/components`.
+
+If you are new to this workspace, read these first:
+
+- Workspace overview: [../../README.md](/Users/shizaki/Works/Shizaki/Shz-Mfe/src/README.md)
+- Core runtime docs: [../../libs/core/README.md](/Users/shizaki/Works/Shizaki/Shz-Mfe/src/libs/core/README.md)
+- Component docs: [../../libs/components/README.md](/Users/shizaki/Works/Shizaki/Shz-Mfe/src/libs/components/README.md)
 
 ## Requirements
 
 - NX workspace (`nx.json` at root)
 - pnpm
-- `@shznet/core` and `@shznet/components` installed (or available via local registry)
+- `@shznet/core` and `@shznet/components` installed
 
 ## Installation
 
 ```bash
-pnpm add -D @shznet/nx-generators --registry http://localhost:4873
+pnpm add -D @shznet/nx-generators
 ```
 
-Or add to your root `package.json` devDependencies and run `pnpm install`.
+Or add the package to workspace `devDependencies` and run `pnpm install`.
+
+## Quick Start
+
+### Generate host app
+
+```bash
+nx g @shznet/nx-generators:host --name=portal-host
+```
+
+### Generate remote app
+
+```bash
+nx g @shznet/nx-generators:module-app --name=remote-sales
+```
+
+### Add a remote to a host
+
+```ts
+import type { FederatedRemoteRegistration } from '@shznet/core'
+
+export const remotes: FederatedRemoteRegistration[] = [
+  {
+    name: 'remote_sales',
+    entry: 'https://remote.example.com/mf-manifest.json',
+  },
+]
+```
 
 ## Template Convention
 
@@ -29,7 +62,7 @@ This keeps editor/typecheck noise low while preserving generated output as norma
 
 ### `host` — Host App
 
-Scaffolds a **host shell** application that dynamically loads remote MFE modules at runtime using `@shznet/core`.
+Scaffolds a **host shell** that dynamically loads remote MFE modules at runtime using `@shznet/core`.
 
 ```bash
 nx g @shznet/nx-generators:host --name=my-host
@@ -90,7 +123,7 @@ apps/my-host/
 
 ### `module-app` — Remote Module App
 
-Scaffolds a **remote MFE app** that exposes `./Shell` and `./config` for consumption by a host.
+Scaffolds a **remote MFE app** that exposes `./Shell` and `./config` for host consumption.
 
 ```bash
 nx g @shznet/nx-generators:module-app --name=remote-sales
@@ -143,7 +176,7 @@ apps/remote-sales/
 
 The remote exposes two Module Federation endpoints:
 - **`./Shell`** — the full app shell mounted by the host
-- **`./config`** — nav menu metadata (label, icon, basePath) consumed by the host sidebar
+- **`./config`** — menu metadata sourced from `src/menu.ts` and consumed by host/sidebar logic
 
 ### Full Component Scaffold
 
@@ -154,7 +187,7 @@ The generated `users` feature is the reference "full component" sample for `@shz
 - `ColumnManager` inside a `Sheet`
 - Form/dialog composition with `Dialog`, `DateInput`, `Input`, and `Select`
 
-You can import components directly from the package entrypoint:
+Components can be imported directly from the package entrypoint:
 
 ```ts
 import {
@@ -167,7 +200,7 @@ import {
 } from '@shznet/components'
 ```
 
-If you want the fastest starting point for a remote that already uses the full component set, generate a `module-app` and start from `src/pages/users/index.tsx`.
+If you want the fastest starting point for a remote app that already includes the full admin component set, generate a `module-app` and start from `src/pages/users/index.tsx`.
 
 ---
 
@@ -177,49 +210,22 @@ After generating both a host and a remote, register the remote in the host's `sr
 
 ```ts
 // apps/my-host/src/remotes.ts
-import type { RemoteConfig } from '@shznet/core'
+import type { FederatedRemoteRegistration } from '@shznet/core'
 
-export const remotes: RemoteConfig[] = [
+export const remotes: FederatedRemoteRegistration[] = [
   {
     name: 'remote_sales',
-    url: process.env.REMOTE_REMOTE_SALES_URL ?? 'http://localhost:3001',
+    entry: process.env.REMOTE_REMOTE_SALES_URL ?? 'https://remote.example.com/mf-manifest.json',
   },
 ]
 ```
 
-The host's `remote-loader.ts` will pick this up automatically at runtime.
+The host `remote-loader.ts` uses this configuration to load the remote at runtime.
 
----
+## Recommended Team Flow
 
-## Local Development
-
-These generators reference `workspace:*` versions of `@shznet/core` and `@shznet/components` by default, which resolves to the local packages in the monorepo.
-
-To generate apps that point to a published version instead (e.g. from the local Verdaccio registry):
-
-```bash
-nx g @shznet/nx-generators:module-app \
-  --name=remote-sales \
-  --coreVersion=0.0.6-local.6 \
-  --componentsVersion=0.0.6-local.6
-```
-
-## Publishing
-
-Build the package:
-
-```bash
-pnpm --filter @shznet/nx-generators build
-```
-
-Publish to the local Verdaccio registry:
-
-```bash
-pnpm publish:local:nx-generators
-```
-
-Publish to npmjs using the workspace release target:
-
-```bash
-pnpm nx run nx-generators:nx-release-publish
-```
+1. Generate the host with `:host`.
+2. Generate each remote domain with `:module-app`.
+3. Add the remote to the host `src/remotes.ts`.
+4. Use `@shznet/components` to build screens inside each remote.
+5. Use `@shznet/core` when you need to extend runtime behavior, state, or remote context.

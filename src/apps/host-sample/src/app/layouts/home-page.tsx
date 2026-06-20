@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { Badge, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shznet/components'
 import { ArrowRight, CircleAlert, LayoutGrid, PlugZap, Server, ShieldCheck, TrendingUp, Users } from 'lucide-react'
 import { apps } from '../../remotes'
 import { HeaderActions } from '../components/header-actions'
+import { useAppNav } from '../lib/app-nav'
 import type { AuthState } from '../types'
 
 type HomePageProps = {
@@ -138,6 +138,7 @@ function HomePageSkeleton({ auth, onSignOut }: HomePageProps) {
 }
 
 export function HomePage({ auth, onSignOut }: HomePageProps) {
+  const { navigateToApp } = useAppNav()
   const { data, loading } = useAsyncData(fetchHomeData)
 
   if (loading || !data) return <HomePageSkeleton auth={auth} onSignOut={onSignOut} />
@@ -238,10 +239,11 @@ export function HomePage({ auth, onSignOut }: HomePageProps) {
             </CardHeader>
             <CardContent className='space-y-3'>
               {apps.map((app) => (
-                <Link
+                <button
                   key={app.id}
-                  to={app.basePath}
-                  className='group flex items-center gap-3 rounded-lg border p-3 transition-colors hover:bg-muted/50'
+                  type='button'
+                  onClick={() => navigateToApp(app)}
+                  className='group flex w-full items-center gap-3 rounded-lg border p-3 text-start transition-colors hover:bg-muted/50'
                 >
                   <div className='flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary'>
                     <PlugZap className='size-4' />
@@ -251,7 +253,7 @@ export function HomePage({ auth, onSignOut }: HomePageProps) {
                     <p className='truncate text-sm text-muted-foreground'>{app.basePath}</p>
                   </div>
                   <ArrowRight className='size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5' />
-                </Link>
+                </button>
               ))}
             </CardContent>
           </Card>

@@ -1,7 +1,5 @@
-import type { ComponentType } from 'react'
-import { Suspense, useEffect, useState } from 'react'
+import { type ComponentType, Suspense, useEffect, useState } from 'react'
 import {
-  Skeleton,
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
@@ -32,30 +30,36 @@ const shellModuleCache = new Map<string, RemoteShellModule>()
 const shellPromiseCache = new Map<string, Promise<RemoteShellModule>>()
 
 async function loadShellModule(remoteName: string, entry: string) {
-  if (shellModuleCache.has(remoteName)) return shellModuleCache.get(remoteName)!
+  const cacheKey = `${remoteName}::${entry}`
+  if (shellModuleCache.has(cacheKey)) return shellModuleCache.get(cacheKey)!
 
-  if (!shellPromiseCache.has(remoteName)) {
+  if (!shellPromiseCache.has(cacheKey)) {
     shellPromiseCache.set(
-      remoteName,
+      cacheKey,
       loadRemoteModule<RemoteShellModule>(remoteName, './Shell', entry)
         .then((mod) => {
           if (!mod?.default) throw new Error(`Remote shell "${remoteName}" has no default export`)
-          shellModuleCache.set(remoteName, mod)
+          shellModuleCache.set(cacheKey, mod)
           return mod
         })
         .catch((error) => {
-          shellPromiseCache.delete(remoteName)
+          shellPromiseCache.delete(cacheKey)
           throw error
         })
     )
   }
 
-  return shellPromiseCache.get(remoteName)!
+  return shellPromiseCache.get(cacheKey)!
 }
 
-function useRemoteShellModule(remoteName: string, entry: string): RemoteShellState {
+export function preloadRemoteShell(remoteName: string, entry: string): Promise<RemoteShellModule> {
+  return loadShellModule(remoteName, entry)
+}
+
+export function useRemoteShell(remoteName: string, entry: string): RemoteShellState {
+  const cacheKey = `${remoteName}::${entry}`
   const [state, setState] = useState<RemoteShellState>(() => {
-    const mod = shellModuleCache.get(remoteName) ?? null
+    const mod = shellModuleCache.get(cacheKey) ?? null
     return { module: mod, loading: !mod, error: null }
   })
 
@@ -76,23 +80,17 @@ function useRemoteShellModule(remoteName: string, entry: string): RemoteShellSta
         })
       })
 
-    return () => {
-      active = false
-    }
+    return () => { active = false }
   }, [entry, remoteName])
 
   return state
-}
-
-export function useRemoteShell(remoteName: string, entry: string) {
-  return useRemoteShellModule(remoteName, entry)
 }
 
 export function RemoteShellPage({ state }: RemoteShellPageProps) {
   const { module, loading, error } = state
 
   if (error) {
-    return <div className='p-6 text-sm text-destructive'>{error.message}</div>
+    return <div className='rounded-md border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive'>{error.message}</div>
   }
 
   if (loading || !module) {
@@ -113,9 +111,7 @@ export function RemoteShellMenu({ state }: { state: RemoteShellState }) {
 
   if (error) return null
 
-  if (loading) {
-    return <RemoteMenuSkeleton />
-  }
+  if (loading) return <RemoteMenuSkeleton />
 
   if (!module?.Menu) return null
 
@@ -128,31 +124,35 @@ export function RemoteShellMenu({ state }: { state: RemoteShellState }) {
   )
 }
 
-function RemotePageSkeleton() {
+function Pulse({ className }: { className: string }) {
+  return <div className={`animate-pulse rounded-md bg-foreground/10 ${className}`} />
+}
+
+export function RemotePageSkeleton() {
   return (
     <div className='flex flex-1 flex-col gap-4'>
       <div className='space-y-2'>
-        <Skeleton className='h-7 w-44' />
-        <Skeleton className='h-4 w-72' />
+        <Pulse className='h-7 w-44' />
+        <Pulse className='h-4 w-72' />
       </div>
       <div className='grid gap-4 sm:grid-cols-2 xl:grid-cols-4'>
         {Array.from({ length: 4 }, (_, i) => (
           <div key={i} className='rounded-xl border bg-card p-6 space-y-3'>
             <div className='flex items-center justify-between'>
-              <Skeleton className='h-4 w-20' />
-              <Skeleton className='size-4 rounded' />
+              <Pulse className='h-4 w-20' />
+              <Pulse className='size-4' />
             </div>
-            <Skeleton className='h-8 w-28' />
-            <Skeleton className='h-4 w-36' />
+            <Pulse className='h-8 w-28' />
+            <Pulse className='h-4 w-36' />
           </div>
         ))}
       </div>
       <div className='rounded-xl border bg-card p-6 space-y-3'>
-        <Skeleton className='h-5 w-32' />
-        <Skeleton className='h-4 w-56' />
+        <Pulse className='h-5 w-32' />
+        <Pulse className='h-4 w-56' />
         <div className='space-y-2 pt-2'>
           {Array.from({ length: 3 }, (_, i) => (
-            <Skeleton key={i} className='h-12 w-full rounded-lg' />
+            <Pulse key={i} className='h-12 w-full rounded-lg' />
           ))}
         </div>
       </div>
@@ -160,7 +160,7 @@ function RemotePageSkeleton() {
   )
 }
 
-function RemoteMenuSkeleton() {
+export function RemoteMenuSkeleton() {
   return (
     <SidebarGroup>
       <SidebarGroupContent>

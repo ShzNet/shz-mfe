@@ -1,11 +1,11 @@
 import AppPage from './pages/app'
-import RemoteDemoNav from './nav'
+import RemoteDemoMenu from './menu'
 
 type RemoteShellProps = Record<string, never>
 
 type RemoteShellModule = {
   default: typeof RemoteShell
-  Menu: typeof RemoteDemoNav
+  Menu: typeof RemoteDemoMenu
 }
 
 function RemoteShell(_: RemoteShellProps) {
@@ -14,7 +14,7 @@ function RemoteShell(_: RemoteShellProps) {
 
 const remoteShellModule = {
   default: RemoteShell,
-  Menu: RemoteDemoNav,
+  Menu: RemoteDemoMenu,
 } satisfies RemoteShellModule
 
 export const Menu = remoteShellModule.Menu

@@ -1,5 +1,5 @@
 import AppPage from './pages/app'
-import RemoteAdminMenu from './nav'
+import RemoteAdminMenu from './menu'
 
 type RemoteShellProps = Record<string, never>
 

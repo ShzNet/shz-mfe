@@ -44,7 +44,7 @@ export default defineConfig({
       dts: false,
       name: 'remote_demo',
       exposes: {
-        './config': './src/menu.ts',
+        './config': './src/menu.tsx',
         './Shell': './src/shell.tsx',
       },
       shared: {

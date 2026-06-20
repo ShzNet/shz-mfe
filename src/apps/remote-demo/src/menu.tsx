@@ -1,16 +1,16 @@
 import { Link, useLocation } from 'react-router-dom'
 import { LayoutDashboard } from 'lucide-react'
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@shznet/components'
-import menu from './menu'
 
 const BASE = '/app/demo'
-const iconMap = {
-  LayoutDashboard,
-} as const
 
-export default function RemoteDemoNav() {
+const menuItems = [
+  { title: 'Overview', path: '', icon: LayoutDashboard, group: 'General' },
+] as const
+
+export default function RemoteDemoMenu() {
   const { pathname } = useLocation()
-  const groups = Array.from(new Set(menu.nav.map((item) => item.group)))
+  const groups = Array.from(new Set(menuItems.map((item) => item.group)))
 
   return (
     <>
@@ -18,10 +18,10 @@ export default function RemoteDemoNav() {
         <SidebarGroup key={group}>
           <SidebarGroupLabel>{group}</SidebarGroupLabel>
           <SidebarMenu>
-            {menu.nav.filter((item) => item.group === group).map((item) => {
+            {menuItems.filter((item) => item.group === group).map((item) => {
               const href = item.path ? `${BASE}/${item.path}` : BASE
-              const Icon = iconMap[item.icon as keyof typeof iconMap] ?? LayoutDashboard
               const isActive = item.path ? pathname === href || pathname.startsWith(`${href}/`) : pathname === href
+              const Icon = item.icon
 
               return (
                 <SidebarMenuItem key={href}>

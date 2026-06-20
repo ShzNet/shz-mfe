@@ -13,6 +13,7 @@ import {
 import { ChevronsUpDown, PlugZap } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { apps } from '../../remotes'
+import { useAppNav } from '../lib/app-nav'
 import type { AppDefinition } from '../types'
 
 type AppSidebarNavProps = {
@@ -22,6 +23,7 @@ type AppSidebarNavProps = {
 export function AppSidebarNav({ app }: AppSidebarNavProps) {
   const { isMobile } = useSidebar()
   const navigate = useNavigate()
+  const { navigateToApp } = useAppNav()
   const { pathname } = useLocation()
   const activeApp = apps.find((item) => pathname === item.basePath || pathname.startsWith(`${item.basePath}/`)) ?? app
 
@@ -55,7 +57,7 @@ export function AppSidebarNav({ app }: AppSidebarNavProps) {
             {apps.map((item) => {
               const isActive = item.id === activeApp.id
               return (
-                <DropdownMenuItem key={item.id} onClick={() => navigate(item.basePath)} className='gap-2 p-2'>
+                <DropdownMenuItem key={item.id} onClick={() => navigateToApp(item)} className='gap-2 p-2'>
                   <div className='flex size-7 items-center justify-center rounded-md border bg-primary/10 text-primary'>
                     <PlugZap className='size-4' />
                   </div>

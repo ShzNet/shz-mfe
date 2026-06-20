@@ -1,0 +1,53 @@
+import type {
+  ColumnManagerItem,
+  ColumnOrderState,
+  FilterBuilderField,
+  FilterBuilderResolvedValue,
+  FilterBuilderValue,
+  VisibilityState,
+} from '@shznet/components'
+
+export type Role = 'admin' | 'editor' | 'viewer'
+export type Status = 'active' | 'inactive' | 'pending'
+export type WorkMode = 'onsite' | 'hybrid' | 'remote'
+
+export interface UserRow {
+  id: string
+  name: string
+  email: string
+  role: Role
+  status: Status
+  team: string
+  joined: string
+  location: string
+  manager: string
+  employeeCode: string
+  phone: string
+  workMode: WorkMode
+  timezone: string
+  lastActive: string
+}
+
+export type UserForm = Omit<UserRow, 'id'>
+export type FilterFieldId = 'team' | 'role' | 'status' | 'location' | 'manager' | 'workMode' | 'timezone' | 'joined'
+export type UsersTableViewId = 'all' | 'active-ops' | 'design-review' | 'custom'
+
+export interface UsersTableViewPreset {
+  id: Exclude<UsersTableViewId, 'custom'>
+  label: string
+  filters: FilterBuilderValue<FilterFieldId>
+  columnVisibility: VisibilityState
+  columnOrder: ColumnOrderState
+}
+
+export interface UsersFeatureConfig {
+  emptyForm: UserForm
+  filterFields: Array<FilterBuilderField<FilterFieldId>>
+  defaultFilters: FilterBuilderValue<FilterFieldId>
+  manageableColumns: ColumnManagerItem[]
+  lockedColumnIds: Set<string>
+  viewPresets: UsersTableViewPreset[]
+  roleVariant: Record<Role, 'default' | 'secondary' | 'outline'>
+}
+
+export type FilterFieldResolver = (user: UserRow, fieldCode: FilterFieldId) => FilterBuilderResolvedValue

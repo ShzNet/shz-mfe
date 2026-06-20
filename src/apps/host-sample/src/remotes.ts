@@ -22,6 +22,6 @@ export const apps = [
     basePath: '/app/admin',
     remoteName: 'remote_admin',
     entry: withRemoteCacheBuster('http://localhost:3001/mf-manifest.json'),
-    canOpen: () => new Promise<boolean>((resolve) => setTimeout(() => resolve(true), 2000)),
+    canOpen: () => new Promise<boolean>((resolve) => setTimeout(() => resolve(true), 500)),
   },
 ] satisfies HostRemoteApp[]

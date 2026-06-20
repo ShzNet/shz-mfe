@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "devDependencies": {
     "@shznet/nx-generators": "^0.0.1",
-    "nx": "^21.0.0"
+    "nx": "23.0.0"
   },
   "scripts": {
     "dev:remote-hr": "nx dev remote-hr",

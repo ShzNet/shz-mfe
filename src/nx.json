@@ -3,7 +3,9 @@
   "defaultBase": "main",
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "cache": true
     },
     "dev": {
@@ -11,7 +13,10 @@
     }
   },
   "release": {
-    "projects": ["core", "components"],
+    "projects": [
+      "core",
+      "components"
+    ],
     "projectsRelationship": "independent",
     "version": {
       "conventionalCommits": true,
@@ -31,5 +36,6 @@
         "tag": true
       }
     }
-  }
+  },
+  "analytics": true
 }

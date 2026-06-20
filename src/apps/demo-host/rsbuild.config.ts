@@ -6,12 +6,12 @@ import tailwindcss from '@tailwindcss/postcss'
 
 export default defineConfig({
   server: {
-    port: 3000,
+    port: 3005,
     headers: { 'Access-Control-Allow-Origin': '*' },
   },
   dev: {
     writeToDisk: true,
-    client: { host: 'localhost', port: 3000 },
+    client: { host: 'localhost', port: 3005 },
   },
   tools: {
     postcss: (config) => {

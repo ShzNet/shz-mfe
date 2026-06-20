@@ -6,18 +6,18 @@ import tailwindcss from '@tailwindcss/postcss'
 
 export default defineConfig({
   server: {
-    port: 3001,
+    port: 3004,
     headers: { 'Access-Control-Allow-Origin': '*' },
   },
   dev: {
     writeToDisk: true,
-    assetPrefix: 'http://localhost:3001/',
-    client: { host: 'localhost', port: 3001 },
+    assetPrefix: 'http://localhost:3004/',
+    client: { host: 'localhost', port: 3004 },
   },
   output: {
     assetPrefix:
       (import.meta as { env?: Record<string, string | undefined> }).env?.REMOTE_REMOTE_DEMO_URL ??
-      'http://localhost:3001/',
+      'http://localhost:3004/',
   },
   tools: {
     postcss: (config) => {

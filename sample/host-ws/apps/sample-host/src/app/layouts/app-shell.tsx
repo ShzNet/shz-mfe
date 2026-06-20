@@ -28,11 +28,11 @@ function AppShellInner({ app, auth, onSignOut }: AppShellProps) {
   const navigate = useNavigate()
   const remoteShell = useRemoteShell(app.remoteName, app.entry)
 
-  // Guarantee the skeleton is visible for at least 800 ms even when the
+  // Guarantee the skeleton is visible for at least 500 ms even when the
   // module was preloaded and arrives from cache immediately.
   const [minDelay, setMinDelay] = useState(false)
   useEffect(() => {
-    const id = setTimeout(() => setMinDelay(true), 800)
+    const id = setTimeout(() => setMinDelay(true), 500)
     return () => clearTimeout(id)
   }, [])
 

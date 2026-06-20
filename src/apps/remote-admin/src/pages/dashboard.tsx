@@ -10,7 +10,7 @@ type DashboardStats = {
 }
 
 async function fetchDashboardStats(): Promise<DashboardStats[]> {
-  await new Promise((resolve) => setTimeout(resolve, 2500))
+  await new Promise((resolve) => setTimeout(resolve, 500))
   return [
     { title: 'Revenue', value: '$28,420', description: '+12.4% vs last week', icon: CircleDollarSign },
     { title: 'Orders', value: '1,204', description: '97 pending review', icon: ShoppingBag },

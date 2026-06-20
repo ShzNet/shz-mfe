@@ -17,7 +17,7 @@ type DashboardData = {
 }
 
 async function fetchHomeData(): Promise<DashboardData> {
-  await new Promise((resolve) => setTimeout(resolve, 800))
+  await new Promise((resolve) => setTimeout(resolve, 500))
   return {
     stats: [
       { title: 'Connected apps', value: `${apps.length}`, description: 'Remote modules registered in host', icon: LayoutGrid },

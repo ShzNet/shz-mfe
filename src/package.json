@@ -24,12 +24,12 @@
     "publish:local": "pnpm publish:local:core && pnpm publish:local:components && pnpm publish:local:nx-generators"
   },
   "devDependencies": {
-    "@nx/js": "^21.0.0",
-    "@swc-node/register": "^1.10.0",
-    "@swc/core": "^1.11.0",
-    "eslint": "^9.0.0",
-    "nx": "^21.0.0",
-    "typescript": "~5.8.0",
-    "typescript-eslint": "^8.0.0"
+    "@nx/js": "23.0.0",
+    "@swc-node/register": "1.11.1",
+    "@swc/core": "1.15.41",
+    "eslint": "^10.0.0",
+    "nx": "23.0.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.61.1"
   }
 }

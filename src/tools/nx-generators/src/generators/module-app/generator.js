@@ -19,7 +19,7 @@ const { buildDashboardPageTsx } = require('./templates/pages/dashboard')
 const { buildUsersPageTsx } = require('./templates/pages/users')
 
 module.exports = async function moduleAppGenerator(tree, schema) {
-  const options = normalizeAppOptions(schema, 'module')
+  const options = normalizeAppOptions(tree, schema, 'module')
   ensureProjectDoesNotExist(tree, options.projectRoot)
   addAppProject(tree, options, ['scope:remote', 'type:app'])
   writePackageJson(tree, options)

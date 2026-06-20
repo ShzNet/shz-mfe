@@ -27,11 +27,11 @@ const { buildHomePageTsx } = require('./templates/app/layouts/home-page')
 const { buildSignInPageTsx } = require('./templates/app/layouts/sign-in-page')
 
 module.exports = async function hostGenerator(tree, schema) {
-  const options = normalizeAppOptions(schema, 'host')
+  const options = normalizeAppOptions(tree, schema, 'host')
   ensureProjectDoesNotExist(tree, options.projectRoot)
   addAppProject(tree, options, ['scope:host', 'type:app'], true)
   writePackageJson(tree, options, {
-    '@module-federation/enhanced': '^0.9.0',
+    '@module-federation/enhanced': '^2.0.0',
     sonner: '^2.0.7',
   })
   writeBaseAppFiles(tree, options, `${options.displayName} Host`)

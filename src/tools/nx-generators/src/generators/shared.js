@@ -5,14 +5,14 @@ const DEFAULT_COMPONENTS_VERSION = 'workspace:*'
 const DEFAULT_CORE_PACKAGE = '@shznet/core'
 const DEFAULT_CORE_VERSION = 'workspace:*'
 
-function normalizeAppOptions(schema, type) {
+function normalizeAppOptions(tree, schema, type) {
   const name = toKebab(schema.name)
   const projectRoot = joinPathFragments('apps', name)
   const packageName = schema.packageName || `@shznet/${name}`
   const displayName = schema.displayName || toTitle(name)
   const baseSegment = schema.baseSegment || name.replace(/^(remote-|host-)/, '')
   const basePath = schema.basePath || `/app/${baseSegment}`
-  const port = Number(schema.port || (type === 'host' ? 3000 : 3001))
+  const port = Number(schema.port || (type === 'host' ? findNextAvailableAppPort(tree, 3000) : findNextAvailableAppPort(tree, 3001)))
   const remoteName = schema.remoteName || name.replace(/-/g, '_')
 
   return {
@@ -28,6 +28,51 @@ function normalizeAppOptions(schema, type) {
     componentsVersion: schema.componentsVersion || DEFAULT_COMPONENTS_VERSION,
     corePackage: schema.corePackage || DEFAULT_CORE_PACKAGE,
     coreVersion: schema.coreVersion || DEFAULT_CORE_VERSION,
+  }
+}
+
+function findNextAvailableAppPort(tree, startPort) {
+  const usedPorts = new Set()
+
+  collectPortsFromDirectory(tree, 'apps', usedPorts)
+
+  let port = startPort
+  while (usedPorts.has(port)) port += 1
+  return port
+}
+
+function collectPortsFromDirectory(tree, directory, usedPorts) {
+  if (!tree.exists(directory)) return
+
+  const entries = safeChildren(tree, directory)
+  if (!entries) return
+
+  for (const entry of entries) {
+    const nestedPath = joinPathFragments(directory, entry)
+
+    const rsbuildConfigPath = joinPathFragments(nestedPath, 'rsbuild.config.ts')
+    if (tree.exists(rsbuildConfigPath)) {
+      const port = readPortFromRsbuildConfig(tree, rsbuildConfigPath)
+      if (port !== null) usedPorts.add(port)
+    }
+
+    collectPortsFromDirectory(tree, nestedPath, usedPorts)
+  }
+}
+
+function readPortFromRsbuildConfig(tree, filePath) {
+  const content = tree.read(filePath, 'utf-8')
+  if (!content) return null
+
+  const match = content.match(/\bport:\s*(\d+)\b/)
+  return match ? Number(match[1]) : null
+}
+
+function safeChildren(tree, directory) {
+  try {
+    return tree.children(directory)
+  } catch {
+    return null
   }
 }
 
@@ -96,22 +141,22 @@ function writePackageJson(tree, options, extraDependencies = {}, extraDevDepende
     dependencies: {
       [options.componentsPackage]: options.componentsVersion,
       [options.corePackage]: options.coreVersion,
-      'lucide-react': '^0.487.0',
-      react: '^19.1.0',
-      'react-dom': '^19.1.0',
-      'react-router-dom': '^6.26.0',
+      'lucide-react': '^1.0.0',
+      react: '^19.2.7',
+      'react-dom': '^19.2.7',
+      'react-router-dom': '^7.0.0',
       ...extraDependencies,
     },
     devDependencies: {
-      '@module-federation/rsbuild-plugin': '^0.9.0',
-      '@rsbuild/core': '^1.4.0',
-      '@rsbuild/plugin-react': '^1.2.0',
-      '@rsbuild/plugin-type-check': '^1.3.4',
-      '@tailwindcss/postcss': '^4.1.0',
-      '@types/react': '^19.0.0',
-      '@types/react-dom': '^19.0.0',
-      tailwindcss: '^4.1.0',
-      typescript: '~5.8.0',
+      '@module-federation/rsbuild-plugin': '^2.0.0',
+      '@rsbuild/core': '^2.0.0',
+      '@rsbuild/plugin-react': '^2.0.0',
+      '@rsbuild/plugin-type-check': '^1.4.0',
+      '@tailwindcss/postcss': '^4.3.1',
+      '@types/react': '^19.2.17',
+      '@types/react-dom': '^19.2.3',
+      tailwindcss: '^4.3.1',
+      typescript: '~5.8.3',
       ...extraDevDependencies,
     },
   }

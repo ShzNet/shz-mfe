@@ -11,6 +11,7 @@ mkdirSync(dist, { recursive: true })
 
 cpSync(resolve(root, 'src'), resolve(dist, 'src'), { recursive: true })
 cpSync(resolve(root, 'generators.json'), resolve(dist, 'generators.json'))
+cpSync(resolve(root, 'README.md'), resolve(dist, 'README.md'))
 
 const packageJson = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'))
 delete packageJson.scripts

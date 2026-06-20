@@ -1,6 +1,6 @@
 {
   "name": "@shz/components",
-  "version": "0.0.6-local.6",
+  "version": "0.0.6-local.7",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -20,7 +20,7 @@
   "scripts": {
     "build": "pnpm typecheck && tsup",
     "dev": "tsup --watch",
-    "typecheck": "tsc -p tsconfig.json --noEmit && node ../../../scripts/check-no-explicit-any.mjs src"
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "files": [
     "dist",

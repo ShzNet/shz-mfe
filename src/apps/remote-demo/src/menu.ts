@@ -1,4 +1,4 @@
-import type { ShellMenuConfig } from '@shz/core'
+import type { ShellMenuConfig } from '@shznet/core'
 
 const config: ShellMenuConfig = {
   nav: [

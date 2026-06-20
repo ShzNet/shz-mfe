@@ -1,12 +1,12 @@
 # @shz/nx-generators
 
-NX generators for scaffolding Micro-Frontend apps in the Shz MFE monorepo. Generates fully wired [Module Federation](https://module-federation.io/) apps built with RSBuild, React 19, Tailwind CSS v4, and `@shz/core` / `@shz/components`.
+NX generators for scaffolding Micro-Frontend apps in the Shz MFE monorepo. Generates fully wired [Module Federation](https://module-federation.io/) apps built with RSBuild, React 19, Tailwind CSS v4, and `@shznet/core` / `@shz/components`.
 
 ## Requirements
 
 - NX workspace (`nx.json` at root)
 - pnpm
-- `@shz/core` and `@shz/components` installed (or available via local registry)
+- `@shznet/core` and `@shz/components` installed (or available via local registry)
 
 ## Installation
 
@@ -20,7 +20,7 @@ Or add to your root `package.json` devDependencies and run `pnpm install`.
 
 ### `host` — Host App
 
-Scaffolds a **host shell** application that dynamically loads remote MFE modules at runtime using `@shz/core`.
+Scaffolds a **host shell** application that dynamically loads remote MFE modules at runtime using `@shznet/core`.
 
 ```bash
 nx g @shz/nx-generators:host --name=my-host
@@ -36,7 +36,7 @@ nx g @shz/nx-generators:host --name=my-host
 | `packageName` | string | `@shz/<name>` | Published package name |
 | `componentsPackage` | string | `@shz/components` | UI components package to use |
 | `componentsVersion` | string | `workspace:*` | Components package version |
-| `corePackage` | string | `@shz/core` | Core package to use |
+| `corePackage` | string | `@shznet/core` | Core package to use |
 | `coreVersion` | string | `workspace:*` | Core package version |
 
 **What gets generated**
@@ -102,7 +102,7 @@ Alias: `remote-app`
 | `packageName` | string | `@shz/<name>` | Published package name |
 | `componentsPackage` | string | `@shz/components` | UI components package to use |
 | `componentsVersion` | string | `workspace:*` | Components package version |
-| `corePackage` | string | `@shz/core` | Core package to use |
+| `corePackage` | string | `@shznet/core` | Core package to use |
 | `coreVersion` | string | `workspace:*` | Core package version |
 
 **What gets generated**
@@ -136,7 +136,7 @@ After generating both a host and a remote, register the remote in the host's `sr
 
 ```ts
 // apps/my-host/src/remotes.ts
-import type { RemoteConfig } from '@shz/core'
+import type { RemoteConfig } from '@shznet/core'
 
 export const remotes: RemoteConfig[] = [
   {
@@ -152,7 +152,7 @@ The host's `remote-loader.ts` will pick this up automatically at runtime.
 
 ## Local Development
 
-These generators reference `workspace:*` versions of `@shz/core` and `@shz/components` by default, which resolves to the local packages in the monorepo.
+These generators reference `workspace:*` versions of `@shznet/core` and `@shz/components` by default, which resolves to the local packages in the monorepo.
 
 To generate apps that point to a published version instead (e.g. from the local Verdaccio registry):
 

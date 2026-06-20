@@ -1,5 +1,5 @@
 import { type ComponentType, Suspense, useEffect, useState } from 'react'
-import { loadFederatedModule } from '@shz/core'
+import { loadFederatedModule } from '@shznet/core'
 
 type RemoteShellProps = Record<string, never>
 type RemoteMenuProps = Record<string, never>

@@ -20,7 +20,7 @@ Workspace mẫu gồm 3 app được tạo bằng `@shz/nx-generators`:
 
 ## Bước 1 — Khởi động registry
 
-Packages `@shz/core`, `@shz/components`, `@shz/nx-generators` được host trên Verdaccio local.
+Packages `@shznet/core`, `@shz/components`, `@shz/nx-generators` được host trên Verdaccio local.
 
 ```bash
 # Từ root của repo Shz-Mfe
@@ -30,7 +30,7 @@ docker compose up -d
 Verdaccio chạy tại http://localhost:4873. Kiểm tra:
 
 ```bash
-curl http://localhost:4873/@shz%2Fcore
+curl http://localhost:4873/@shznet%2Fcore
 ```
 
 ---
@@ -138,7 +138,7 @@ nx g @shz/nx-generators:host \
 | `--name` | Tên project (kebab-case) | *(bắt buộc)* |
 | `--displayName` | Tên hiển thị trên UI | Title-case của name |
 | `--port` | Dev server port | `3000` |
-| `--coreVersion` | Version của `@shz/core` | `workspace:*` |
+| `--coreVersion` | Version của `@shznet/core` | `workspace:*` |
 | `--componentsVersion` | Version của `@shz/components` | `workspace:*` |
 
 ---

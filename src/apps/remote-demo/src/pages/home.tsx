@@ -14,7 +14,7 @@ export function HomePage() {
         <CardHeader>
           <CardTitle>Next step</CardTitle>
           <CardDescription>
-            Replace this page with your feature UI and keep shared primitives in @shz/components or @shz/core.
+            Replace this page with your feature UI and keep shared primitives in @shz/components or @shznet/core.
           </CardDescription>
         </CardHeader>
         <CardContent>

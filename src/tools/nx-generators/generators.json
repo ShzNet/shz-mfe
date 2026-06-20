@@ -4,7 +4,7 @@
     "host": {
       "implementation": "./src/generators/host/generator.js",
       "schema": "./src/generators/host/schema.json",
-      "description": "Generate a minimal host app that loads remote shells using @shz/core and @shz/components."
+      "description": "Generate a minimal host app that loads remote shells using @shznet/core and @shz/components."
     },
     "module-app": {
       "implementation": "./src/generators/module-app/generator.js",

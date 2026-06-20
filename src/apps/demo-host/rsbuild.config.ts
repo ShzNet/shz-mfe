@@ -39,7 +39,7 @@ export default defineConfig({
       name: 'demo_host',
       remotes: {},
       shared: {
-        '@shz/core': { singleton: true, eager: true, requiredVersion: false },
+        '@shznet/core': { singleton: true, eager: true, requiredVersion: false },
         '@shz/components': { singleton: true, eager: true, requiredVersion: false },
         react: { singleton: true, eager: true, requiredVersion: false },
         'react-dom': { singleton: true, eager: true, requiredVersion: false },

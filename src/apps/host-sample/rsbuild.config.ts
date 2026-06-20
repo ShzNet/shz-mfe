@@ -44,7 +44,7 @@ export default defineConfig({
       name: 'host_sample',
       remotes: {},
       shared: {
-        '@shz/core': { singleton: true, eager: true, requiredVersion: false },
+        '@shznet/core': { singleton: true, eager: true, requiredVersion: false },
         react: { singleton: true, eager: true, requiredVersion: false },
         'react-dom': { singleton: true, eager: true, requiredVersion: false },
         'react-router-dom': { singleton: true, eager: true, requiredVersion: false },

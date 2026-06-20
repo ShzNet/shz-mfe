@@ -1,2 +1,2 @@
-// Backward-compatible re-export. Prefer importing from @shz/core.
-export type { ShellMenuItem as RemoteNavItem, ShellMenuConfig as RemoteAppConfig } from '@shz/core'
+// Backward-compatible re-export. Prefer importing from @shznet/core.
+export type { ShellMenuItem as RemoteNavItem, ShellMenuConfig as RemoteAppConfig } from '@shznet/core'

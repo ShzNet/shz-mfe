@@ -16,7 +16,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@shz/components'
+} from '@shznet/components'
 import { BadgeCheck, Bell, CreditCard, LogOut, Sparkles } from 'lucide-react'
 import { useState } from 'react'
 import type { AuthState } from '../types'

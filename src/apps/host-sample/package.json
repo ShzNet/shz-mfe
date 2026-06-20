@@ -1,5 +1,5 @@
 {
-  "name": "@shz/host-sample",
+  "name": "@shznet/host-sample",
   "version": "0.0.5",
   "private": true,
   "type": "module",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@module-federation/enhanced": "^0.9.0",
-    "@shz/components": "workspace:*",
+    "@shznet/components": "workspace:*",
     "@shznet/core": "workspace:*",
     "lucide-react": "^0.487.0",
     "react": "^19.1.0",

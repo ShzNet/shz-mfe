@@ -1,6 +1,6 @@
 const { addProjectConfiguration, joinPathFragments, updateJson } = require('nx/src/devkit-exports')
 
-const DEFAULT_COMPONENTS_PACKAGE = '@shz/components'
+const DEFAULT_COMPONENTS_PACKAGE = '@shznet/components'
 const DEFAULT_COMPONENTS_VERSION = 'workspace:*'
 const DEFAULT_CORE_PACKAGE = '@shznet/core'
 const DEFAULT_CORE_VERSION = 'workspace:*'
@@ -8,7 +8,7 @@ const DEFAULT_CORE_VERSION = 'workspace:*'
 function normalizeAppOptions(schema, type) {
   const name = toKebab(schema.name)
   const projectRoot = joinPathFragments('apps', name)
-  const packageName = schema.packageName || `@shz/${name}`
+  const packageName = schema.packageName || `@shznet/${name}`
   const displayName = schema.displayName || toTitle(name)
   const baseSegment = schema.baseSegment || name.replace(/^(remote-|host-)/, '')
   const basePath = schema.basePath || `/app/${baseSegment}`

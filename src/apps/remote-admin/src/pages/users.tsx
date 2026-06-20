@@ -42,7 +42,7 @@ import {
   type ColumnDef,
   type RowSelectionState,
   type VisibilityState,
-} from '@shz/components'
+} from '@shznet/components'
 import { Check, ChevronDown, Columns3, Filter, Plus, RotateCcw, Search, Trash2 } from 'lucide-react'
 
 type Role = 'admin' | 'editor' | 'viewer'

@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { LayoutDashboard } from 'lucide-react'
-import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@shz/components'
+import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@shznet/components'
 import menu from './menu'
 
 const BASE = '/app/demo'

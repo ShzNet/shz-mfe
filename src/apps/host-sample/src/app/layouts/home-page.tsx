@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Badge, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shz/components'
+import { Badge, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shznet/components'
 import { Activity, ArrowRight, CircleAlert, LayoutGrid, PlugZap, Server, ShieldCheck, Users } from 'lucide-react'
 import { apps } from '../../remotes'
 import { HeaderActions } from '../components/header-actions'

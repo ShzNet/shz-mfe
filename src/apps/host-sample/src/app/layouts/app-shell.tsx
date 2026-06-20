@@ -1,4 +1,4 @@
-import { Sidebar, SidebarContent, SidebarHeader, SidebarInset, SidebarProvider, SidebarRail } from '@shz/components'
+import { Sidebar, SidebarContent, SidebarHeader, SidebarInset, SidebarProvider, SidebarRail } from '@shznet/components'
 import { useNavigate } from 'react-router-dom'
 import { RemoteShellMenu, RemoteShellPage, useRemoteShell } from '../components/remote-shell'
 import { AppHeader } from './app-header'

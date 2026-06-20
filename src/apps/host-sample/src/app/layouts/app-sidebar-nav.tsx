@@ -9,7 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '@shz/components'
+} from '@shznet/components'
 import { ChevronsUpDown, PlugZap } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { apps } from '../../remotes'

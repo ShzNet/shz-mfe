@@ -49,7 +49,7 @@ export default defineConfig({
       },
       shared: {
         '@shznet/core': { singleton: true, requiredVersion: false },
-        '@shz/components': { singleton: true, requiredVersion: false },
+        '@shznet/components': { singleton: true, requiredVersion: false },
         react: { singleton: true, requiredVersion: false },
         'react-dom': { singleton: true, requiredVersion: false },
         'react-router-dom': { singleton: true, requiredVersion: false },

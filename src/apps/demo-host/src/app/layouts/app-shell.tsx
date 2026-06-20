@@ -8,7 +8,7 @@ import {
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
-} from '@shz/components'
+} from '@shznet/components'
 import { Link } from 'react-router-dom'
 import { RemoteShellMenu, RemoteShellPage, useRemoteShell } from '../components/remote-shell'
 import type { AppDefinition } from '../types'

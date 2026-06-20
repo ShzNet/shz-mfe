@@ -1,4 +1,4 @@
-import { Badge, Separator, SidebarTrigger } from '@shz/components'
+import { Badge, Separator, SidebarTrigger } from '@shznet/components'
 import { HeaderActions } from '../components/header-actions'
 import type { AppDefinition, AuthState } from '../types'
 

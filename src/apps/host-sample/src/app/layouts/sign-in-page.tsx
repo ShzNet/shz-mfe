@@ -1,7 +1,7 @@
 import type { FormEvent } from 'react'
 import { useState } from 'react'
 import { LogIn } from 'lucide-react'
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Label } from '@shz/components'
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Input, Label } from '@shznet/components'
 import type { AuthState } from '../types'
 
 type SignInPageProps = {

@@ -1,7 +1,7 @@
 @import "tailwindcss";
-@import "@shz/components/styles/theme.css";
+@import "@shznet/components/styles/theme.css";
 
-@source "../node_modules/@shz/components/dist";
+@source "../node_modules/@shznet/components/dist";
 
 @custom-variant dark (&:is(.dark *));
 

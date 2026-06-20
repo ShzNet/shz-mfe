@@ -1,5 +1,5 @@
 {
-  "name": "@shz/demo-host",
+  "name": "@shznet/demo-host",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -10,7 +10,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit && node ../../../scripts/check-no-explicit-any.mjs src"
   },
   "dependencies": {
-    "@shz/components": "workspace:*",
+    "@shznet/components": "workspace:*",
     "@shznet/core": "workspace:*",
     "lucide-react": "^0.487.0",
     "react": "^19.1.0",

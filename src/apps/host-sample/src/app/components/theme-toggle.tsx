@@ -1,4 +1,4 @@
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@shz/components'
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@shznet/components'
 import { Monitor, Moon, Sun } from 'lucide-react'
 import { useThemeMode } from '../hooks/use-theme-mode'
 import type { ThemeMode } from '../types'

@@ -1,6 +1,6 @@
 import './styles.css'
 import { NavLink, useLocation } from 'react-router-dom'
-import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@shz/components'
+import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@shznet/components'
 import menuItems from './menu'
 
 const BASE = '/app/admin'

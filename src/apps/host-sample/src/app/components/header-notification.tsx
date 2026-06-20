@@ -1,4 +1,4 @@
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, ScrollArea, Separator } from '@shz/components'
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, ScrollArea, Separator } from '@shznet/components'
 import { Bell } from 'lucide-react'
 import { useState } from 'react'
 

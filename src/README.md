@@ -42,9 +42,9 @@ pnpm build
 
 ## Package Docs
 
-- Core runtime: [libs/core/README.md](/Users/shizaki/Works/Shizaki/Shz-Mfe/src/libs/core/README.md)
-- Component library: [libs/components/README.md](/Users/shizaki/Works/Shizaki/Shz-Mfe/src/libs/components/README.md)
-- NX generators: [tools/nx-generators/README.md](/Users/shizaki/Works/Shizaki/Shz-Mfe/src/tools/nx-generators/README.md)
+- Core runtime: [libs/core/README.md](https://github.com/ShzNet/shz-mfe/blob/main/src/libs/core/README.md)
+- Component library: [libs/components/README.md](https://github.com/ShzNet/shz-mfe/blob/main/src/libs/components/README.md)
+- NX generators: [tools/nx-generators/README.md](https://github.com/ShzNet/shz-mfe/blob/main/src/tools/nx-generators/README.md)
 
 ## Recommended Flow
 

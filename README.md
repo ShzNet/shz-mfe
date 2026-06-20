@@ -2,10 +2,10 @@
 
 Main workspace documentation:
 
-- [src/README.md](/Users/shizaki/Works/Shizaki/Shz-Mfe/src/README.md)
+- [src/README.md](https://github.com/ShzNet/shz-mfe/blob/main/src/README.md)
 
 Package documentation:
 
-- [src/libs/core/README.md](/Users/shizaki/Works/Shizaki/Shz-Mfe/src/libs/core/README.md)
-- [src/libs/components/README.md](/Users/shizaki/Works/Shizaki/Shz-Mfe/src/libs/components/README.md)
-- [src/tools/nx-generators/README.md](/Users/shizaki/Works/Shizaki/Shz-Mfe/src/tools/nx-generators/README.md)
+- [src/libs/core/README.md](https://github.com/ShzNet/shz-mfe/blob/main/src/libs/core/README.md)
+- [src/libs/components/README.md](https://github.com/ShzNet/shz-mfe/blob/main/src/libs/components/README.md)
+- [src/tools/nx-generators/README.md](https://github.com/ShzNet/shz-mfe/blob/main/src/tools/nx-generators/README.md)

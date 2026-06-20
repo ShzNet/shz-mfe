@@ -4,9 +4,9 @@ NX generators for scaffolding micro-frontend apps in the Shz MFE workspace. Gene
 
 If you are new to this workspace, read these first:
 
-- Workspace overview: [../../README.md](/Users/shizaki/Works/Shizaki/Shz-Mfe/src/README.md)
-- Core runtime docs: [../../libs/core/README.md](/Users/shizaki/Works/Shizaki/Shz-Mfe/src/libs/core/README.md)
-- Component docs: [../../libs/components/README.md](/Users/shizaki/Works/Shizaki/Shz-Mfe/src/libs/components/README.md)
+- Workspace overview: [src/README.md](https://github.com/ShzNet/shz-mfe/blob/main/src/README.md)
+- Core runtime docs: [src/libs/core/README.md](https://github.com/ShzNet/shz-mfe/blob/main/src/libs/core/README.md)
+- Component docs: [src/libs/components/README.md](https://github.com/ShzNet/shz-mfe/blob/main/src/libs/components/README.md)
 
 ## Requirements
 

@@ -6,7 +6,7 @@ import AppPage from './pages/app'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <div className='p-4'>
         <AppPage />
       </div>

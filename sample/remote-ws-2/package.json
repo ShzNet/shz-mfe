@@ -7,9 +7,8 @@
     "nx": "23.0.0"
   },
   "scripts": {
-    "dev:remote-hr": "nx dev remote-hr",
     "dev": "nx run-many -t dev --parallel=10",
     "build": "nx run-many -t build",
-    "build:remote-hr": "nx build remote-hr"
+    "dev:remote-hr": "nx dev remote-hr"
   }
 }

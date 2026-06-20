@@ -42,10 +42,7 @@ export default defineConfig({
     pluginModuleFederation({
       dts: false,
       name: 'sample_host',
-      remotes: {
-        remote_sales: 'remote_sales@http://localhost:3001/mf-manifest.json',
-        remote_hr: 'remote_hr@http://localhost:3002/mf-manifest.json',
-      },
+      remotes: {},
       shared: {
         '@shznet/core': { singleton: true, eager: true, requiredVersion: false },
         '@shznet/components': { singleton: true, eager: true, requiredVersion: false },

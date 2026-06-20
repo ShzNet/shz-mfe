@@ -8,11 +8,18 @@
     "experimentalDecorators": true,
     "target": "ESNext",
     "module": "ESNext",
-    "lib": ["ESNext", "DOM"],
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
     "noImplicitAny": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "paths": {}
   },
-  "exclude": ["node_modules", "dist", ".nx"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".nx"
+  ]
 }

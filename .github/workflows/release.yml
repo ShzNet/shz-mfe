@@ -44,17 +44,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Check first release
-        id: first_release
-        run: |
-          if git tag --list | grep -qE '^(core|components|nx-generators)@'; then
-            echo "flag=" >> $GITHUB_OUTPUT
-          else
-            echo "flag=--first-release" >> $GITHUB_OUTPUT
-          fi
-
       - name: Prepare release
-        run: pnpm nx release ${{ steps.first_release.outputs.flag }} --skip-publish
+        run: pnpm nx release --skip-publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NX_NO_CLOUD: true

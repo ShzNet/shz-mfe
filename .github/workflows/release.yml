@@ -44,13 +44,22 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Prepare release
-        run: pnpm nx release --skip-publish
+      - name: Version and changelog
+        id: version
+        run: |
+          OUTPUT=$(pnpm nx release --skip-publish 2>&1)
+          echo "$OUTPUT"
+          if echo "$OUTPUT" | grep -q "No files changed"; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NX_NO_CLOUD: true
 
       - name: Push release commit and tags
+        if: steps.version.outputs.changed == 'true'
         run: git push --follow-tags origin main
 
       - name: Publish to npm

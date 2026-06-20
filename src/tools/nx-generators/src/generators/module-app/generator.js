@@ -8,6 +8,7 @@ const {
   updateRootPackageScripts,
   writeBaseAppFiles,
   writePackageJson,
+  writeTemplateFiles,
 } = require('../shared')
 const { buildRsbuildConfig } = require('./templates/rsbuild-config')
 const { buildMainTsx } = require('./templates/main')
@@ -16,7 +17,16 @@ const { buildNavTsx } = require('./templates/nav')
 const { buildShellTsx } = require('./templates/shell')
 const { buildAppPageTsx } = require('./templates/pages/app')
 const { buildDashboardPageTsx } = require('./templates/pages/dashboard')
-const { buildUsersPageTsx } = require('./templates/pages/users')
+
+const USER_TEMPLATE_FILES = [
+  ['src/pages/users/index.tsx', 'index.tsx.template'],
+  ['src/pages/users/types.ts', 'types.ts.template'],
+  ['src/pages/users/config.ts', 'config.ts.template'],
+  ['src/pages/users/data.ts', 'data.ts.template'],
+  ['src/pages/users/helpers.ts', 'helpers.ts.template'],
+  ['src/pages/users/columns.tsx', 'columns.tsx.template'],
+  ['src/pages/users/components/user-form-dialog.tsx', 'components/user-form-dialog.tsx.template'],
+]
 
 module.exports = async function moduleAppGenerator(tree, schema) {
   const options = normalizeAppOptions(tree, schema, 'module')
@@ -41,8 +51,14 @@ module.exports = async function moduleAppGenerator(tree, schema) {
 
   tree.write(p('src/pages/app.tsx'), buildAppPageTsx())
   tree.write(p('src/pages/dashboard.tsx'), buildDashboardPageTsx(options))
-  tree.write(p('src/pages/users.tsx'), buildUsersPageTsx(options))
+  writeUserFeatureTemplates(tree, options)
 
   updateRootPackageScripts(tree, options)
   if (typeof formatFiles === 'function') await formatFiles(tree)
+}
+
+function writeUserFeatureTemplates(tree, options) {
+  writeTemplateFiles(tree, options.projectRoot, joinPathFragments(__dirname, 'templates', 'users'), USER_TEMPLATE_FILES, {
+    __COMPONENTS_PACKAGE__: options.componentsPackage,
+  })
 }

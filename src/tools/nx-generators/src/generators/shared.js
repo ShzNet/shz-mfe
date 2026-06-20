@@ -1,3 +1,5 @@
+const { readFileSync } = require('node:fs')
+const { resolve } = require('node:path')
 const { addProjectConfiguration, joinPathFragments, updateJson } = require('nx/src/devkit-exports')
 
 const DEFAULT_COMPONENTS_PACKAGE = '@shznet/components'
@@ -165,10 +167,21 @@ function writePackageJson(tree, options, extraDependencies = {}, extraDevDepende
 }
 
 function writeBaseAppFiles(tree, options, title) {
-  tree.write(joinPathFragments(options.projectRoot, 'index.html'), buildIndexHtml(title))
-  tree.write(joinPathFragments(options.projectRoot, 'tsconfig.json'), buildTsConfig())
-  tree.write(joinPathFragments(options.projectRoot, 'src/style-modules.d.ts'), "declare module '*.css';\n")
-  tree.write(joinPathFragments(options.projectRoot, 'src/styles.css'), buildStylesCss(options.componentsPackage))
+  writeTemplateFiles(
+    tree,
+    options.projectRoot,
+    resolve(__dirname, 'templates', 'base'),
+    [
+      ['index.html', 'index.html.template'],
+      ['tsconfig.json', 'tsconfig.json.template'],
+      ['src/style-modules.d.ts', 'style-modules.d.ts.template'],
+      ['src/styles.css', 'styles.css.template'],
+    ],
+    {
+      __TITLE__: title,
+      __COMPONENTS_PACKAGE__: options.componentsPackage,
+    }
+  )
 }
 
 function updateRootPackageScripts(tree, options) {
@@ -182,49 +195,20 @@ function updateRootPackageScripts(tree, options) {
   })
 }
 
-function buildIndexHtml(title) {
-  return `<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${title}</title>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
-</html>
-`
+function writeTemplateFiles(tree, projectRoot, templateRoot, files, replacements = {}) {
+  for (const [targetFile, templateFile] of files) {
+    const source = resolve(templateRoot, templateFile)
+    const content = applyTemplateReplacements(readFileSync(source, 'utf8'), replacements)
+    tree.write(joinPathFragments(projectRoot, targetFile), content)
+  }
 }
 
-function buildTsConfig() {
-  return `{
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "types": ["react", "react-dom"],
-    "baseUrl": ".",
-    "paths": {}
-  },
-  "include": ["src/**/*", "rsbuild.config.ts"],
-  "exclude": ["node_modules", "dist"]
-}
-`
-}
-
-function buildStylesCss(componentsPackage) {
-  return `@import "tailwindcss";
-@import "${componentsPackage}/styles/theme.css";
-
-@source "../node_modules/${componentsPackage}/dist";
-
-@custom-variant dark (&:is(.dark *));
-
-@layer base {
-  * { @apply border-border; }
-  body { @apply bg-background text-foreground; }
-}
-`
+function applyTemplateReplacements(content, replacements) {
+  let rendered = content
+  for (const [token, value] of Object.entries(replacements)) {
+    rendered = rendered.replaceAll(token, value)
+  }
+  return rendered
 }
 
 function toKebab(value) {
@@ -264,6 +248,7 @@ module.exports = {
   toKebab,
   toPascal,
   toTitle,
+  writeTemplateFiles,
   updateRootPackageScripts,
   writeBaseAppFiles,
   writePackageJson,

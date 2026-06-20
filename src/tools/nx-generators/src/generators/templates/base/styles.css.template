@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "__COMPONENTS_PACKAGE__/styles/theme.css";
+
+@source "../node_modules/__COMPONENTS_PACKAGE__/dist";
+
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; }
+}

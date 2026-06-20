@@ -16,6 +16,15 @@ pnpm add -D @shznet/nx-generators --registry http://localhost:4873
 
 Or add to your root `package.json` devDependencies and run `pnpm install`.
 
+## Template Convention
+
+Inside this package:
+
+- Raw scaffold files that are copied into generated apps use the `.template` suffix
+- `.js` files under `src/generators/**` are generator code or template builders, not typed app source files
+
+This keeps editor/typecheck noise low while preserving generated output as normal `.ts` and `.tsx` files.
+
 ## Generators
 
 ### `host` — Host App
@@ -120,13 +129,45 @@ apps/remote-sales/
 │   ├── shell.tsx               # Exposed ./Shell component
 │   └── pages/
 │       ├── app.tsx             # App wrapper with router
-│       ├── dashboard.tsx       # Sample dashboard page
-│       └── users.tsx           # Sample users page
+│       ├── dashboard.tsx       # Async stats dashboard with skeleton states
+│       └── users/
+│           ├── index.tsx       # Full CRUD/table sample
+│           ├── columns.tsx
+│           ├── config.ts
+│           ├── data.ts
+│           ├── helpers.ts
+│           ├── types.ts
+│           └── components/
+│               └── user-form-dialog.tsx
 ```
 
 The remote exposes two Module Federation endpoints:
 - **`./Shell`** — the full app shell mounted by the host
 - **`./config`** — nav menu metadata (label, icon, basePath) consumed by the host sidebar
+
+### Full Component Scaffold
+
+The generated `users` feature is the reference "full component" sample for `@shznet/components`. It demonstrates:
+
+- `DataTable` with row selection, column ordering, and visibility control
+- `FilterBuilder` with reusable presets and active-rule counting
+- `ColumnManager` inside a `Sheet`
+- Form/dialog composition with `Dialog`, `DateInput`, `Input`, and `Select`
+
+You can import components directly from the package entrypoint:
+
+```ts
+import {
+  Button,
+  DataTable,
+  FilterBuilder,
+  ColumnManager,
+  Dialog,
+  Sheet,
+} from '@shznet/components'
+```
+
+If you want the fastest starting point for a remote that already uses the full component set, generate a `module-app` and start from `src/pages/users/index.tsx`.
 
 ---
 
@@ -161,4 +202,24 @@ nx g @shznet/nx-generators:module-app \
   --name=remote-sales \
   --coreVersion=0.0.6-local.6 \
   --componentsVersion=0.0.6-local.6
+```
+
+## Publishing
+
+Build the package:
+
+```bash
+pnpm --filter @shznet/nx-generators build
+```
+
+Publish to the local Verdaccio registry:
+
+```bash
+pnpm publish:local:nx-generators
+```
+
+Publish to npmjs using the workspace release target:
+
+```bash
+pnpm nx run nx-generators:nx-release-publish
 ```

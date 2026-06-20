@@ -1,7 +1,7 @@
 {
-  "name": "remote-admin",
+  "name": "host-sample",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/remote-admin/src",
+  "sourceRoot": "apps/host-sample/src",
   "projectType": "application",
   "targets": {
     "dev": {
@@ -24,10 +24,17 @@
         "command": "pnpm typecheck",
         "cwd": "{projectRoot}"
       }
+    },
+    "preview": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm preview",
+        "cwd": "{projectRoot}"
+      }
     }
   },
   "tags": [
-    "scope:remote",
+    "scope:host",
     "type:app"
   ]
 }

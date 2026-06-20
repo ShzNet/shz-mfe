@@ -6,18 +6,12 @@ import tailwindcss from '@tailwindcss/postcss'
 
 export default defineConfig({
   server: {
-    port: 3001,
+    port: 3000,
     headers: { 'Access-Control-Allow-Origin': '*' },
   },
   dev: {
     writeToDisk: true,
-    assetPrefix: 'http://localhost:3001/',
-    client: { host: 'localhost', port: 3001 },
-  },
-  output: {
-    assetPrefix:
-      (import.meta as { env?: Record<string, string | undefined> }).env?.REMOTE_REMOTE_ADMIN_URL ??
-      'http://localhost:3001/',
+    client: { host: 'localhost', port: 3000 },
   },
   tools: {
     postcss: (config) => {
@@ -25,6 +19,11 @@ export default defineConfig({
       config.postcssOptions ??= {}
       config.postcssOptions.plugins ??= []
       config.postcssOptions.plugins.unshift(tailwindcss)
+    },
+  },
+  resolve: {
+    alias: {
+      '@': new URL('./src', import.meta.url).pathname,
     },
   },
   source: {
@@ -42,17 +41,14 @@ export default defineConfig({
     }),
     pluginModuleFederation({
       dts: false,
-      name: 'remote_admin',
-      exposes: {
-        './config': './src/menu.ts',
-        './Shell': './src/shell.tsx',
-      },
+      name: 'host_sample',
+      remotes: {},
       shared: {
-        '@shz/core': { singleton: true, requiredVersion: false },
-        react: { singleton: true, requiredVersion: false },
-        'react-dom': { singleton: true, requiredVersion: false },
-        'react-router-dom': { singleton: true, requiredVersion: false },
-        '@shz/components': { singleton: true, requiredVersion: false },
+        '@shz/core': { singleton: true, eager: true, requiredVersion: false },
+        react: { singleton: true, eager: true, requiredVersion: false },
+        'react-dom': { singleton: true, eager: true, requiredVersion: false },
+        'react-router-dom': { singleton: true, eager: true, requiredVersion: false },
+        '@shz/components': { singleton: true, eager: true, requiredVersion: false },
       },
     }),
   ],

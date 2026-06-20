@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+
+# Package manager logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+out/
+coverage/
+
+# Rsbuild / Rspack caches
+.rsbuild/
+.rspack-cache/
+apps/**/@mf-types/
+
+# Nx cache and local state
+.nx/
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# pnpm store
+.pnpm-store/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+.claude/worktrees
+.claude/settings.local.json

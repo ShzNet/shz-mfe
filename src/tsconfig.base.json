@@ -1,0 +1,25 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "bundler",
+    "experimentalDecorators": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "paths": {
+      "@shznet/core": ["./libs/core/src/index.ts"],
+      "@shznet/core/*": ["./libs/core/src/*"],
+      "@shznet/components": ["./libs/components/src/index.ts"],
+      "@shznet/components/*": ["./libs/components/src/*"],
+      "@shznet/nx-generators": ["./tools/nx-generators"],
+      "@shznet/nx-generators/*": ["./tools/nx-generators/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist", ".nx"]
+}

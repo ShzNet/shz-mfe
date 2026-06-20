@@ -1,0 +1,33 @@
+{
+  "name": "@shznet/host-sample",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "rsbuild dev",
+    "build": "pnpm typecheck && rsbuild build",
+    "preview": "rsbuild preview",
+    "typecheck": "tsc -p tsconfig.json --noEmit && eslint src"
+  },
+  "dependencies": {
+    "@module-federation/enhanced": "^2.0.0",
+    "@shznet/components": "workspace:*",
+    "@shznet/core": "workspace:*",
+    "lucide-react": "^1.0.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router-dom": "^7.0.0",
+    "sonner": "^2.0.7"
+  },
+  "devDependencies": {
+    "@module-federation/rsbuild-plugin": "^2.0.0",
+    "@rsbuild/core": "^2.0.0",
+    "@rsbuild/plugin-react": "^2.0.0",
+    "@rsbuild/plugin-type-check": "^1.4.0",
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "tailwindcss": "^4.3.1",
+    "typescript": "~5.8.3"
+  }
+}

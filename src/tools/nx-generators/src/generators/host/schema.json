@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string", "description": "Host project name" },
+    "displayName": { "type": "string", "description": "Display title for the host" },
+    "packageName": { "type": "string" },
+    "port": { "type": "number", "description": "Dev server port" },
+    "componentsPackage": { "type": "string" },
+    "componentsVersion": { "type": "string" },
+    "corePackage": { "type": "string" },
+    "coreVersion": { "type": "string" }
+  },
+  "required": ["name"]
+}

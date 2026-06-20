@@ -1,0 +1,12 @@
+services:
+  npm-registry:
+    image: verdaccio/verdaccio:5
+    container_name: shznet-local-npm-registry
+    ports:
+      - "4873:4873"
+    volumes:
+      - ./verdaccio/storage:/verdaccio/storage
+      - ./verdaccio/conf/config.yaml:/verdaccio/conf/config.yaml:ro
+    environment:
+      VERDACCIO_APPDIR: /verdaccio
+    restart: unless-stopped

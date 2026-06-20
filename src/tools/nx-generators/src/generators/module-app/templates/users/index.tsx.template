@@ -1,0 +1,461 @@
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import {
+  Button,
+  ColumnManager,
+  DataTable,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  FilterBuilder,
+  Input,
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  type ColumnManagerItem,
+  type ColumnOrderState,
+  type FilterBuilderField,
+  type FilterBuilderValue,
+  type RowSelectionState,
+  type VisibilityState,
+  countActiveFilterBuilderRules,
+  matchesFilterBuilderGroup,
+} from '__COMPONENTS_PACKAGE__'
+import { Check, ChevronDown, Columns3, Filter, Plus, RotateCcw, Search, Trash2 } from 'lucide-react'
+import { USERS_FEATURE_DEFAULTS } from './config'
+import { createUsersColumns } from './columns'
+import { INITIAL_USERS } from './data'
+import { cloneFilterValue, isColumnVisible, matchesKeyword, resolveFilterFieldValue, setColumnVisible } from './helpers'
+import { UserFormDialog } from './components/user-form-dialog'
+import type { FilterFieldId, UserForm, UserRow, UsersTableViewId, UsersTableViewPreset } from './types'
+
+const {
+  emptyForm,
+  filterFields,
+  defaultFilters,
+  manageableColumns,
+  lockedColumnIds,
+  viewPresets,
+} = USERS_FEATURE_DEFAULTS
+
+const defaultColumnOrder = manageableColumns.map((column) => column.id)
+const manageableColumnsById = new Map(manageableColumns.map((column) => [column.id, column]))
+
+export default function UsersPage() {
+  const [users, setUsers] = useState<UserRow[]>(INITIAL_USERS)
+  const [open, setOpen] = useState(false)
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [form, setForm] = useState<UserForm>(emptyForm)
+  const [filtersOpen, setFiltersOpen] = useState(false)
+  const [columnsOpen, setColumnsOpen] = useState(false)
+  const [appliedFilters, setAppliedFilters] = useState<FilterBuilderValue<FilterFieldId>>(defaultFilters)
+  const [draftFilters, setDraftFilters] = useState<FilterBuilderValue<FilterFieldId>>(defaultFilters)
+  const [quickKeyword, setQuickKeyword] = useState('')
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [draftColumnVisibility, setDraftColumnVisibility] = useState<VisibilityState>({})
+  const [columnOrder, setColumnOrder] = useState<ColumnOrderState>(defaultColumnOrder)
+  const [draftColumnOrder, setDraftColumnOrder] = useState<ColumnOrderState>(defaultColumnOrder)
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+  const [activeViewId, setActiveViewId] = useState<UsersTableViewId>('all')
+
+  useEffect(() => {
+    if (filtersOpen) {
+      setDraftFilters(appliedFilters)
+    }
+  }, [filtersOpen, appliedFilters])
+
+  useEffect(() => {
+    if (columnsOpen) {
+      setDraftColumnVisibility(columnVisibility)
+      setDraftColumnOrder(columnOrder)
+    }
+  }, [columnsOpen, columnOrder, columnVisibility])
+
+  function startCreate() {
+    setEditingId(null)
+    setForm(emptyForm)
+    setOpen(true)
+  }
+
+  function startEdit(user: UserRow) {
+    setEditingId(user.id)
+    setForm({
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      status: user.status,
+      team: user.team,
+      joined: user.joined,
+      location: user.location,
+      manager: user.manager,
+      employeeCode: user.employeeCode,
+      phone: user.phone,
+      workMode: user.workMode,
+      timezone: user.timezone,
+      lastActive: user.lastActive,
+    })
+    setOpen(true)
+  }
+
+  function saveUser() {
+    if (!form.name.trim() || !form.email.trim()) return
+
+    if (editingId) {
+      setUsers((prev) => prev.map((user) => (user.id === editingId ? { ...user, ...form } : user)))
+    } else {
+      const id = String(Date.now())
+      setUsers((prev) => [{ id, ...form }, ...prev])
+    }
+    setOpen(false)
+  }
+
+  function deleteSelectedUsers() {
+    const selectedIds = new Set(
+      Object.entries(rowSelection)
+        .filter(([, selected]) => selected)
+        .map(([rowId]) => rowId)
+    )
+
+    if (!selectedIds.size) return
+
+    setUsers((prev) => prev.filter((user) => !selectedIds.has(user.id)))
+    setRowSelection({})
+  }
+
+  function applyView(viewId: Exclude<UsersTableViewId, 'custom'>) {
+    const view = viewPresets.find((entry) => entry.id === viewId)
+    if (!view) return
+
+    const nextFilters = cloneFilterValue(view.filters)
+    const nextVisibility = { ...view.columnVisibility }
+    const nextOrder = [...view.columnOrder]
+
+    setAppliedFilters(nextFilters)
+    setDraftFilters(nextFilters)
+    setColumnVisibility(nextVisibility)
+    setDraftColumnVisibility(nextVisibility)
+    setColumnOrder(nextOrder)
+    setDraftColumnOrder(nextOrder)
+    setActiveViewId(view.id)
+  }
+
+  const filteredUsers = useMemo(
+    () =>
+      users.filter(
+        (user) =>
+          matchesKeyword(user, quickKeyword) &&
+          matchesFilterBuilderGroup(user, appliedFilters, filterFields, resolveFilterFieldValue)
+      ),
+    [users, appliedFilters, quickKeyword]
+  )
+
+  const selectedCount = useMemo(() => Object.values(rowSelection).filter(Boolean).length, [rowSelection])
+
+  const dataTableColumnOrder = useMemo<ColumnOrderState>(() => ['select', ...columnOrder], [columnOrder])
+
+  const orderedDraftColumns = useMemo(
+    () =>
+      draftColumnOrder
+        .map((id) => manageableColumnsById.get(id))
+        .filter((column): column is ColumnManagerItem => !!column),
+    [draftColumnOrder]
+  )
+
+  const activeViewLabel = useMemo(
+    () => viewPresets.find((view) => view.id === activeViewId)?.label ?? 'Custom view',
+    [activeViewId]
+  )
+
+  const columns = useMemo(() => createUsersColumns(startEdit), [])
+
+  return (
+    <div className='flex min-h-0 flex-1 flex-col gap-4'>
+      <ActionBar>
+        <div className='flex flex-wrap items-center gap-2'>
+          <Button size='sm' className='gap-1.5' onClick={startCreate}>
+            <Plus className='size-4' />
+            New
+          </Button>
+          {selectedCount > 0 ? (
+            <Button variant='outline' size='sm' className='gap-1.5' onClick={deleteSelectedUsers}>
+              <Trash2 className='size-4' />
+              Delete ({selectedCount})
+            </Button>
+          ) : null}
+        </div>
+      </ActionBar>
+
+      <div className='flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg bg-background shadow-sm'>
+        <UsersToolbar
+          activeViewId={activeViewId}
+          activeViewLabel={activeViewLabel}
+          appliedFilters={appliedFilters}
+          quickKeyword={quickKeyword}
+          onKeywordChange={setQuickKeyword}
+          onApplyView={applyView}
+          onCustomViewSelect={() => setActiveViewId('custom')}
+          onResetFilters={() => {
+            setAppliedFilters(defaultFilters)
+            setActiveViewId('custom')
+          }}
+          onOpenColumns={() => setColumnsOpen(true)}
+          onOpenFilters={() => setFiltersOpen(true)}
+          viewPresets={viewPresets}
+        />
+
+        <DataTable
+          columns={columns}
+          data={filteredUsers}
+          pageSize={10}
+          columnVisibility={columnVisibility}
+          onColumnVisibilityChange={setColumnVisibility}
+          columnOrder={dataTableColumnOrder}
+          onColumnOrderChange={setColumnOrder}
+          rowSelection={rowSelection}
+          onRowSelectionChange={setRowSelection}
+          getRowId={(row) => row.id}
+          showToolbar={false}
+          stickyHeader
+          tableWrapperClassName='max-h-[calc(100svh-19rem)]'
+          className='min-h-0 flex-1 space-y-0'
+        />
+      </div>
+
+      <UserFormDialog
+        open={open}
+        editingId={editingId}
+        form={form}
+        onOpenChange={setOpen}
+        onFormChange={(updater) => setForm(updater)}
+        onSave={saveUser}
+      />
+
+      <UsersFiltersSheet
+        open={filtersOpen}
+        value={draftFilters}
+        fields={filterFields}
+        defaultFilters={defaultFilters}
+        onOpenChange={setFiltersOpen}
+        onValueChange={setDraftFilters}
+        onApply={() => {
+          setAppliedFilters(draftFilters)
+          setActiveViewId('custom')
+          setFiltersOpen(false)
+        }}
+      />
+
+      <UsersColumnsSheet
+        open={columnsOpen}
+        items={orderedDraftColumns}
+        visibility={draftColumnVisibility}
+        lockedColumnIds={lockedColumnIds}
+        onOpenChange={setColumnsOpen}
+        onVisibilityChange={setDraftColumnVisibility}
+        onColumnOrderChange={setDraftColumnOrder}
+        onReset={() => {
+          setDraftColumnVisibility({})
+          setDraftColumnOrder(defaultColumnOrder)
+        }}
+        onApply={() => {
+          setColumnVisibility(draftColumnVisibility)
+          setColumnOrder(draftColumnOrder)
+          setActiveViewId('custom')
+          setColumnsOpen(false)
+        }}
+      />
+    </div>
+  )
+}
+
+function ActionBar({ children }: { children: ReactNode }) {
+  return <div className='rounded-lg border bg-background px-3 py-2 shadow-sm'>{children}</div>
+}
+
+type UsersToolbarProps = {
+  activeViewId: UsersTableViewId
+  activeViewLabel: string
+  appliedFilters: FilterBuilderValue<FilterFieldId>
+  quickKeyword: string
+  onKeywordChange: (value: string) => void
+  onApplyView: (viewId: Exclude<UsersTableViewId, 'custom'>) => void
+  onCustomViewSelect: () => void
+  onResetFilters: () => void
+  onOpenColumns: () => void
+  onOpenFilters: () => void
+  viewPresets: UsersTableViewPreset[]
+}
+
+function UsersToolbar({
+  activeViewId,
+  activeViewLabel,
+  appliedFilters,
+  quickKeyword,
+  onKeywordChange,
+  onApplyView,
+  onCustomViewSelect,
+  onResetFilters,
+  onOpenColumns,
+  onOpenFilters,
+  viewPresets,
+}: UsersToolbarProps) {
+  const activeFilterCount = countActiveFilterBuilderRules(appliedFilters)
+
+  return (
+    <div className='border-b px-3 py-2'>
+      <div className='flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between'>
+        <div className='flex items-center gap-2'>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant='ghost'
+                size='sm'
+                className='h-auto gap-1 rounded-sm px-1 py-0 text-sm font-medium text-primary hover:bg-transparent hover:text-primary focus-visible:ring-0'
+              >
+                <span>{activeViewLabel}</span>
+                <ChevronDown className='size-4' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='start'>
+              {viewPresets.map((view) => (
+                <DropdownMenuItem key={view.id} onClick={() => onApplyView(view.id)}>
+                  <Check className={activeViewId === view.id ? 'opacity-100' : 'opacity-0'} />
+                  {view.label}
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuItem onClick={onCustomViewSelect}>
+                <Check className={activeViewId === 'custom' ? 'opacity-100' : 'opacity-0'} />
+                Custom view
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        <div className='flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-end'>
+          {activeFilterCount > 0 ? (
+            <Button variant='ghost' size='sm' className='gap-1.5 lg:order-1' onClick={onResetFilters}>
+              <RotateCcw className='size-4' />
+              Reset filters
+            </Button>
+          ) : null}
+          <Button variant='ghost' size='sm' className='gap-1.5 lg:order-2' onClick={onOpenColumns}>
+            <Columns3 className='size-4' />
+            Edit columns
+          </Button>
+          <Button variant='ghost' size='sm' className='gap-1.5 lg:order-3' onClick={onOpenFilters}>
+            <Filter className='size-4' />
+            Edit filters
+            {activeFilterCount > 0 ? <span className='rounded-sm bg-muted px-1.5 py-0.5 text-xs'>{activeFilterCount}</span> : null}
+          </Button>
+          <div className='relative w-full lg:order-4 lg:w-72'>
+            <Search className='pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground' />
+            <Input value={quickKeyword} onChange={(event) => onKeywordChange(event.target.value)} placeholder='Filter by keyword' className='pl-9' />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+type UsersFiltersSheetProps = {
+  open: boolean
+  value: FilterBuilderValue<FilterFieldId>
+  fields: Array<FilterBuilderField<FilterFieldId>>
+  defaultFilters: FilterBuilderValue<FilterFieldId>
+  onOpenChange: (open: boolean) => void
+  onValueChange: (value: FilterBuilderValue<FilterFieldId>) => void
+  onApply: () => void
+}
+
+function UsersFiltersSheet({
+  open,
+  value,
+  fields,
+  defaultFilters,
+  onOpenChange,
+  onValueChange,
+  onApply,
+}: UsersFiltersSheetProps) {
+  return (
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent side='right' className='w-full gap-0 p-0 sm:max-w-4xl'>
+        <SheetHeader className='border-b px-6 py-5'>
+          <SheetTitle>Edit filters</SheetTitle>
+          <SheetDescription>Build nested rule groups and combine them with AND or OR.</SheetDescription>
+        </SheetHeader>
+
+        <div className='flex-1 overflow-y-auto px-6 py-5'>
+          <FilterBuilder fields={fields} value={value} onChange={onValueChange} />
+        </div>
+
+        <SheetFooter className='border-t px-6 py-4 sm:flex-row sm:justify-between'>
+          <Button variant='ghost' onClick={() => onValueChange(defaultFilters)}>Reset to default</Button>
+          <div className='flex gap-2'>
+            <Button variant='outline' onClick={() => onOpenChange(false)}>Cancel</Button>
+            <Button onClick={onApply}>Apply</Button>
+          </div>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  )
+}
+
+type UsersColumnsSheetProps = {
+  open: boolean
+  items: ColumnManagerItem[]
+  visibility: VisibilityState
+  lockedColumnIds: Set<string>
+  onOpenChange: (open: boolean) => void
+  onVisibilityChange: (visibility: VisibilityState) => void
+  onColumnOrderChange: (order: ColumnOrderState) => void
+  onReset: () => void
+  onApply: () => void
+}
+
+function UsersColumnsSheet({
+  open,
+  items,
+  visibility,
+  lockedColumnIds,
+  onOpenChange,
+  onVisibilityChange,
+  onColumnOrderChange,
+  onReset,
+  onApply,
+}: UsersColumnsSheetProps) {
+  return (
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent side='right' className='w-full gap-0 p-0 sm:max-w-lg'>
+        <SheetHeader className='border-b px-6 py-5'>
+          <SheetTitle>Edit columns</SheetTitle>
+          <SheetDescription>Choose visible columns and drag to reorder them.</SheetDescription>
+        </SheetHeader>
+
+        <div className='flex-1 overflow-y-auto px-6 py-5'>
+          <ColumnManager
+            items={items}
+            visibility={Object.fromEntries(items.map((column) => [column.id, isColumnVisible(visibility, column.id)]))}
+            onVisibilityChange={(columnId, visible) => {
+              if (lockedColumnIds.has(columnId)) return
+              onVisibilityChange(setColumnVisible(visibility, columnId, visible))
+            }}
+            onOrderChange={(nextItems) => {
+              onColumnOrderChange(nextItems.map((item) => item.id))
+            }}
+            className='max-h-[calc(100svh-12rem)] overflow-y-auto pr-1'
+          />
+        </div>
+
+        <SheetFooter className='border-t px-6 py-4 sm:flex-row sm:justify-between'>
+          <Button variant='ghost' onClick={onReset}>Reset to default</Button>
+          <div className='flex gap-2'>
+            <Button variant='outline' onClick={() => onOpenChange(false)}>Cancel</Button>
+            <Button onClick={onApply}>Apply</Button>
+          </div>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  )
+}

@@ -1,0 +1,64 @@
+import {
+  type FilterBuilderResolvedValue,
+  type FilterBuilderValue,
+  createFilterBuilderGroup,
+  createFilterBuilderRule,
+  type VisibilityState,
+} from '__COMPONENTS_PACKAGE__'
+import type { FilterFieldId, UserRow } from './types'
+
+export function isColumnVisible(state: VisibilityState, columnId: string) {
+  return state[columnId] !== false
+}
+
+export function setColumnVisible(state: VisibilityState, columnId: string, visible: boolean): VisibilityState {
+  const next = { ...state }
+  if (visible) {
+    delete next[columnId]
+  } else {
+    next[columnId] = false
+  }
+  return next
+}
+
+export function matchesKeyword(user: UserRow, keyword: string) {
+  const normalizedKeyword = normalizeString(keyword)
+  if (!normalizedKeyword) return true
+  return normalizeString(`${user.name} ${user.email}`).includes(normalizedKeyword)
+}
+
+export function resolveFilterFieldValue(user: UserRow, fieldCode: FilterFieldId): FilterBuilderResolvedValue {
+  return user[fieldCode]
+}
+
+export function createViewRule(
+  fieldCode: FilterFieldId,
+  condition: 'contains' | 'equals' | 'notEquals' | 'startsWith' | 'before' | 'after' | 'on',
+  value: string
+) {
+  const rule = createFilterBuilderRule<FilterFieldId>()
+  return {
+    ...rule,
+    fieldCode,
+    condition,
+    value,
+  }
+}
+
+export function createViewGroup(
+  children: FilterBuilderValue<FilterFieldId>['children'],
+  operator: 'and' | 'or' = 'and'
+) {
+  return {
+    ...createFilterBuilderGroup<FilterFieldId>(operator),
+    children,
+  }
+}
+
+export function cloneFilterValue<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T
+}
+
+function normalizeString(value: string) {
+  return value.trim().toLowerCase()
+}

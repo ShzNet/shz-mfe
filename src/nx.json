@@ -1,0 +1,42 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "defaultBase": "main",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "cache": true
+    },
+    "dev": {
+      "cache": false
+    }
+  },
+  "release": {
+    "projects": [
+      "core",
+      "components",
+      "nx-generators"
+    ],
+    "projectsRelationship": "independent",
+    "version": {
+      "conventionalCommits": true,
+      "fallbackCurrentVersionResolver": "disk",
+      "git": {
+        "commit": false,
+        "stageChanges": true,
+        "tag": false
+      }
+    },
+    "changelog": {
+      "projectChangelogs": true,
+      "workspaceChangelog": false,
+      "git": {
+        "commit": true,
+        "commitMessage": "chore(release): publish [skip ci]",
+        "tag": true
+      }
+    }
+  },
+  "analytics": true
+}

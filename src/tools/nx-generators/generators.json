@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "generators": {
+    "host": {
+      "implementation": "./src/generators/host/generator.js",
+      "schema": "./src/generators/host/schema.json",
+      "description": "Generate a minimal host app that loads remote shells using @shznet/core and @shznet/components."
+    },
+    "module-app": {
+      "implementation": "./src/generators/module-app/generator.js",
+      "schema": "./src/generators/module-app/schema.json",
+      "aliases": ["remote-app"],
+      "description": "Generate a minimal module federation remote app that exposes ./Shell and ./config."
+    }
+  }
+}

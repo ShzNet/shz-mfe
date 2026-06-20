@@ -8,6 +8,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
 
+defaults:
+  run:
+    working-directory: src
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -16,21 +20,20 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-          # Dùng PAT thay GITHUB_TOKEN nếu main branch được protected
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v5
         with:
           version: latest
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
+          cache-dependency-path: src/pnpm-lock.yaml
           registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
@@ -44,7 +47,7 @@ jobs:
       - name: Check first release
         id: first_release
         run: |
-          if git tag --list | grep -qE '^(core|components)@'; then
+          if git tag --list | grep -qE '^(core|components|nx-generators)@'; then
             echo "flag=" >> $GITHUB_OUTPUT
           else
             echo "flag=--first-release" >> $GITHUB_OUTPUT
@@ -62,11 +65,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NX_NO_CLOUD: true
 
-      - name: Push release commit & tags
+      - name: Push release commit and tags
         run: git push --follow-tags origin main
 
       - name: Publish to npm
         run: pnpm nx release publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
           NX_NO_CLOUD: true

@@ -1,0 +1,35 @@
+{
+  "name": "shznet-mfe",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "nx run-many -t dev --parallel=10",
+    "dev:host-sample": "nx dev host-sample",
+    "dev:remote-admin": "nx dev remote-admin",
+    "dev:demo-host": "nx dev demo-host",
+    "dev:remote-demo": "nx dev remote-demo",
+    "build:host-sample": "nx build host-sample",
+    "build:remote-admin": "nx build remote-admin",
+    "build:demo-host": "nx build demo-host",
+    "build:remote-demo": "nx build remote-demo",
+    "start:all": "nx run-many -t dev --parallel=2",
+    "preview:all": "nx run-many -t preview --parallel=2",
+    "build": "nx run-many -t build",
+    "build:all": "nx run-many -t build --parallel=2",
+    "typecheck": "nx run-many -t typecheck --projects=core,components,host-sample,remote-admin",
+    "typecheck:all": "nx run-many -t typecheck --projects=core,components,host-sample,remote-admin --parallel=2",
+    "publish:local:core": "pnpm --filter @shznet/core build && pnpm --filter @shznet/core publish --registry http://localhost:4873 --access public --no-git-checks",
+    "publish:local:components": "pnpm --filter @shznet/components build && pnpm --filter @shznet/components publish --registry http://localhost:4873 --access public --no-git-checks",
+    "publish:local:nx-generators": "pnpm --filter @shznet/nx-generators build && node ./tools/nx-generators/scripts/publish-local.mjs",
+    "publish:local": "pnpm publish:local:core && pnpm publish:local:components && pnpm publish:local:nx-generators"
+  },
+  "devDependencies": {
+    "@nx/js": "23.0.0",
+    "@swc-node/register": "1.11.1",
+    "@swc/core": "1.15.41",
+    "eslint": "^10.0.0",
+    "nx": "23.0.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.61.1"
+  }
+}

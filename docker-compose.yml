@@ -1,7 +1,7 @@
 services:
   npm-registry:
     image: verdaccio/verdaccio:5
-    container_name: shz-local-npm-registry
+    container_name: shznet-local-npm-registry
     ports:
       - "4873:4873"
     volumes:

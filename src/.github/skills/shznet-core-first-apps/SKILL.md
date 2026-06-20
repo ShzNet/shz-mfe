@@ -1,5 +1,5 @@
 ---
-name: shz-core-first-apps
+name: shznet-core-first-apps
 description: Use when generating or updating apps in this repository, especially host/module federation apps. Prefer @shznet/components and @shznet/core exports before creating local UI/runtime code, and keep generated app scaffolds minimal.
 ---
 

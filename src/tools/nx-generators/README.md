@@ -2,6 +2,8 @@
 
 NX generators for scaffolding micro-frontend apps in the Shz MFE workspace. Generated output is prewired with [Module Federation](https://module-federation.io/), RSBuild, React 19, Tailwind CSS v4, `@shznet/core`, and `@shznet/components`.
 
+For bootstrapping a fresh workspace from scratch, use [`create-shznet-workspace`](https://github.com/ShzNet/shz-mfe/blob/main/src/tools/create-shznet-workspace/README.md) first. It can either create an empty Nx workspace or immediately run `host` / `module-app` with your parameters.
+
 If you are new to this workspace, read these first:
 
 - Workspace overview: [src/README.md](https://github.com/ShzNet/shz-mfe/blob/main/src/README.md)
@@ -10,7 +12,7 @@ If you are new to this workspace, read these first:
 
 ## Requirements
 
-- NX workspace (`nx.json` at root)
+- NX workspace (`nx.json` at root), or use `create-shznet-workspace`
 - pnpm
 - `@shznet/core` and `@shznet/components` installed
 

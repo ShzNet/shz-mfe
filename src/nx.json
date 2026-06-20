@@ -16,9 +16,10 @@
     "projects": [
       "core",
       "components",
-      "nx-generators"
+      "nx-generators",
+      "create-shznet-workspace"
     ],
-    "projectsRelationship": "independent",
+    "projectsRelationship": "fixed",
     "git": {
       "commit": true,
       "commitMessage": "chore(release): publish [skip ci]",

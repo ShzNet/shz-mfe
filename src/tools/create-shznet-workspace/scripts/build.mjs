@@ -7,16 +7,22 @@ const root = resolve(here, '..')
 const dist = resolve(root, 'dist')
 
 rmSync(dist, { recursive: true, force: true })
-mkdirSync(dist, { recursive: true })
+mkdirSync(resolve(dist, 'bin'), { recursive: true })
 
-cpSync(resolve(root, 'src'), resolve(dist, 'src'), { recursive: true })
-cpSync(resolve(root, 'generators.json'), resolve(dist, 'generators.json'))
+cpSync(resolve(root, 'bin/create-shznet-workspace.js'), resolve(dist, 'bin/create-shznet-workspace.js'))
 cpSync(resolve(root, 'README.md'), resolve(dist, 'README.md'))
 
 const packageJson = JSON.parse(readFileSync(resolve(root, 'package.json'), 'utf8'))
 delete packageJson.scripts
 if (packageJson.publishConfig?.registry) {
   delete packageJson.publishConfig.registry
+}
+if (packageJson.dependencies) {
+  for (const [name, version] of Object.entries(packageJson.dependencies)) {
+    if (typeof version === 'string' && version.startsWith('workspace:')) {
+      packageJson.dependencies[name] = version.slice('workspace:'.length)
+    }
+  }
 }
 
 writeFileSync(resolve(dist, 'package.json'), `${JSON.stringify(packageJson, null, 2)}\n`)

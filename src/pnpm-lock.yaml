@@ -402,6 +402,12 @@ importers:
         specifier: ^8.5.1
         version: 8.5.1(@swc/core@1.15.41(@swc/helpers@0.5.23))(jiti@2.7.0)(postcss@8.5.15)(typescript@5.8.3)(yaml@2.9.0)
 
+  tools/create-shznet-workspace:
+    dependencies:
+      '@shznet/nx-generators':
+        specifier: workspace:^0.0.3
+        version: link:../nx-generators
+
   tools/nx-generators: {}
 
 packages:

@@ -1,0 +1,22 @@
+{
+  "name": "create-shznet-workspace",
+  "version": "0.0.3",
+  "type": "commonjs",
+  "bin": {
+    "create-shznet-workspace": "./bin/create-shznet-workspace.js"
+  },
+  "scripts": {
+    "build": "node ./scripts/build.mjs"
+  },
+  "files": [
+    "bin",
+    "README.md"
+  ],
+  "dependencies": {
+    "@shznet/nx-generators": "workspace:^0.0.3"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

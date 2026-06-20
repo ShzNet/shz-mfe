@@ -5,6 +5,7 @@ This workspace provides three main building blocks for micro-frontend developmen
 - `@shznet/core`: shared runtime contracts and host/remote helpers
 - `@shznet/components`: shared UI component library
 - `@shznet/nx-generators`: generators for scaffolding host and remote apps
+- `create-shznet-workspace`: CLI bootstrap for new Nx workspaces
 
 ## Workspace Structure
 
@@ -45,13 +46,15 @@ pnpm build
 - Core runtime: [libs/core/README.md](https://github.com/ShzNet/shz-mfe/blob/main/src/libs/core/README.md)
 - Component library: [libs/components/README.md](https://github.com/ShzNet/shz-mfe/blob/main/src/libs/components/README.md)
 - NX generators: [tools/nx-generators/README.md](https://github.com/ShzNet/shz-mfe/blob/main/src/tools/nx-generators/README.md)
+- Workspace bootstrap CLI: [tools/create-shznet-workspace/README.md](https://github.com/ShzNet/shz-mfe/blob/main/src/tools/create-shznet-workspace/README.md)
 
 ## Recommended Flow
 
-1. Use `@shznet/nx-generators` to create host or remote apps.
-2. Use `@shznet/core` in the host to register and load remotes.
-3. Use `@shznet/components` to keep UI patterns consistent across host and remotes.
-4. Use the sample apps as reference implementations when extending the platform.
+1. Use `create-shznet-workspace` to bootstrap a fresh Nx workspace.
+2. Use `@shznet/nx-generators` to create host or remote apps.
+3. Use `@shznet/core` in the host to register and load remotes.
+4. Use `@shznet/components` to keep UI patterns consistent across host and remotes.
+5. Use the sample apps as reference implementations when extending the platform.
 
 ## Sample Apps
 

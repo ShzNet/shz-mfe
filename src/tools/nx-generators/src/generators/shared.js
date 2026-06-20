@@ -138,7 +138,7 @@ function writePackageJson(tree, options, extraDependencies = {}, extraDevDepende
       dev: 'rsbuild dev',
       build: 'pnpm typecheck && rsbuild build',
       preview: 'rsbuild preview',
-      typecheck: 'tsc -p tsconfig.json --noEmit && node ../../../scripts/check-no-explicit-any.mjs src',
+      typecheck: 'tsc -p tsconfig.json --noEmit',
     },
     dependencies: {
       [options.componentsPackage]: options.componentsVersion,

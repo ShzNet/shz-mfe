@@ -21,7 +21,8 @@
     "publish:local:core": "pnpm --filter @shznet/core build && pnpm --filter @shznet/core publish --registry http://localhost:4873 --access public --no-git-checks",
     "publish:local:components": "pnpm --filter @shznet/components build && pnpm --filter @shznet/components publish --registry http://localhost:4873 --access public --no-git-checks",
     "publish:local:nx-generators": "pnpm --filter @shznet/nx-generators build && node ./tools/nx-generators/scripts/publish-local.mjs",
-    "publish:local": "pnpm publish:local:core && pnpm publish:local:components && pnpm publish:local:nx-generators"
+    "publish:local:create-workspace": "pnpm --filter create-shznet-workspace build && node ./tools/create-shznet-workspace/scripts/publish-local.mjs",
+    "publish:local": "pnpm publish:local:core && pnpm publish:local:components && pnpm publish:local:nx-generators && pnpm publish:local:create-workspace"
   },
   "devDependencies": {
     "@nx/js": "23.0.0",

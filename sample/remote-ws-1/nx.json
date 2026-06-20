@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "defaultBase": "main",
+  "targetDefaults": {
+    "build": { "dependsOn": ["^build"], "cache": true },
+    "dev": { "cache": false }
+  },
+  "generators": {
+    "@shznet/nx-generators:module-app": {
+      "componentsVersion": "^0.0.1",
+      "coreVersion": "^0.0.1"
+    }
+  }
+}

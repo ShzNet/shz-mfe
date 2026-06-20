@@ -1,5 +1,4 @@
-function buildUsersPageTsx(options) {
-  return `import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   Badge,
   Button,
@@ -43,7 +42,7 @@ import {
   type ColumnDef,
   type RowSelectionState,
   type VisibilityState,
-} from '${options.componentsPackage}'
+} from '@shznet/components'
 import { Check, ChevronDown, Columns3, Filter, Plus, RotateCcw, Search, Trash2 } from 'lucide-react'
 
 type Role = 'admin' | 'editor' | 'viewer'
@@ -92,11 +91,11 @@ const INITIAL_USERS: UserRow[] = BASE_USERS.map((user, index) => ({
   ...user,
   location: LOCATIONS[index % LOCATIONS.length]!,
   manager: MANAGERS[index % MANAGERS.length]!,
-  employeeCode: \`EMP-\${String(index + 1).padStart(4, '0')}\`,
-  phone: \`090\${String(1000000 + index * 137).slice(0, 7)}\`,
+  employeeCode: `EMP-${String(index + 1).padStart(4, '0')}`,
+  phone: `090${String(1000000 + index * 137).slice(0, 7)}`,
   workMode: WORK_MODES[index % WORK_MODES.length]!,
   timezone: TIMEZONES[index % TIMEZONES.length]!,
-  lastActive: \`2026-06-\${String((index % 9) + 1).padStart(2, '0')} 0\${index % 8}:30\`,
+  lastActive: `2026-06-${String((index % 9) + 1).padStart(2, '0')} 0${index % 8}:30`,
 }))
 
 const EMPTY_FORM: UserForm = {
@@ -349,7 +348,7 @@ export default function UsersPage() {
       },
       {
         id: 'name',
-        accessorFn: (row) => \`\${row.name} \${row.email}\`,
+        accessorFn: (row) => `${row.name} ${row.email}`,
         header: 'Name',
         cell: ({ row }) => (
           <button type='button' className='pl-2 text-left' onClick={() => startEdit(row.original)}>
@@ -577,7 +576,7 @@ export default function UsersPage() {
   )
 }
 
-function ActionBar({ children }: { children: ReactNode }) {
+function ActionBar({ children }: { children: React.ReactNode }) {
   return <div className='rounded-lg border bg-background px-3 py-2 shadow-sm'>{children}</div>
 }
 
@@ -598,7 +597,7 @@ function setColumnVisible(state: VisibilityState, columnId: string, visible: boo
 function matchesKeyword(user: UserRow, keyword: string) {
   const normalizedKeyword = normalizeString(keyword)
   if (!normalizedKeyword) return true
-  return normalizeString(\`\${user.name} \${user.email}\`).includes(normalizedKeyword)
+  return normalizeString(`${user.name} ${user.email}`).includes(normalizedKeyword)
 }
 
 function normalizeString(value: string) {
@@ -627,7 +626,3 @@ function createViewGroup(
 function cloneFilterValue<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T
 }
-`
-}
-
-module.exports = { buildUsersPageTsx }

@@ -1,5 +1,4 @@
-function buildRemotesTs() {
-  return `export interface HostRemoteApp {
+export interface HostRemoteApp {
   id: string
   name: string
   basePath: string
@@ -24,7 +23,3 @@ export const apps: HostRemoteApp[] = [
   //   entry: withRemoteCacheBuster('http://localhost:3001/mf-manifest.json'),
   // },
 ]
-`
-}
-
-module.exports = { buildRemotesTs }

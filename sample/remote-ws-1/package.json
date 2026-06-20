@@ -1,0 +1,15 @@
+{
+  "name": "remote-ws-1",
+  "private": true,
+  "version": "0.0.0",
+  "devDependencies": {
+    "@shznet/nx-generators": "^0.0.1",
+    "nx": "^21.0.0"
+  },
+  "scripts": {
+    "dev:remote-sales": "nx dev remote-sales",
+    "dev": "nx run-many -t dev --parallel=10",
+    "build": "nx run-many -t build",
+    "build:remote-sales": "nx build remote-sales"
+  }
+}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import {
   Badge,
   Button,
@@ -694,7 +694,7 @@ export default function UsersPage() {
   )
 }
 
-function AcitonBar({ children }: { children: React.ReactNode }) {
+function AcitonBar({ children }: { children: ReactNode }) {
   return <div className='rounded-lg border bg-background px-3 py-2 shadow-sm'>{children}</div>
 }
 

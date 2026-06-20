@@ -129,7 +129,10 @@ function writeBaseAppFiles(tree, options, title) {
 function updateRootPackageScripts(tree, options) {
   updateJson(tree, 'package.json', (json) => {
     json.scripts ||= {}
+    json.scripts.dev ??= 'nx run-many -t dev --parallel=10'
+    json.scripts.build ??= 'nx run-many -t build'
     json.scripts[`dev:${options.name}`] = `nx dev ${options.name}`
+    json.scripts[`build:${options.name}`] = `nx build ${options.name}`
     return json
   })
 }

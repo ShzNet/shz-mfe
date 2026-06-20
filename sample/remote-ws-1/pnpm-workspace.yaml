@@ -1,0 +1,11 @@
+packages:
+  - 'apps/*'
+allowBuilds:
+  '@swc/core': true
+  core-js: set this to true or false
+  esbuild: true
+  nx: true
+minimumReleaseAgeExclude:
+  - '@shznet/nx-generators@0.0.1'
+  - '@shznet/components@0.0.1'
+  - '@shznet/core@0.0.1'

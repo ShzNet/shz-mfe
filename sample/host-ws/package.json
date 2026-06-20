@@ -1,0 +1,15 @@
+{
+  "name": "host-ws",
+  "private": true,
+  "version": "0.0.0",
+  "devDependencies": {
+    "@shznet/nx-generators": "^0.0.1",
+    "nx": "^21.0.0"
+  },
+  "scripts": {
+    "dev:sample-host": "nx dev sample-host",
+    "dev": "nx run-many -t dev --parallel=10",
+    "build": "nx run-many -t build",
+    "build:sample-host": "nx build sample-host"
+  }
+}

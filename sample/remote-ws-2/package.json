@@ -1,0 +1,15 @@
+{
+  "name": "remote-ws-2",
+  "private": true,
+  "version": "0.0.0",
+  "devDependencies": {
+    "@shznet/nx-generators": "^0.0.1",
+    "nx": "^21.0.0"
+  },
+  "scripts": {
+    "dev:remote-hr": "nx dev remote-hr",
+    "dev": "nx run-many -t dev --parallel=10",
+    "build": "nx run-many -t build",
+    "build:remote-hr": "nx build remote-hr"
+  }
+}

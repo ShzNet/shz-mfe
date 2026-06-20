@@ -96,6 +96,16 @@ Tạo `tsconfig.base.json`:
 }
 ```
 
+Tạo `pnpm-workspace.yaml` — khai báo để pnpm cài deps cho từng app:
+
+```yaml
+packages:
+  - 'apps/*'
+allowBuilds:
+  nx: true
+  core-js: true
+```
+
 ---
 
 ## Bước 3 — Cài dependencies
@@ -104,7 +114,7 @@ Tạo `tsconfig.base.json`:
 pnpm install
 ```
 
-> pnpm sẽ hỏi về build scripts của nx. Mở `pnpm-workspace.yaml` vừa được tạo và đổi `nx: set this to true or false` thành `nx: true`, rồi chạy lại `pnpm install`.
+> **Nếu pnpm hỏi về build scripts** (lần đầu): nó tạo ra `pnpm-workspace.yaml` với `nx: set this to true or false`. Đổi thành `nx: true` rồi chạy lại `pnpm install`. Nếu đã tạo file sẵn như trên thì bỏ qua bước này.
 
 ---
 
@@ -210,13 +220,15 @@ export const apps = [
 
 ---
 
-## Bước 7 — Cài dependencies cho từng app
+## Bước 7 — Install lại sau khi generate
 
-Generator tạo `package.json` riêng cho mỗi app. Cần install:
+Mỗi app được generate ra với `package.json` riêng chứa deps như `@rsbuild/core`, `react`, v.v. Cần install để pnpm resolve chúng:
 
 ```bash
 pnpm install
 ```
+
+> Nếu thấy `core-js: set this to true or false` trong `pnpm-workspace.yaml`, đổi thành `core-js: true` rồi chạy lại.
 
 ---
 

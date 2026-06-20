@@ -20,7 +20,7 @@
   "scripts": {
     "build": "pnpm typecheck && tsup",
     "dev": "tsup --watch",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit && eslint src"
   },
   "files": [
     "dist",

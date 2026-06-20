@@ -17,7 +17,55 @@ export interface FederatedRemoteRegistration {
   entry: string
 }
 
-const registeredRemotes = new Map<string, string>()
+export interface FederationConfig {
+  /**
+   * Called once per page session to produce the value appended as `?_t=<buster>`
+   * on every remote entry URL, preventing stale manifest caches.
+   *
+   * Default: `Date.now().toString()`
+   *
+   * Examples:
+   *   getSessionBuster: () => __webpack_hash__          // content-hash from build
+   *   getSessionBuster: () => env.DEPLOY_ID             // CI deploy ID
+   *   getSessionBuster: () => Date.now().toString()     // always-fresh (dev)
+   */
+  getSessionBuster?: () => string
+}
+
+let _config: FederationConfig = {}
+
+/** Call this once in host bootstrap (before any module is loaded). */
+export function configureFederation(config: FederationConfig): void {
+  _config = { ..._config, ...config }
+}
+
+// Resolved once and cached on globalThis so the same value survives HMR reloads.
+function resolveSessionBuster(): string {
+  const g = globalThis as Record<string, unknown>
+  if (typeof g.__mfBuster !== 'string') {
+    g.__mfBuster = _config.getSessionBuster?.() ?? Date.now().toString()
+  }
+  return g.__mfBuster as string
+}
+
+// Track which remotes have been registered this page session; survives HMR.
+const globallyRegistered: Map<string, string> = (() => {
+  const g = globalThis as Record<string, unknown>
+  if (!(g.__mfRegistered instanceof Map)) g.__mfRegistered = new Map<string, string>()
+  return g.__mfRegistered as Map<string, string>
+})()
+
+function withBuster(entry: string): string {
+  const buster = resolveSessionBuster()
+  try {
+    const url = new URL(entry)
+    url.searchParams.set('_t', buster)
+    return url.toString()
+  } catch {
+    return `${entry}${entry.includes('?') ? '&' : '?'}_t=${buster}`
+  }
+}
+
 const loadedRemoteStyles = new Set<string>()
 const manifestPromiseCache = new Map<string, Promise<FederatedManifest>>()
 
@@ -46,15 +94,17 @@ async function loadFederatedManifest(manifestUrl: string) {
 }
 
 export async function ensureFederatedRemoteRegistered({ name, entry }: FederatedRemoteRegistration) {
-  const registeredEntry = registeredRemotes.get(name)
-  if (registeredEntry === entry) return
+  const prev = globallyRegistered.get(name)
 
-  if (registeredEntry && registeredEntry !== entry) {
+  if (prev === entry) return
+
+  if (prev !== undefined && prev !== entry) {
     throw new Error(`Remote "${name}" was already registered with a different entry`)
   }
 
-  registerRemotes([{ name, entry }])
-  registeredRemotes.set(name, entry)
+  // Add cache buster here so callers pass clean URLs and MF registration stays stable.
+  registerRemotes([{ name, entry: withBuster(entry) }])
+  globallyRegistered.set(name, entry)
 }
 
 export async function loadFederatedStyles(manifestUrl: string, exposedModule: string) {

@@ -1,5 +1,13 @@
 import type { ComponentType } from 'react'
 import { Suspense, useEffect, useState } from 'react'
+import {
+  Skeleton,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuSkeleton,
+} from '@shznet/components'
 import { loadRemoteModule } from '../lib/remote-loader'
 
 type RemoteShellProps = Record<string, never>
@@ -88,13 +96,13 @@ export function RemoteShellPage({ state }: RemoteShellPageProps) {
   }
 
   if (loading || !module) {
-    return <RemoteFallback />
+    return <RemotePageSkeleton />
   }
 
   const Component = module.default
 
   return (
-    <Suspense fallback={<RemoteFallback />}>
+    <Suspense fallback={<RemotePageSkeleton />}>
       <Component />
     </Suspense>
   )
@@ -103,21 +111,67 @@ export function RemoteShellPage({ state }: RemoteShellPageProps) {
 export function RemoteShellMenu({ state }: { state: RemoteShellState }) {
   const { module, loading, error } = state
 
-  if (error || loading || !module?.Menu) return null
+  if (error) return null
+
+  if (loading) {
+    return <RemoteMenuSkeleton />
+  }
+
+  if (!module?.Menu) return null
 
   const Component = module.Menu
 
   return (
-    <Suspense fallback={<RemoteMenuFallback />}>
+    <Suspense fallback={<RemoteMenuSkeleton />}>
       <Component />
     </Suspense>
   )
 }
 
-function RemoteFallback() {
-  return <div className='p-6 text-sm text-muted-foreground'>Loading module...</div>
+function RemotePageSkeleton() {
+  return (
+    <div className='flex flex-1 flex-col gap-4'>
+      <div className='space-y-2'>
+        <Skeleton className='h-7 w-44' />
+        <Skeleton className='h-4 w-72' />
+      </div>
+      <div className='grid gap-4 sm:grid-cols-2 xl:grid-cols-4'>
+        {Array.from({ length: 4 }, (_, i) => (
+          <div key={i} className='rounded-xl border bg-card p-6 space-y-3'>
+            <div className='flex items-center justify-between'>
+              <Skeleton className='h-4 w-20' />
+              <Skeleton className='size-4 rounded' />
+            </div>
+            <Skeleton className='h-8 w-28' />
+            <Skeleton className='h-4 w-36' />
+          </div>
+        ))}
+      </div>
+      <div className='rounded-xl border bg-card p-6 space-y-3'>
+        <Skeleton className='h-5 w-32' />
+        <Skeleton className='h-4 w-56' />
+        <div className='space-y-2 pt-2'>
+          {Array.from({ length: 3 }, (_, i) => (
+            <Skeleton key={i} className='h-12 w-full rounded-lg' />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
 }
 
-function RemoteMenuFallback() {
-  return <div className='px-3 py-2 text-sm text-muted-foreground'>Loading menu...</div>
+function RemoteMenuSkeleton() {
+  return (
+    <SidebarGroup>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {Array.from({ length: 5 }, (_, i) => (
+            <SidebarMenuItem key={i}>
+              <SidebarMenuSkeleton showIcon />
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  )
 }

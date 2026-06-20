@@ -49,7 +49,7 @@ run('pnpm', ['publish:local'], srcRoot)
 console.log('\nRe-installing sample workspaces...')
 for (const ws of sampleWorkspaces) {
   console.log(`  Installing ${ws}...`)
-  run('pnpm', ['install'], resolve(sampleRoot, ws))
+  run('pnpm', ['install', '--force'], resolve(sampleRoot, ws))
 }
 
 console.log('\nDone.')

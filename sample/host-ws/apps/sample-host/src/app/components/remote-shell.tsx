@@ -1,5 +1,12 @@
 import { type ComponentType, Suspense, useEffect, useState } from 'react'
 import { loadFederatedModule } from '@shznet/core'
+import {
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuSkeleton,
+} from '@shznet/components'
 
 type RemoteShellProps = Record<string, never>
 type RemoteMenuProps = Record<string, never>
@@ -45,6 +52,12 @@ async function loadShellModule(remoteName: string, entry: string) {
   return shellPromiseCache.get(cacheKey)!
 }
 
+// Call this before navigating to warm the module cache.
+// Swap the internals with your own loading strategy later.
+export function preloadRemoteShell(remoteName: string, entry: string): Promise<RemoteShellModule> {
+  return loadShellModule(remoteName, entry)
+}
+
 export function useRemoteShell(remoteName: string, entry: string): RemoteShellState {
   const cacheKey = `${remoteName}::${entry}`
   const [state, setState] = useState<RemoteShellState>(() => {
@@ -69,9 +82,7 @@ export function useRemoteShell(remoteName: string, entry: string): RemoteShellSt
         })
       })
 
-    return () => {
-      active = false
-    }
+    return () => { active = false }
   }, [entry, remoteName])
 
   return state
@@ -85,13 +96,13 @@ export function RemoteShellPage({ state }: RemoteShellPageProps) {
   }
 
   if (loading || !module) {
-    return <RemoteFallback />
+    return <RemotePageSkeleton />
   }
 
   const Component = module.default
 
   return (
-    <Suspense fallback={<RemoteFallback />}>
+    <Suspense fallback={<RemotePageSkeleton />}>
       <Component />
     </Suspense>
   )
@@ -100,21 +111,69 @@ export function RemoteShellPage({ state }: RemoteShellPageProps) {
 export function RemoteShellMenu({ state }: { state: RemoteShellState }) {
   const { module, loading, error } = state
 
-  if (error || loading || !module?.Menu) return null
+  if (error) return null
+
+  if (loading) return <RemoteMenuSkeleton />
+
+  if (!module?.Menu) return null
 
   const Component = module.Menu
 
   return (
-    <Suspense fallback={<RemoteMenuFallback />}>
+    <Suspense fallback={<RemoteMenuSkeleton />}>
       <Component />
     </Suspense>
   )
 }
 
-function RemoteFallback() {
-  return <div className='p-4 text-sm text-muted-foreground'>Loading module...</div>
+function Pulse({ className }: { className: string }) {
+  return <div className={`animate-pulse rounded-md bg-foreground/10 ${className}`} />
 }
 
-function RemoteMenuFallback() {
-  return <div className='px-3 py-2 text-sm text-muted-foreground'>Loading menu...</div>
+export function RemotePageSkeleton() {
+  return (
+    <div className='flex flex-1 flex-col gap-4'>
+      <div className='space-y-2'>
+        <Pulse className='h-7 w-44' />
+        <Pulse className='h-4 w-72' />
+      </div>
+      <div className='grid gap-4 sm:grid-cols-2 xl:grid-cols-4'>
+        {Array.from({ length: 4 }, (_, i) => (
+          <div key={i} className='rounded-xl border bg-card p-6 space-y-3'>
+            <div className='flex items-center justify-between'>
+              <Pulse className='h-4 w-20' />
+              <Pulse className='size-4' />
+            </div>
+            <Pulse className='h-8 w-28' />
+            <Pulse className='h-4 w-36' />
+          </div>
+        ))}
+      </div>
+      <div className='rounded-xl border bg-card p-6 space-y-3'>
+        <Pulse className='h-5 w-32' />
+        <Pulse className='h-4 w-56' />
+        <div className='space-y-2 pt-2'>
+          {Array.from({ length: 3 }, (_, i) => (
+            <Pulse key={i} className='h-12 w-full rounded-lg' />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export function RemoteMenuSkeleton() {
+  return (
+    <SidebarGroup>
+      <SidebarGroupContent>
+        <SidebarMenu>
+          {Array.from({ length: 5 }, (_, i) => (
+            <SidebarMenuItem key={i}>
+              <SidebarMenuSkeleton showIcon />
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroupContent>
+    </SidebarGroup>
+  )
 }

@@ -1,14 +1,77 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shznet/components'
+import { useEffect, useState } from 'react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, Skeleton } from '@shznet/components'
 import { Activity, Boxes, CircleDollarSign, ShoppingBag } from 'lucide-react'
 
-const stats = [
-  { title: 'Revenue', value: '$28,420', description: '+12.4% vs last week', icon: CircleDollarSign },
-  { title: 'Orders', value: '1,204', description: '97 pending review', icon: ShoppingBag },
-  { title: 'Products', value: '486', description: '24 low stock alerts', icon: Boxes },
-  { title: 'Activity', value: '89%', description: 'SLA within target', icon: Activity },
-]
+type DashboardStats = {
+  title: string
+  value: string
+  description: string
+  icon: React.ComponentType<{ className?: string }>
+}
+
+async function fetchDashboardStats(): Promise<DashboardStats[]> {
+  await new Promise((resolve) => setTimeout(resolve, 2500))
+  return [
+    { title: 'Revenue', value: '$28,420', description: '+12.4% vs last week', icon: CircleDollarSign },
+    { title: 'Orders', value: '1,204', description: '97 pending review', icon: ShoppingBag },
+    { title: 'Products', value: '486', description: '24 low stock alerts', icon: Boxes },
+    { title: 'Activity', value: '89%', description: 'SLA within target', icon: Activity },
+  ]
+}
+
+function useAsyncData<T>(fetcher: () => Promise<T>) {
+  const [data, setData] = useState<T | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    let active = true
+    fetcher().then((result) => {
+      if (!active) return
+      setData(result)
+      setLoading(false)
+    })
+    return () => {
+      active = false
+    }
+  }, [])
+
+  return { data, loading }
+}
+
+function DashboardSkeleton() {
+  return (
+    <div className='flex flex-1 flex-col gap-4'>
+      <div className='flex items-center justify-between'>
+        <div className='space-y-2'>
+          <Skeleton className='h-7 w-36' />
+          <Skeleton className='h-4 w-72' />
+        </div>
+      </div>
+      <div className='grid gap-4 sm:grid-cols-2 xl:grid-cols-4'>
+        {Array.from({ length: 4 }, (_, i) => (
+          <Card key={i}>
+            <CardHeader>
+              <div className='flex items-center justify-between'>
+                <Skeleton className='h-4 w-20' />
+                <Skeleton className='size-4 rounded' />
+              </div>
+              <Skeleton className='h-8 w-24 mt-1' />
+            </CardHeader>
+            <CardContent>
+              <Skeleton className='h-4 w-36' />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export default function DashboardPage() {
+  const { data: stats, loading } = useAsyncData(fetchDashboardStats)
+
+  if (loading || !stats) return <DashboardSkeleton />
+
   return (
     <div className='flex flex-1 flex-col gap-4'>
       <div className='flex items-center justify-between'>

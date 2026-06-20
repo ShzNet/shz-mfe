@@ -16,6 +16,7 @@
     "src"
   ],
   "publishConfig": {
-    "registry": "http://localhost:4873/"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }

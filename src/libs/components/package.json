@@ -27,7 +27,8 @@
     "src/styles"
   ],
   "publishConfig": {
-    "registry": "http://localhost:4873/"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

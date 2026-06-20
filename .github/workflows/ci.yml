@@ -8,6 +8,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    working-directory: src
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,12 +26,12 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
+          cache-dependency-path: src/pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build libraries
-        run: pnpm nx run-many -t build --projects=core,components --parallel=2
+      - name: Build publishable packages
+        run: pnpm nx run-many -t build --projects=core,components,nx-generators --parallel=3
         env:
           NX_NO_CLOUD: true

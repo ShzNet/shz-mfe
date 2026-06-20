@@ -15,7 +15,8 @@
   "release": {
     "projects": [
       "core",
-      "components"
+      "components",
+      "nx-generators"
     ],
     "projectsRelationship": "independent",
     "version": {

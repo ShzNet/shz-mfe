@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { LoaderCircle, Plus, Trash2 } from 'lucide-react'
+import { LoaderCircle, Plus, X } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { Button } from '../button'
 import { DateInput } from '../inputs/date-input'
@@ -260,7 +260,7 @@ function FilterBuilderGroupEditor<TCode extends string = string>({
             className='size-7 text-muted-foreground'
             onClick={onRemove}
           >
-            <Trash2 className='size-3.5' />
+            <X className='size-3.5' />
             <span className='sr-only'>{messages.removeGroupLabel}</span>
           </Button>
         ) : null}
@@ -393,7 +393,7 @@ function FilterBuilderRuleEditor<TCode extends string = string>({
       />
 
       <Button variant='ghost' size='icon' className='size-8 text-muted-foreground' onClick={onRemove}>
-        <Trash2 className='size-3.5' />
+        <X className='size-3.5' />
         <span className='sr-only'>{messages.removeConditionLabel}</span>
       </Button>
     </div>

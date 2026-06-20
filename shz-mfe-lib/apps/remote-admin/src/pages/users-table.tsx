@@ -612,7 +612,6 @@ export default function UsersTablePage() {
               fields={FILTER_FIELDS}
               value={draftFilters}
               onChange={setDraftFilters}
-              showRootOperator
             />
           </div>
 

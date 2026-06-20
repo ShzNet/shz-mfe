@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@module-federation/enhanced": "^0.9.0",
-    "@shz/components": "0.0.6-local.4",
-    "@shz/core": "0.0.6-local.4",
+    "@shz/components": "0.0.6-local.6",
+    "@shz/core": "0.0.6-local.6",
     "lucide-react": "^0.487.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

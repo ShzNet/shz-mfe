@@ -1,6 +1,6 @@
 {
   "name": "@shz/nx-generators",
-  "version": "0.0.6-local.4",
+  "version": "0.0.6-local.6",
   "type": "commonjs",
   "main": "./src/generators/shared.js",
   "exports": {

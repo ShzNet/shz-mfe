@@ -645,7 +645,7 @@ export default function OrdersTablePage() {
             <SheetDescription>Build nested rule groups and combine them with AND or OR.</SheetDescription>
           </SheetHeader>
           <div className='flex-1 overflow-y-auto px-6 py-5'>
-            <FilterBuilder fields={FILTER_FIELDS} value={draftFilters} onChange={setDraftFilters} showRootOperator />
+            <FilterBuilder fields={FILTER_FIELDS} value={draftFilters} onChange={setDraftFilters} />
           </div>
           <SheetFooter className='border-t px-6 py-4 sm:flex-row sm:justify-between'>
             <Button variant='ghost' onClick={() => setDraftFilters(DEFAULT_FILTERS)}>Reset to default</Button>

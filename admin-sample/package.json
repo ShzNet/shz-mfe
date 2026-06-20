@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@nx/js": "^21.0.0",
-    "@shz/nx-generators": "0.0.6-local.4",
+    "@shz/nx-generators": "0.0.6-local.6",
     "nx": "^21.0.0",
     "typescript": "~5.8.0"
   }

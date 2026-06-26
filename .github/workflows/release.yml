@@ -47,8 +47,16 @@ jobs:
         id: version
         run: |
           BEFORE_HEAD=$(git rev-parse HEAD)
+          CURRENT_TAG=$(git describe --tags --abbrev=0 --match 'v*' 2>/dev/null || true)
+          echo "before_head=$BEFORE_HEAD"
+          echo "current_tag=${CURRENT_TAG:-<none>}"
+          git log --oneline --decorate --max-count=8
+          if [ -n "$CURRENT_TAG" ]; then
+            echo "commits_since_${CURRENT_TAG}:"
+            git log --format='%h %s' "${CURRENT_TAG}..HEAD" || true
+          fi
           set +e
-          OUTPUT=$(pnpm nx release --skip-publish 2>&1)
+          OUTPUT=$(pnpm nx release --skip-publish --verbose 2>&1)
           STATUS=$?
           set -e
           echo "$OUTPUT"
@@ -58,6 +66,7 @@ jobs:
           fi
 
           AFTER_HEAD=$(git rev-parse HEAD)
+          echo "after_head=$AFTER_HEAD"
           if [ "$BEFORE_HEAD" != "$AFTER_HEAD" ]; then
             echo "changed=true" >> $GITHUB_OUTPUT
           else

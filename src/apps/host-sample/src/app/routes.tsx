@@ -24,7 +24,10 @@ function AppRoutesContent() {
 
     Promise.all([
       checkPermission(app.id),
-      preloadRemoteShell(app.remoteName, app.entry).catch(() => null as null),
+      preloadRemoteShell(app.remoteName, app.entry).catch((error: unknown) => {
+        console.warn(`Remote preload failed for "${app.id}"`, error)
+        return null as null
+      }),
     ])
       .then(([ok]) => {
         if (ok) {

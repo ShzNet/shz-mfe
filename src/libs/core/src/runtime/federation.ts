@@ -73,6 +73,22 @@ function buildFederatedModuleId(remoteName: string, exposedModule: string) {
   return `${remoteName}${exposedModule.replace(/^\./, '')}`
 }
 
+function toError(error: unknown, fallbackMessage: string) {
+  if (error instanceof Error) return error
+  return new Error(fallbackMessage)
+}
+
+function buildRemoteLoadErrorMessage(
+  phase: 'register' | 'preload' | 'load',
+  remoteName: string,
+  exposedModule: string,
+  entry: string,
+  error: unknown
+) {
+  const detail = toError(error, `Unknown federation ${phase} error`)
+  return `Failed to ${phase} federated module "${remoteName}:${exposedModule}" from "${entry}": ${detail.message}`
+}
+
 async function loadFederatedManifest(manifestUrl: string) {
   if (!manifestPromiseCache.has(manifestUrl)) {
     manifestPromiseCache.set(
@@ -145,14 +161,29 @@ export async function loadFederatedModule<TModule = unknown>(
   exposedModule: string,
   entry: string
 ): Promise<TModule> {
-  await ensureFederatedRemoteRegistered({ name: remoteName, entry })
-  await preloadRemote([{ nameOrAlias: remoteName, exposes: [exposedModule] }])
+  try {
+    await ensureFederatedRemoteRegistered({ name: remoteName, entry })
+  } catch (error) {
+    throw new Error(buildRemoteLoadErrorMessage('register', remoteName, exposedModule, entry, error))
+  }
+
+  try {
+    await preloadRemote([{ nameOrAlias: remoteName, exposes: [exposedModule] }])
+  } catch (error) {
+    throw new Error(buildRemoteLoadErrorMessage('preload', remoteName, exposedModule, entry, error))
+  }
 
   const moduleId = buildFederatedModuleId(remoteName, exposedModule)
-  const remoteModule = await loadRemote<TModule>(moduleId)
+  let remoteModule: TModule | null | undefined
+
+  try {
+    remoteModule = await loadRemote<TModule>(moduleId)
+  } catch (error) {
+    throw new Error(buildRemoteLoadErrorMessage('load', remoteName, exposedModule, entry, error))
+  }
 
   if (remoteModule == null) {
-    throw new Error(`Remote module "${moduleId}" could not be loaded`)
+    throw new Error(`Remote module "${moduleId}" could not be loaded from "${entry}"`)
   }
 
   return remoteModule

@@ -20,15 +20,15 @@
       "create-shznet-workspace"
     ],
     "projectsRelationship": "fixed",
+    "git": {
+      "commit": true,
+      "commitMessage": "chore(release): publish [skip ci]",
+      "stageChanges": true,
+      "tag": true
+    },
     "version": {
       "conventionalCommits": true,
-      "fallbackCurrentVersionResolver": "disk",
-      "git": {
-        "commit": true,
-        "commitMessage": "chore(release): publish [skip ci]",
-        "stageChanges": true,
-        "tag": true
-      }
+      "fallbackCurrentVersionResolver": "disk"
     },
     "changelog": {
       "projectChangelogs": true,

@@ -47,12 +47,25 @@ jobs:
       - name: Version and changelog
         id: version
         run: |
+          set +e
           OUTPUT=$(pnpm nx release --skip-publish 2>&1)
+          STATUS=$?
+          set -e
           echo "$OUTPUT"
+
           if echo "$OUTPUT" | grep -q "No files changed"; then
             echo "changed=false" >> $GITHUB_OUTPUT
-          else
+            exit 0
+          fi
+
+          if [ $STATUS -ne 0 ]; then
+            exit $STATUS
+          fi
+
+          if [ -n "$(git status --porcelain)" ]; then
             echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

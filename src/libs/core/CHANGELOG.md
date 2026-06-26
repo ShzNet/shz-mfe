@@ -1,3 +1,13 @@
+## 0.0.5 (2026-06-26)
+
+### 🚀 Features
+
+- **core:** add opt-in federation debug logging ([7f27119](https://github.com/ShzNet/shz-mfe/commit/7f27119))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.4 (2026-06-26)
 
 ### 🩹 Fixes

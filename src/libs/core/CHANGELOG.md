@@ -1,3 +1,13 @@
+## 0.0.6 (2026-06-26)
+
+### 🚀 Features
+
+- **core:** expose federation debug state ([fd64368](https://github.com/ShzNet/shz-mfe/commit/fd64368))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.5 (2026-06-26)
 
 ### 🚀 Features

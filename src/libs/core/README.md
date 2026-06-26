@@ -20,6 +20,7 @@
 - `ensureFederatedRemoteRegistered`
 - `loadFederatedModule`
 - `loadFederatedStyles`
+- `FederatedRemoteRegistration`, `FederationConfig`
 
 ### Remote Context
 

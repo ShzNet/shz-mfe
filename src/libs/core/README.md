@@ -63,11 +63,13 @@ import { configureFederation } from '@shznet/core'
 
 configureFederation({
   getSessionBuster: () => Date.now().toString(),
+  debug: true,
 })
 ```
 
 Call `configureFederation()` early in host bootstrap so every remote manifest uses the same session buster value.
 The runtime caches that value on `globalThis`, which keeps remote registration and manifest cache-busting stable across HMR reloads.
+Set `debug: true` to emit verbose federation logs through `console.debug`, or pass `logger` to route them elsewhere.
 
 ### 3. Load a remote module
 

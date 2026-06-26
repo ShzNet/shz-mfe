@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
 
     steps:
       - uses: actions/checkout@v6
@@ -79,3 +80,11 @@ jobs:
       - name: Push release commit and tags
         if: steps.version.outputs.changed == 'true'
         run: git push --follow-tags origin main
+
+      - name: Publish to npm
+        if: steps.version.outputs.changed == 'true'
+        run: pnpm nx release publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+          NX_NO_CLOUD: true

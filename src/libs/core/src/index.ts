@@ -5,7 +5,13 @@ export type { CoreEvent, EventBus, Unsubscribe } from './runtime/event-bus'
 export { createEventBus } from './runtime/event-bus'
 
 export type { FederatedRemoteRegistration, FederationConfig } from './runtime/federation'
-export { configureFederation, ensureFederatedRemoteRegistered, loadFederatedModule, loadFederatedStyles } from './runtime/federation'
+export {
+  configureFederation,
+  ensureFederatedRemoteRegistered,
+  isFederationDebugEnabled,
+  loadFederatedModule,
+  loadFederatedStyles,
+} from './runtime/federation'
 
 export type {
   ShellRemoteContextValue,

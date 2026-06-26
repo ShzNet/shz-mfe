@@ -64,6 +64,10 @@ function logDebug(message: string, context?: Record<string, unknown>) {
   logger(`[core:federation] ${message}`)
 }
 
+export function isFederationDebugEnabled(): boolean {
+  return !!_config.debug
+}
+
 // Resolved once and cached on globalThis so the same value survives HMR reloads.
 function resolveSessionBuster(): string {
   const g = globalThis as Record<string, unknown>

@@ -18,6 +18,7 @@
 
 - `configureFederation`
 - `ensureFederatedRemoteRegistered`
+- `isFederationDebugEnabled`
 - `loadFederatedModule`
 - `loadFederatedStyles`
 - `FederatedRemoteRegistration`, `FederationConfig`

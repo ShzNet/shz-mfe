@@ -66,6 +66,7 @@ configureFederation({
 ```
 
 Call `configureFederation()` early in host bootstrap so every remote manifest uses the same session buster value.
+The runtime caches that value on `globalThis`, which keeps remote registration and manifest cache-busting stable across HMR reloads.
 
 ### 3. Load a remote module
 

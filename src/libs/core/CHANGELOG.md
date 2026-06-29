@@ -1,3 +1,13 @@
+## 0.0.7 (2026-06-29)
+
+### 🚀 Features
+
+- **mfe:** sync host and remote samples with service bridge ([d66566d](https://github.com/ShzNet/shz-mfe/commit/d66566d))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.6 (2026-06-26)
 
 ### 🚀 Features

@@ -1,3 +1,13 @@
+## 0.0.9 (2026-06-29)
+
+### 🩹 Fixes
+
+- **components:** reduce dialog backdrop blur ([95e217d](https://github.com/ShzNet/shz-mfe/commit/95e217d))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.8 (2026-06-29)
 
 ### 🩹 Fixes

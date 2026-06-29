@@ -1,3 +1,13 @@
+## 0.0.8 (2026-06-29)
+
+### 🩹 Fixes
+
+- **components:** strengthen dialog backdrop blur ([d025d16](https://github.com/ShzNet/shz-mfe/commit/d025d16))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.7 (2026-06-29)
 
 This was a version bump only for components to align it with other projects, there were no code changes.

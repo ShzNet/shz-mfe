@@ -16,7 +16,10 @@ export function SignInPage({ onSignIn }: SignInPageProps) {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     if (!email || password.length < 7) return
-    onSignIn({ email })
+    onSignIn({
+      email,
+      token: \`demo-token:\${btoa(email).replace(/=+$/g, '')}\`,
+    })
   }
 
   return (

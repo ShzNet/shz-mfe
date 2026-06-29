@@ -132,15 +132,29 @@ async function loadFederatedManifest(manifestUrl: string) {
       manifestUrl,
       fetch(manifestUrl).then(async (response) => {
         if (!response.ok) {
-          throw new Error(`Failed to load federated manifest: ${manifestUrl} (${response.status})`)
+          throw new Error(`Failed to load federated manifest: ${manifestUrl} (${response.status} ${response.statusText})`)
         }
 
-        const manifest = (await response.json()) as FederatedManifest
-        logDebug('loaded federated manifest', {
-          manifestUrl,
-          exposeCount: manifest.exposes?.length ?? 0,
-        })
-        return manifest
+        const contentType = response.headers.get('content-type') ?? ''
+        const bodyText = await response.text()
+
+        if (!contentType.includes('application/json') && !contentType.includes('+json')) {
+          const preview = bodyText.replace(/\s+/g, ' ').slice(0, 200)
+          throw new Error(
+            `Federated manifest at ${manifestUrl} returned ${contentType || 'unknown content type'} instead of JSON. Preview: ${preview}`
+          )
+        }
+
+        try {
+          const manifest = JSON.parse(bodyText) as FederatedManifest
+          logDebug('loaded federated manifest', {
+            manifestUrl,
+            exposeCount: manifest.exposes?.length ?? 0,
+          })
+          return manifest
+        } catch (error) {
+          throw new Error(`Failed to parse federated manifest JSON from ${manifestUrl}: ${toError(error, 'Unknown JSON parse error').message}`)
+        }
       }).catch((error) => {
         manifestPromiseCache.delete(manifestUrl)
         logDebug('failed to load federated manifest', {

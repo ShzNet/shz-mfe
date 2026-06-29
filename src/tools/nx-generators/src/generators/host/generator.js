@@ -14,6 +14,7 @@ const { buildRoutesTsx } = require('./templates/app/routes')
 const { buildTypesTs } = require('./templates/app/types')
 const { buildUseAuthStateTs, buildUseThemeModeTs } = require('./templates/app/hooks')
 const { buildAuthStorageTs, buildRemoteLoaderTs, buildThemeTs } = require('./templates/app/lib')
+const { buildHostServicesTs } = require('./templates/app/lib/host-services')
 const { buildAuthGuardTsx } = require('./templates/app/components/auth-guard')
 const { buildHeaderActionsTsx, buildThemeToggleTsx } = require('./templates/app/components/header-actions')
 const { buildHeaderNotificationTsx } = require('./templates/app/components/header-notification')
@@ -51,6 +52,7 @@ module.exports = async function hostGenerator(tree, schema) {
   tree.write(p('src/app/hooks/use-theme-mode.ts'), buildUseThemeModeTs())
 
   tree.write(p('src/app/lib/auth-storage.ts'), buildAuthStorageTs(options))
+  tree.write(p('src/app/lib/host-services.ts'), buildHostServicesTs(options))
   tree.write(p('src/app/lib/remote-loader.ts'), buildRemoteLoaderTs(options))
   tree.write(p('src/app/lib/theme.ts'), buildThemeTs(options))
 

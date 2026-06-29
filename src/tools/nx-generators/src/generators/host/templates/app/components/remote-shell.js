@@ -1,9 +1,10 @@
 function buildRemoteShellTsx(options) {
   return `import { type ComponentType, Suspense, useEffect, useState } from 'react'
+import type { ShellHostServices, ShellRemoteComponentProps } from '${options.corePackage}'
 import { loadFederatedModule } from '${options.corePackage}'
 
-type RemoteShellProps = Record<string, never>
-type RemoteMenuProps = Record<string, never>
+type RemoteShellProps = ShellRemoteComponentProps<unknown, ShellHostServices>
+type RemoteMenuProps = ShellRemoteComponentProps<unknown, ShellHostServices>
 
 type RemoteShellModule = {
   default: ComponentType<RemoteShellProps>
@@ -18,6 +19,7 @@ type RemoteShellState = {
 
 type RemoteShellPageProps = {
   state: RemoteShellState
+  shellServices?: ShellHostServices
 }
 
 const shellModuleCache = new Map<string, RemoteShellModule>()
@@ -78,7 +80,7 @@ export function useRemoteShell(remoteName: string, entry: string): RemoteShellSt
   return state
 }
 
-export function RemoteShellPage({ state }: RemoteShellPageProps) {
+export function RemoteShellPage({ state, shellServices }: RemoteShellPageProps) {
   const { module, loading, error } = state
 
   if (error) {
@@ -93,12 +95,12 @@ export function RemoteShellPage({ state }: RemoteShellPageProps) {
 
   return (
     <Suspense fallback={<RemoteFallback />}>
-      <Component />
+      <Component shellServices={shellServices} />
     </Suspense>
   )
 }
 
-export function RemoteShellMenu({ state }: { state: RemoteShellState }) {
+export function RemoteShellMenu({ state, shellServices }: { state: RemoteShellState; shellServices?: ShellHostServices }) {
   const { module, loading, error } = state
 
   if (error || loading || !module?.Menu) return null
@@ -107,7 +109,7 @@ export function RemoteShellMenu({ state }: { state: RemoteShellState }) {
 
   return (
     <Suspense fallback={<RemoteMenuFallback />}>
-      <Component />
+      <Component shellServices={shellServices} />
     </Suspense>
   )
 }

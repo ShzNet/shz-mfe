@@ -2,8 +2,7 @@ import './styles.css'
 import { NavLink, useLocation } from 'react-router-dom'
 import { LayoutDashboard, Users, type LucideIcon } from 'lucide-react'
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@shznet/components'
-
-const BASE = '/app/admin'
+import { REMOTE_ADMIN_BASE_PATH } from './runtime-config'
 
 type RemoteAdminMenuItem = {
   title: string
@@ -25,7 +24,7 @@ function buildGroups() {
 
   for (const item of menuItems) {
     if (item.hidden) continue
-    const url = item.path ? `${BASE}/${item.path.replace(/^\/+/, '')}` : BASE
+    const url = item.path ? `${REMOTE_ADMIN_BASE_PATH}/${item.path.replace(/^\/+/, '')}` : REMOTE_ADMIN_BASE_PATH
     const groupItems = groups.get(item.group) ?? []
     groupItems.push({ ...item, url })
     groups.set(item.group, groupItems)

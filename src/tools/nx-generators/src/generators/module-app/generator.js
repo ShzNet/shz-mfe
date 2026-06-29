@@ -15,6 +15,7 @@ const { buildMainTsx } = require('./templates/main')
 const { buildMenuTs } = require('./templates/menu')
 const { buildNavTsx } = require('./templates/nav')
 const { buildShellTsx } = require('./templates/shell')
+const { buildShellServicesTsx } = require('./templates/shell-services')
 const { buildAppPageTsx } = require('./templates/pages/app')
 const { buildDashboardPageTsx } = require('./templates/pages/dashboard')
 
@@ -47,7 +48,8 @@ module.exports = async function moduleAppGenerator(tree, schema) {
   tree.write(p('src/main.tsx'), buildMainTsx())
   tree.write(p('src/menu.ts'), buildMenuTs(options, menuItemTypeName))
   tree.write(p('src/nav.tsx'), buildNavTsx(options, navComponentName))
-  tree.write(p('src/shell.tsx'), buildShellTsx(shellComponentName, navComponentName))
+  tree.write(p('src/shell.tsx'), buildShellTsx(shellComponentName, navComponentName, options.corePackage))
+  tree.write(p('src/shell-services.tsx'), buildShellServicesTsx(options.corePackage))
 
   tree.write(p('src/pages/app.tsx'), buildAppPageTsx())
   tree.write(p('src/pages/dashboard.tsx'), buildDashboardPageTsx(options))

@@ -4,6 +4,9 @@ export type { ShellRemoteModuleMeta, ShellResolvedModule, ShellRouteItem } from 
 export type { CoreEvent, EventBus, Unsubscribe } from './runtime/event-bus'
 export { createEventBus } from './runtime/event-bus'
 
+export type { ShellHostGetTokenResult, ShellHostServices } from './runtime/host-services'
+export { clearShellHostServices, getShellHostServices, setShellHostServices } from './runtime/host-services'
+
 export type { FederatedRemoteRegistration, FederationConfig } from './runtime/federation'
 export {
   configureFederation,

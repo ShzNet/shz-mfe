@@ -31,6 +31,13 @@
 - `getShellRemoteContextData`
 - `clearShellRemoteContext`
 
+### Host Services
+
+- `setShellHostServices`
+- `getShellHostServices`
+- `clearShellHostServices`
+- `ShellHostServices`
+
 ### Shell State
 
 - `createShellStateStore`
@@ -132,6 +139,36 @@ const shellState = createShellStateStore({
 shellState.subscribe((state) => {
   console.log(state.activeModuleId)
 })
+```
+
+## Host Service Bridge
+
+Use host services when a remote needs to call back into the host for session-aware data such as `getState()` or `getToken()`.
+
+```ts
+import { setShellHostServices, type ShellHostServices } from '@shznet/core'
+
+type HostShellState = {
+  auth: { email: string; token: string } | null
+}
+
+const services: ShellHostServices<HostShellState> = {
+  getState: () => ({ auth: currentAuth }),
+  getToken: () => currentAuth?.token ?? null,
+}
+
+setShellHostServices(services)
+```
+
+Remote shell components can receive the same object through `shellServices` props:
+
+```ts
+import type { ShellRemoteShellProps } from '@shznet/core'
+
+function RemoteShell({ shellServices }: ShellRemoteShellProps) {
+  const token = shellServices?.getToken?.()
+  return <div>{String(token)}</div>
+}
 ```
 
 ## When To Use This Package

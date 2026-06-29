@@ -1,21 +1,32 @@
-function buildShellTsx(shellComponentName, navComponentName) {
-  return `import AppPage from './pages/app'
+function buildShellTsx(shellComponentName, navComponentName, corePackage = '@shznet/core') {
+  return `import type { ShellRemoteComponentProps, ShellRemoteShellProps } from '${corePackage}'
+import AppPage from './pages/app'
 import ${navComponentName} from './nav'
+import { ModuleShellServicesProvider, type ModuleShellServices } from './shell-services'
 
-type RemoteShellProps = Record<string, never>
+type RemoteShellProps = ShellRemoteShellProps<unknown, ModuleShellServices>
+type RemoteMenuProps = ShellRemoteComponentProps<unknown, ModuleShellServices>
 
 type RemoteShellModule = {
   default: typeof ${shellComponentName}
-  Menu: typeof ${navComponentName}
+  Menu: typeof ${navComponentName}Menu
 }
 
-function ${shellComponentName}(_: RemoteShellProps) {
-  return <AppPage />
+function ${shellComponentName}({ shellServices }: RemoteShellProps) {
+  return (
+    <ModuleShellServicesProvider shellServices={shellServices}>
+      <AppPage />
+    </ModuleShellServicesProvider>
+  )
+}
+
+function ${navComponentName}Menu(_: RemoteMenuProps) {
+  return <${navComponentName} />
 }
 
 const remoteShellModule = {
   default: ${shellComponentName},
-  Menu: ${navComponentName},
+  Menu: ${navComponentName}Menu,
 } satisfies RemoteShellModule
 
 export const Menu = remoteShellModule.Menu

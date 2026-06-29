@@ -8,10 +8,12 @@ import {
   SidebarProvider,
   SidebarRail,
 } from '@shznet/components'
+import { clearShellHostServices, setShellHostServices } from '@shznet/core'
 import { PermissionOverlay } from '../components/app-loading-overlay'
 import { RemoteMenuSkeleton, RemotePageSkeleton, RemoteShellMenu, RemoteShellPage, useRemoteShell } from '../components/remote-shell'
 import { permissionCache } from '../lib/app-nav'
 import { checkPermission } from '../lib/app-permission'
+import { createHostShellServices } from '../lib/host-services'
 import { AppHeader } from './app-header'
 import { AppSidebarNav } from './app-sidebar-nav'
 import type { AppDefinition, AuthState } from '../types'
@@ -39,6 +41,13 @@ function AppShellInner({ app, auth, onSignOut }: AppShellProps) {
     navigate('/sign-in', { replace: true })
   }
 
+  const shellServices = createHostShellServices(auth, app, handleSignOut)
+
+  useEffect(() => {
+    setShellHostServices(shellServices)
+    return () => clearShellHostServices()
+  }, [shellServices])
+
   if (remoteShell.error) {
     return (
       <div className='flex min-h-svh items-center justify-center'>
@@ -54,14 +63,14 @@ function AppShellInner({ app, auth, onSignOut }: AppShellProps) {
           <AppSidebarNav app={app} />
         </SidebarHeader>
         <SidebarContent>
-          {isLoading ? <RemoteMenuSkeleton /> : <RemoteShellMenu state={remoteShell} />}
+          {isLoading ? <RemoteMenuSkeleton /> : <RemoteShellMenu state={remoteShell} shellServices={shellServices} />}
         </SidebarContent>
         <SidebarRail />
       </Sidebar>
       <SidebarInset>
         <AppHeader app={app} auth={auth} onSignOut={handleSignOut} />
         <main className='flex min-h-0 flex-1 flex-col p-4 md:p-6'>
-          {isLoading ? <RemotePageSkeleton /> : <RemoteShellPage state={remoteShell} />}
+          {isLoading ? <RemotePageSkeleton /> : <RemoteShellPage state={remoteShell} shellServices={shellServices} />}
         </main>
       </SidebarInset>
     </SidebarProvider>

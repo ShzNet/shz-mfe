@@ -3,6 +3,7 @@ function buildTypesTs() {
 
 export type AuthState = {
   email: string
+  token: string
 }
 
 export type ThemeMode = 'light' | 'dark' | 'system'

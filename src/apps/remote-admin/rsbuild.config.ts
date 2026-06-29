@@ -1,23 +1,28 @@
-import { defineConfig } from '@rsbuild/core'
+import { defineConfig, loadEnv } from '@rsbuild/core'
 import { pluginReact } from '@rsbuild/plugin-react'
 import { pluginModuleFederation } from '@module-federation/rsbuild-plugin'
 import { pluginTypeCheck } from '@rsbuild/plugin-type-check'
 import tailwindcss from '@tailwindcss/postcss'
 
+const { parsed } = loadEnv({
+  prefixes: ['PORT', 'BASE_PATH', 'ROUTE_BASE_PATH'],
+})
+
+const remotePort = Number(parsed.PORT?.trim() || '3001')
+const assetPrefix = parsed.BASE_PATH?.trim() || '/mfe/remote-admin'
+
 export default defineConfig({
   server: {
-    port: 3001,
+    port: remotePort,
     headers: { 'Access-Control-Allow-Origin': '*' },
   },
   dev: {
     writeToDisk: true,
-    assetPrefix: 'http://localhost:3001/',
-    client: { host: 'localhost', port: 3001 },
+    assetPrefix,
+    client: { host: 'localhost', port: remotePort },
   },
   output: {
-    assetPrefix:
-      (import.meta as { env?: Record<string, string | undefined> }).env?.REMOTE_REMOTE_ADMIN_URL ??
-      'http://localhost:3001/',
+    assetPrefix,
   },
   tools: {
     postcss: (config) => {
@@ -29,6 +34,9 @@ export default defineConfig({
   },
   source: {
     entry: { index: './src/main.tsx' },
+    define: {
+      __APP_ENV__: JSON.stringify(parsed),
+    },
   },
   html: {
     template: './index.html',
@@ -48,11 +56,11 @@ export default defineConfig({
         './Shell': './src/shell.tsx',
       },
       shared: {
-        '@shznet/core': { singleton: true, requiredVersion: false },
-        react: { singleton: true, requiredVersion: false },
-        'react-dom': { singleton: true, requiredVersion: false },
-        'react-router-dom': { singleton: true, requiredVersion: false },
-        '@shznet/components': { singleton: true, requiredVersion: false },
+        '@shznet/core': { singleton: true, eager: true, requiredVersion: false },
+        react: { singleton: true, eager: true, requiredVersion: false },
+        'react-dom': { singleton: true, eager: true, requiredVersion: false },
+        'react-router-dom': { singleton: true, eager: true, requiredVersion: false },
+        '@shznet/components': { singleton: true, eager: true, requiredVersion: false },
       },
     }),
   ],

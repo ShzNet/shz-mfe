@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react'
 import type { ShellMenuConfig } from '../contracts/menu'
 import type { ShellRemoteModuleMeta } from '../contracts/shell'
+import type { ShellHostServices } from './host-services'
 
 export interface ShellRemoteContextValue<TData = unknown> {
   remote: Partial<ShellRemoteModuleMeta> & Pick<ShellRemoteModuleMeta, 'remoteName'>
@@ -8,16 +9,18 @@ export interface ShellRemoteContextValue<TData = unknown> {
   data: TData
 }
 
-export interface ShellRemoteComponentProps<TData = unknown> {
+export interface ShellRemoteComponentProps<TData = unknown, THostServices = ShellHostServices> {
   shellContext?: ShellRemoteContextValue<TData>
+  shellServices?: THostServices
 }
 
-export interface ShellRemoteShellProps<TData = unknown> extends ShellRemoteComponentProps<TData> {
+export interface ShellRemoteShellProps<TData = unknown, THostServices = ShellHostServices>
+  extends ShellRemoteComponentProps<TData, THostServices> {
   onMenuChange?: (menu: ShellMenuConfig) => void
 }
 
-export interface ShellRemoteShellModule<TData = unknown> {
-  default: ComponentType<ShellRemoteShellProps<TData>>
+export interface ShellRemoteShellModule<TData = unknown, THostServices = ShellHostServices> {
+  default: ComponentType<ShellRemoteShellProps<TData, THostServices>>
   getInitialMenu?: () => ShellMenuConfig
 }
 

@@ -1,15 +1,16 @@
+import type { ShellRemoteShellProps } from '@shznet/core'
 import AppPage from './pages/app'
 import RemoteAdminMenu from './menu'
 
-type RemoteShellProps = Record<string, never>
+type RemoteShellProps = ShellRemoteShellProps
 
 type RemoteShellModule = {
   default: typeof RemoteAdminShell
   Menu: typeof RemoteAdminMenu
 }
 
-function RemoteAdminShell(_: RemoteShellProps) {
-  return <AppPage />
+function RemoteAdminShell({ shellServices }: RemoteShellProps) {
+  return <AppPage shellServices={shellServices} />
 }
 
 const remoteAdminShellModule = {

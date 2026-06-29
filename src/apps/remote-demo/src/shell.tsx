@@ -1,7 +1,8 @@
+import type { ShellRemoteShellProps } from '@shznet/core'
 import AppPage from './pages/app'
 import RemoteDemoMenu from './menu'
 
-type RemoteShellProps = Record<string, never>
+type RemoteShellProps = ShellRemoteShellProps
 
 type RemoteShellModule = {
   default: typeof RemoteShell

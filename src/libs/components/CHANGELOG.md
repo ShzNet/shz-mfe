@@ -1,3 +1,13 @@
+## 0.0.10 (2026-06-30)
+
+### 🚀 Features
+
+- add action bar component ([ba8a7d2](https://github.com/ShzNet/shz-mfe/commit/ba8a7d2))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.9 (2026-06-29)
 
 ### 🩹 Fixes

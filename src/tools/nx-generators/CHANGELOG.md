@@ -1,3 +1,7 @@
+## 0.0.10 (2026-06-30)
+
+This was a version bump only for nx-generators to align it with other projects, there were no code changes.
+
 ## 0.0.9 (2026-06-29)
 
 This was a version bump only for nx-generators to align it with other projects, there were no code changes.

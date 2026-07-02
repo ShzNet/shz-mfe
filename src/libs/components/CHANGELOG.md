@@ -1,3 +1,13 @@
+## 0.0.13 (2026-07-02)
+
+### 🩹 Fixes
+
+- **components:** show ImageUploader remove button on hover only ([e5f4a73](https://github.com/ShzNet/shz-mfe/commit/e5f4a73))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.12 (2026-07-02)
 
 ### 🚀 Features

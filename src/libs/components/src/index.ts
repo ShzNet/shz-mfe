@@ -31,6 +31,7 @@ export { ToggleGroup, ToggleGroupItem } from './ui/toggle-group'
 export { Autocomplete, type AutocompleteOption } from './ui/inputs/autocomplete'
 export { DateInput } from './ui/inputs/date-input'
 export { FileUploader } from './ui/inputs/file-uploader'
+export { ImageUploader } from './ui/inputs/image-uploader'
 export { MultiSelect, type MultiSelectOption } from './ui/inputs/multi-select'
 export { SplitButton, type SplitButtonItem } from './ui/inputs/split-button'
 

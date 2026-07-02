@@ -1,3 +1,14 @@
+## 0.0.11 (2026-07-02)
+
+### 🚀 Features
+
+- **components:** add generic EditableCell and EditableTable primitives ([2885836](https://github.com/ShzNet/shz-mfe/commit/2885836))
+
+### ❤️ Thank You
+
+- Chien Tran
+- Claude Sonnet 5
+
 ## 0.0.10 (2026-06-30)
 
 ### 🚀 Features

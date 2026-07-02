@@ -1,3 +1,13 @@
+## 0.0.12 (2026-07-02)
+
+### 🚀 Features
+
+- **components:** add ImageUploader for click-to-upload images ([e2d4161](https://github.com/ShzNet/shz-mfe/commit/e2d4161))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.11 (2026-07-02)
 
 ### 🚀 Features

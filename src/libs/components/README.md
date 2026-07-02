@@ -96,10 +96,13 @@ The component system starts from `shadcn-admin` and is adapted for this workspac
 | Overlay | `Tooltip` | Supported | Small hover hint |
 | Data Display | `Carousel` | Supported | Horizontal carousel |
 | Data Display | `Chart` | Supported | Recharts wrapper |
+| Data Display | `OverflowBadges` | Supported | Ordered badge list with truncation, `+N`, and overflow tooltip |
 | Data Display | `StatsCard` | Supported | KPI summary card |
 | Data Display | `Table` | Supported | Base table primitive |
 | Data Heavy | `ColumnManager` | Supported | Column visibility/order |
 | Data Heavy | `DataTable` | Supported | TanStack-based table |
+| Data Heavy | `EditableCell` | Supported | Inline editable table/cell value |
+| Data Heavy | `EditableTable` | Supported | Editable table composition |
 | Data Heavy | `FilterBuilder` | Supported | Rule/group filter builder |
 | Data Heavy | `Tree` | Supported | Hierarchical tree |
 | Data Heavy | `TreeTable` | Supported | Tree + columns |
@@ -120,6 +123,7 @@ The component system starts from `shadcn-admin` and is adapted for this workspac
 - `Switch`
 - `DateInput`
 - `FileUploader`
+- `ImageUploader`
 - `Dialog`
 
 ### Admin Tables
@@ -129,6 +133,7 @@ The component system starts from `shadcn-admin` and is adapted for this workspac
 - `FilterBuilder`
 - `Sheet`
 - `Badge`
+- `OverflowBadges`
 - `Button`
 - `DropdownMenu`
 
@@ -163,6 +168,46 @@ export function UsersPage() {
         <DataTable columns={[]} data={[]} />
       </CardContent>
     </Card>
+  )
+}
+```
+
+## Focused Examples
+
+### Ordered Overflow Badges
+
+Use `OverflowBadges` when a row or toolbar needs to show tags/actions in priority order. It renders as many full badges as fit, truncates the next visible badge if there is partial room, and groups the rest into a `+N` badge. Hovering `+N` shows the hidden labels.
+
+```tsx
+import { OverflowBadges } from '@shznet/components'
+
+export function ActionTags() {
+  return (
+    <OverflowBadges
+      items={[
+        { id: 'approve', label: 'Approve' },
+        { id: 'reject', label: 'Reject' },
+        { id: 'delegate', label: 'Delegate' },
+      ]}
+    />
+  )
+}
+```
+
+### Image Upload
+
+`ImageUploader` supports click-to-upload, preview, upload loading state, and optional clear action. When a preview image exists, hover shows only the clear button; it does not cover the image with the upload placeholder.
+
+```tsx
+import { ImageUploader } from '@shznet/components'
+
+export function LogoField() {
+  return (
+    <ImageUploader
+      previewUrl='/logo.svg'
+      onUpload={(file) => console.log(file)}
+      onClear={() => console.log('clear')}
+    />
   )
 }
 ```

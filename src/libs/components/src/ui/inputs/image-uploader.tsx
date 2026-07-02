@@ -86,9 +86,6 @@ export function ImageUploader({
             className='h-full w-full object-contain'
             onError={() => setFailed(true)}
           />
-          <div className='absolute inset-0 hidden items-center justify-center bg-black/50 group-hover:flex'>
-            <ImagePlus className={cn('text-white', iconSizeClasses[size])} />
-          </div>
           {!disabled && onClear && (
             <button
               type='button'

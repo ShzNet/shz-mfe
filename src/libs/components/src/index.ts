@@ -116,6 +116,7 @@ export { Calendar, type CalendarProps } from './ui/calendar'
 // Data display
 export { type CarouselApi, Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from './ui/carousel'
 export { type ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent, ChartStyle } from './ui/chart'
+export { OverflowBadges, type OverflowBadgeItem } from './ui/display/overflow-badges'
 export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from './ui/table'
 export { DataTable, SortableHeader, type ColumnDef, type ColumnFiltersState, type ColumnOrderState, type RowSelectionState, type VisibilityState } from './ui/data/data-table'
 export { ColumnManager, type ColumnManagerItem } from './ui/data/column-manager'

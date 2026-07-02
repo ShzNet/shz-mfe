@@ -1,6 +1,6 @@
 {
   "name": "create-shznet-workspace",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "type": "commonjs",
   "bin": {
     "create-shznet-workspace": "./bin/create-shznet-workspace.js"

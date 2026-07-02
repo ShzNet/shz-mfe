@@ -1,3 +1,13 @@
+## 0.0.14 (2026-07-02)
+
+### 🚀 Features
+
+- **components:** add overflow badges ([adfc86d](https://github.com/ShzNet/shz-mfe/commit/adfc86d))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.13 (2026-07-02)
 
 ### 🩹 Fixes

@@ -2,7 +2,6 @@ import * as React from 'react'
 import { ImagePlus, X } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { Skeleton } from '../skeleton'
-import { Button } from '../button'
 
 type ImageUploaderSize = 'md' | 'lg' | 'xl'
 
@@ -41,6 +40,7 @@ export function ImageUploader({
 }: ImageUploaderProps) {
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [failed, setFailed] = React.useState(false)
+  const isInactive = disabled || uploading
 
   React.useEffect(() => {
     setFailed(false)
@@ -52,41 +52,55 @@ export function ImageUploader({
     e.target.value = ''
   }
 
-  return (
-    <div className={cn('flex items-center gap-3', className)}>
-      <button
-        type='button'
-        disabled={disabled || uploading}
-        onClick={() => inputRef.current?.click()}
-        className={cn(
-          'group relative flex items-center justify-center overflow-hidden rounded-lg border bg-muted transition-colors hover:border-primary disabled:cursor-not-allowed disabled:opacity-60',
-          sizeClasses[size],
-        )}
-      >
-        {uploading ? (
-          <Skeleton className='h-full w-full' />
-        ) : previewUrl && !failed ? (
-          <>
-            <img
-              src={previewUrl}
-              alt=''
-              className='h-full w-full object-contain'
-              onError={() => setFailed(true)}
-            />
-            <div className='absolute inset-0 hidden items-center justify-center bg-black/50 group-hover:flex'>
-              <ImagePlus className={cn('text-white', iconSizeClasses[size])} />
-            </div>
-          </>
-        ) : (
-          <ImagePlus className={cn('text-muted-foreground group-hover:text-primary', iconSizeClasses[size])} />
-        )}
-      </button>
+  function handleClear(e: React.MouseEvent) {
+    e.stopPropagation()
+    onClear?.()
+  }
 
-      {previewUrl && !disabled && onClear && (
-        <Button type='button' variant='ghost' size='sm' onClick={onClear}>
-          <X className='size-4' />
-          Remove
-        </Button>
+  return (
+    <div
+      role='button'
+      tabIndex={isInactive ? -1 : 0}
+      aria-disabled={isInactive}
+      onClick={() => !isInactive && inputRef.current?.click()}
+      onKeyDown={(e) => {
+        if (isInactive) return
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          inputRef.current?.click()
+        }
+      }}
+      className={cn(
+        'group relative flex cursor-pointer items-center justify-center overflow-hidden rounded-lg border bg-muted transition-colors hover:border-primary aria-disabled:cursor-not-allowed aria-disabled:opacity-60',
+        sizeClasses[size],
+        className,
+      )}
+    >
+      {uploading ? (
+        <Skeleton className='h-full w-full' />
+      ) : previewUrl && !failed ? (
+        <>
+          <img
+            src={previewUrl}
+            alt=''
+            className='h-full w-full object-contain'
+            onError={() => setFailed(true)}
+          />
+          <div className='absolute inset-0 hidden items-center justify-center bg-black/50 group-hover:flex'>
+            <ImagePlus className={cn('text-white', iconSizeClasses[size])} />
+          </div>
+          {!disabled && onClear && (
+            <button
+              type='button'
+              onClick={handleClear}
+              className='absolute right-1 top-1 hidden rounded-full bg-black/60 p-1 text-white transition-colors hover:bg-black/80 group-hover:block'
+            >
+              <X className='size-3.5' />
+            </button>
+          )}
+        </>
+      ) : (
+        <ImagePlus className={cn('text-muted-foreground group-hover:text-primary', iconSizeClasses[size])} />
       )}
 
       <input

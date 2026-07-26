@@ -88,7 +88,7 @@ export function EditableCell<V = string>({
       disabled={disabled}
       onClick={() => setEditing(true)}
       className={cn(
-        'block h-8 w-full min-w-0 rounded-md border border-transparent px-2 text-left text-sm outline-none transition-colors hover:border-input hover:bg-muted focus:outline-none focus-visible:outline-none disabled:cursor-not-allowed disabled:hover:border-transparent disabled:hover:bg-transparent',
+        'block h-8 w-full min-w-0 rounded-md border border-transparent px-2 text-left text-sm outline-none disabled:cursor-not-allowed',
         className
       )}
     >

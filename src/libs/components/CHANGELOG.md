@@ -1,3 +1,13 @@
+## 0.0.16 (2026-07-26)
+
+### 🩹 Fixes
+
+- **components:** remove hover/focus affordance from EditableCell read state ([3b1b25b](https://github.com/ShzNet/shz-mfe/commit/3b1b25b))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.15 (2026-07-26)
 
 ### 🩹 Fixes

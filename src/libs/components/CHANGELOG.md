@@ -1,3 +1,13 @@
+## 0.0.15 (2026-07-26)
+
+### 🩹 Fixes
+
+- **components:** remove focus outline on EditableCell read-mode button ([aa56d5c](https://github.com/ShzNet/shz-mfe/commit/aa56d5c))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.14 (2026-07-02)
 
 ### 🚀 Features

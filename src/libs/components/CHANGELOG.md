@@ -1,3 +1,14 @@
+## 0.0.18 (2026-07-27)
+
+### 🩹 Fixes
+
+- **components:** rebalance CommandBar gap and drop extra separator margin ([6a1c5c8](https://github.com/ShzNet/shz-mfe/commit/6a1c5c8))
+
+### ❤️ Thank You
+
+- Chien Tran
+- Claude Sonnet 5
+
 ## 0.0.17 (2026-07-27)
 
 ### 🩹 Fixes

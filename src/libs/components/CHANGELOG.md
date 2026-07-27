@@ -1,3 +1,14 @@
+## 0.0.17 (2026-07-27)
+
+### 🩹 Fixes
+
+- **components:** tighten CommandBar spacing and its width measurement constant ([7280941](https://github.com/ShzNet/shz-mfe/commit/7280941))
+
+### ❤️ Thank You
+
+- Chien Tran
+- Claude Sonnet 5
+
 ## 0.0.16 (2026-07-26)
 
 ### 🩹 Fixes

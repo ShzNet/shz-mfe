@@ -30,7 +30,7 @@ export type CommandBarItem =
     }
 
 const MORE_BTN_WIDTH = 40
-const GAP = 4
+const GAP = 6
 
 export function CommandBar({ items }: { items: CommandBarItem[] }) {
   const containerRef = React.useRef<HTMLDivElement>(null)
@@ -74,12 +74,12 @@ export function CommandBar({ items }: { items: CommandBarItem[] }) {
   const overflow = activeItems.slice(visibleCount)
 
   return (
-    <div ref={containerRef} className='relative flex min-w-0 flex-1 items-center gap-1 overflow-hidden'>
+    <div ref={containerRef} className='relative flex min-w-0 flex-1 items-center gap-1.5 overflow-hidden'>
       {/* Hidden measurement row */}
       <div
         ref={measureRef}
         aria-hidden
-        className='pointer-events-none invisible absolute inset-0 flex items-center gap-1'
+        className='pointer-events-none invisible absolute inset-0 flex items-center gap-1.5'
       >
         {activeItems.map((item) =>
           item.type === 'separator' ? (
@@ -96,7 +96,7 @@ export function CommandBar({ items }: { items: CommandBarItem[] }) {
       {/* Visible items */}
       {shown.map((item) =>
         item.type === 'separator' ? (
-          <Separator key={item.id} orientation='vertical' className='mx-1 h-5 shrink-0' />
+          <Separator key={item.id} orientation='vertical' className='h-5 shrink-0' />
         ) : (
           <Button
             key={item.id}

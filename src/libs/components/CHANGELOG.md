@@ -1,3 +1,14 @@
+## 0.0.19 (2026-07-27)
+
+### 🩹 Fixes
+
+- **components:** give Table header a distinct background from the body ([736939b](https://github.com/ShzNet/shz-mfe/commit/736939b))
+
+### ❤️ Thank You
+
+- Chien Tran
+- Claude Sonnet 5
+
 ## 0.0.18 (2026-07-27)
 
 ### 🩹 Fixes

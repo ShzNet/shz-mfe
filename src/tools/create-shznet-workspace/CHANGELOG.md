@@ -1,3 +1,7 @@
+## 0.0.19 (2026-07-27)
+
+This was a version bump only for create-shznet-workspace to align it with other projects, there were no code changes.
+
 ## 0.0.18 (2026-07-27)
 
 This was a version bump only for create-shznet-workspace to align it with other projects, there were no code changes.

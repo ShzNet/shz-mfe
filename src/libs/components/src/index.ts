@@ -1,4 +1,5 @@
 export { cn } from './lib/utils'
+export { ComponentsLocaleProvider, useComponentsLocale, type ComponentsLocale, type ComponentsLocaleOverrides, type DataTableMessages, type PaginationMessages } from './i18n/components-locale'
 
 // Core primitives
 export { Alert, AlertTitle, AlertDescription } from './ui/alert'

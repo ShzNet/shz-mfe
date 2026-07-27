@@ -30,6 +30,7 @@ import {
   DropdownMenuTrigger,
 } from '../dropdown-menu'
 import { cn } from '../../lib/utils'
+import { useComponentsLocale } from '../../i18n/components-locale'
 
 export { type ColumnDef }
 export { type ColumnFiltersState, type ColumnOrderState, type RowSelectionState, type VisibilityState }
@@ -69,7 +70,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   searchColumn,
-  searchPlaceholder = 'Search…',
+  searchPlaceholder,
   pageSize = 10,
   className,
   headerMenu = false,
@@ -88,6 +89,7 @@ export function DataTable<TData, TValue>({
   tableWrapperClassName,
   getRowId,
 }: DataTableProps<TData, TValue>) {
+  const { dataTable: messages } = useComponentsLocale()
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [internalColumnFilters, setInternalColumnFilters] = React.useState<ColumnFiltersState>([])
   const [internalColumnVisibility, setInternalColumnVisibility] = React.useState<VisibilityState>({})
@@ -154,7 +156,7 @@ export function DataTable<TData, TValue>({
         <div className='flex items-center gap-2'>
           {searchColumn && (
             <Input
-              placeholder={searchPlaceholder}
+              placeholder={searchPlaceholder ?? messages.searchPlaceholder}
               value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ''}
               onChange={(e) => table.getColumn(searchColumn)?.setFilterValue(e.target.value)}
               className='max-w-xs'
@@ -164,7 +166,7 @@ export function DataTable<TData, TValue>({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant='outline' size='sm' className='ml-auto gap-1'>
-                  Columns <ChevronDown className='size-4 opacity-50' />
+                  {messages.columns} <ChevronDown className='size-4 opacity-50' />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align='end'>
@@ -225,7 +227,7 @@ export function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className='h-24 text-center text-muted-foreground'>
-                  No results.
+                  {messages.noResults}
                 </TableCell>
               </TableRow>
             )}
@@ -237,11 +239,10 @@ export function DataTable<TData, TValue>({
       <div className='flex items-center justify-between border-t px-3 py-3 text-sm text-muted-foreground'>
         <div className='flex items-center gap-4'>
           <span>
-            {table.getFilteredSelectedRowModel().rows.length} of{' '}
-            {table.getFilteredRowModel().rows.length} row(s) selected
+            {messages.rowsSelected(table.getFilteredSelectedRowModel().rows.length, table.getFilteredRowModel().rows.length)}
           </span>
           <div className='flex items-center gap-2'>
-            <span>Rows per page</span>
+            <span>{messages.rowsPerPage}</span>
             <Select
               value={String(table.getState().pagination.pageSize)}
               onValueChange={(value) => table.setPageSize(Number(value))}
@@ -265,10 +266,10 @@ export function DataTable<TData, TValue>({
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            {messages.previous}
           </Button>
           <span className='tabular-nums'>
-            Page {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
+            {messages.page(table.getState().pagination.pageIndex + 1, table.getPageCount())}
           </span>
           <Button
             variant='outline'
@@ -276,7 +277,7 @@ export function DataTable<TData, TValue>({
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            {messages.next}
           </Button>
         </div>
       </div>
@@ -304,10 +305,11 @@ function HeaderMenu<TData, TValue>({
   label: string
   filterConfig?: HeaderFilterConfig
 }) {
+  const { dataTable: messages } = useComponentsLocale()
   const canSort = column.getCanSort()
   const canFilter = column.getCanFilter()
   const filterValue = (column.getFilterValue() as string) ?? ''
-  const config = filterConfig ?? { type: 'text', placeholder: `Filter ${label}...` as string }
+  const config = filterConfig ?? { type: 'text', placeholder: messages.filterByColumn(label) }
 
   return (
     <div className='flex items-center gap-1'>
@@ -333,7 +335,7 @@ function HeaderMenu<TData, TValue>({
             {canFilter && config.type === 'text' && (
               <div className='p-2'>
                 <Input
-                  placeholder={config.placeholder ?? `Filter ${label}...`}
+                  placeholder={config.placeholder ?? messages.filterByColumn(label)}
                   value={filterValue}
                   onChange={(e) => column.setFilterValue(e.target.value)}
                   className='h-8'
@@ -346,7 +348,7 @@ function HeaderMenu<TData, TValue>({
                   className='w-full rounded px-2 py-1 text-left text-sm hover:bg-accent'
                   onClick={() => column.setFilterValue('')}
                 >
-                  {config.allLabel ?? 'All'}
+                  {config.allLabel ?? messages.all}
                 </button>
                 {config.options.map((opt) => (
                   <button

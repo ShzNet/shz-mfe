@@ -3,12 +3,14 @@ import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from 'lucide-re
 import { cn } from '../lib/utils'
 import { buttonVariants } from './button'
 import { type VariantProps } from 'class-variance-authority'
+import { useComponentsLocale } from '../i18n/components-locale'
 
 function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
+  const { pagination: messages } = useComponentsLocale()
   return (
     <nav
       role='navigation'
-      aria-label='pagination'
+      aria-label={messages.navigationLabel}
       data-slot='pagination'
       className={cn('mx-auto flex w-full justify-center', className)}
       {...props}
@@ -51,34 +53,37 @@ function PaginationLink({ className, isActive, size = 'icon', ...props }: Pagina
 }
 
 function PaginationPrevious({ className, ...props }: React.ComponentProps<typeof PaginationLink>) {
+  const { pagination: messages } = useComponentsLocale()
   return (
     <PaginationLink
-      aria-label='Go to previous page'
+      aria-label={messages.goToPreviousPage}
       size='default'
       className={cn('gap-1 pl-2.5', className)}
       {...props}
     >
       <ChevronLeftIcon className='size-4' />
-      <span>Previous</span>
+      <span>{messages.previous}</span>
     </PaginationLink>
   )
 }
 
 function PaginationNext({ className, ...props }: React.ComponentProps<typeof PaginationLink>) {
+  const { pagination: messages } = useComponentsLocale()
   return (
     <PaginationLink
-      aria-label='Go to next page'
+      aria-label={messages.goToNextPage}
       size='default'
       className={cn('gap-1 pr-2.5', className)}
       {...props}
     >
-      <span>Next</span>
+      <span>{messages.next}</span>
       <ChevronRightIcon className='size-4' />
     </PaginationLink>
   )
 }
 
 function PaginationEllipsis({ className, ...props }: React.ComponentProps<'span'>) {
+  const { pagination: messages } = useComponentsLocale()
   return (
     <span
       aria-hidden
@@ -87,7 +92,7 @@ function PaginationEllipsis({ className, ...props }: React.ComponentProps<'span'
       {...props}
     >
       <MoreHorizontalIcon className='size-4' />
-      <span className='sr-only'>More pages</span>
+      <span className='sr-only'>{messages.morePages}</span>
     </span>
   )
 }

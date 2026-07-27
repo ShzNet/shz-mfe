@@ -1,3 +1,13 @@
+## 0.0.20 (2026-07-27)
+
+### 🚀 Features
+
+- **components:** add locale provider for table controls ([e95d4d8](https://github.com/ShzNet/shz-mfe/commit/e95d4d8))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.19 (2026-07-27)
 
 ### 🩹 Fixes

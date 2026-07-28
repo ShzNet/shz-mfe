@@ -1,3 +1,13 @@
+## 0.0.21 (2026-07-28)
+
+### 🚀 Features
+
+- **components:** support server pagination and select all ([2bd76b1](https://github.com/ShzNet/shz-mfe/commit/2bd76b1))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.20 (2026-07-27)
 
 ### 🚀 Features

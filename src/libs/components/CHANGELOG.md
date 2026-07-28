@@ -1,3 +1,13 @@
+## 0.0.22 (2026-07-28)
+
+### 🩹 Fixes
+
+- **components:** refetch on server page size change ([d9fb7f7](https://github.com/ShzNet/shz-mfe/commit/d9fb7f7))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.21 (2026-07-28)
 
 ### 🚀 Features

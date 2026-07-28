@@ -43,8 +43,10 @@ interface DataTableProps<TData, TValue> {
   searchColumn?: string
   searchPlaceholder?: string
   pageSize?: number
-  /** Enables server-side pagination. `total` is the number of matching records, not `data.length`. */
-  pagination?: { pageIndex: number; pageSize: number; total: number }
+  /** Enables server-side pagination when supplied with `totalRecords`. */
+  pagination?: { pageIndex: number; pageSize: number }
+  /** Total matching records returned by the API, not the current page's `data.length`. */
+  totalRecords?: number
   onPaginationChange?: (pagination: { pageIndex: number; pageSize: number }) => void
   /**
    * Adds a select-all-matching checkbox to the table footer. The parent owns the
@@ -87,6 +89,7 @@ export function DataTable<TData, TValue>({
   searchPlaceholder,
   pageSize = 10,
   pagination,
+  totalRecords,
   onPaginationChange,
   selectAllMatching,
   className,
@@ -150,13 +153,13 @@ export function DataTable<TData, TValue>({
     onRowSelectionChange?.(updater)
   }, [controlledRowSelection, onRowSelectionChange, rowSelection])
 
-  const isServerPaginated = pagination !== undefined
+  const isServerPaginated = pagination !== undefined && totalRecords !== undefined
   const table = useReactTable({
     data,
     columns,
     initialState: { pagination: { pageSize } },
     manualPagination: isServerPaginated,
-    pageCount: isServerPaginated ? Math.max(1, Math.ceil(pagination.total / pagination.pageSize)) : undefined,
+    pageCount: isServerPaginated ? Math.max(1, Math.ceil(totalRecords / pagination.pageSize)) : undefined,
     onPaginationChange: isServerPaginated
       ? (updater) => {
           const next = resolveUpdater(updater, { pageIndex: pagination.pageIndex, pageSize: pagination.pageSize })
@@ -182,6 +185,15 @@ export function DataTable<TData, TValue>({
       ...(isServerPaginated ? { pagination: { pageIndex: pagination.pageIndex, pageSize: pagination.pageSize } } : {}),
     },
   })
+
+  const handlePageSizeChange = React.useCallback((value: string) => {
+    const nextPageSize = Number(value)
+    if (isServerPaginated) {
+      onPaginationChange?.({ pageIndex: 0, pageSize: nextPageSize })
+      return
+    }
+    table.setPageSize(nextPageSize)
+  }, [isServerPaginated, onPaginationChange, table])
 
   return (
     <div className={cn('flex min-h-0 flex-col space-y-3', className)}>
@@ -288,7 +300,7 @@ export function DataTable<TData, TValue>({
             <span>{messages.rowsPerPage}</span>
             <Select
               value={String(table.getState().pagination.pageSize)}
-              onValueChange={(value) => table.setPageSize(Number(value))}
+              onValueChange={handlePageSizeChange}
             >
               <SelectTrigger size='sm' className='h-8 w-[88px]'>
                 <SelectValue />

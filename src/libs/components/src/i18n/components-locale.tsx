@@ -5,6 +5,7 @@ export type DataTableMessages = {
   columns: string
   noResults: string
   rowsPerPage: string
+  selectAllMatching: string
   previous: string
   next: string
   rowsSelected: (selected: number, total: number) => string
@@ -27,7 +28,7 @@ export type ComponentsLocaleOverrides = { dataTable?: Partial<DataTableMessages>
 
 const defaultLocale: ComponentsLocale = {
   dataTable: {
-    searchPlaceholder: 'Search…', columns: 'Columns', noResults: 'No results.', rowsPerPage: 'Rows per page', previous: 'Previous', next: 'Next',
+    searchPlaceholder: 'Search…', columns: 'Columns', noResults: 'No results.', rowsPerPage: 'Rows per page', selectAllMatching: 'Select all matching', previous: 'Previous', next: 'Next',
     rowsSelected: (selected, total) => `${selected} of ${total} row(s) selected`, page: (index, total) => `Page ${index} / ${total}`,
     filterByColumn: (column) => `Filter ${column}...`, all: 'All',
   },

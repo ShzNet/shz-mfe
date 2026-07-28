@@ -19,6 +19,7 @@ import {
 } from '@tanstack/react-table'
 import { ArrowUpDown, ChevronDown } from 'lucide-react'
 import { Button } from '../button'
+import { Checkbox } from '../checkbox'
 import { Input } from '../input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../select'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../table'
@@ -42,6 +43,19 @@ interface DataTableProps<TData, TValue> {
   searchColumn?: string
   searchPlaceholder?: string
   pageSize?: number
+  /** Enables server-side pagination. `total` is the number of matching records, not `data.length`. */
+  pagination?: { pageIndex: number; pageSize: number; total: number }
+  onPaginationChange?: (pagination: { pageIndex: number; pageSize: number }) => void
+  /**
+   * Adds a select-all-matching checkbox to the table footer. The parent owns the
+   * selection because selecting every matching record may require an API request.
+   */
+  selectAllMatching?: {
+    checked: boolean
+    onCheckedChange: (checked: boolean) => void
+    disabled?: boolean
+    label?: string
+  }
   className?: string
   /** Show header dropdown on each column with sort + quick filter */
   headerMenu?: boolean
@@ -72,6 +86,9 @@ export function DataTable<TData, TValue>({
   searchColumn,
   searchPlaceholder,
   pageSize = 10,
+  pagination,
+  onPaginationChange,
+  selectAllMatching,
   className,
   headerMenu = false,
   headerFilterConfig,
@@ -133,10 +150,19 @@ export function DataTable<TData, TValue>({
     onRowSelectionChange?.(updater)
   }, [controlledRowSelection, onRowSelectionChange, rowSelection])
 
+  const isServerPaginated = pagination !== undefined
   const table = useReactTable({
     data,
     columns,
     initialState: { pagination: { pageSize } },
+    manualPagination: isServerPaginated,
+    pageCount: isServerPaginated ? Math.max(1, Math.ceil(pagination.total / pagination.pageSize)) : undefined,
+    onPaginationChange: isServerPaginated
+      ? (updater) => {
+          const next = resolveUpdater(updater, { pageIndex: pagination.pageIndex, pageSize: pagination.pageSize })
+          onPaginationChange?.(next)
+        }
+      : undefined,
     onSortingChange: setSorting,
     onColumnFiltersChange: handleColumnFiltersChange,
     onColumnVisibilityChange: handleColumnVisibilityChange,
@@ -147,7 +173,14 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getRowId,
-    state: { sorting, columnFilters, columnVisibility, columnOrder, rowSelection },
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      columnOrder,
+      rowSelection,
+      ...(isServerPaginated ? { pagination: { pageIndex: pagination.pageIndex, pageSize: pagination.pageSize } } : {}),
+    },
   })
 
   return (
@@ -238,6 +271,16 @@ export function DataTable<TData, TValue>({
       {/* Footer */}
       <div className='flex items-center justify-between border-t px-3 py-3 text-sm text-muted-foreground'>
         <div className='flex items-center gap-4'>
+          {selectAllMatching && (
+            <label className='flex cursor-pointer items-center gap-2 whitespace-nowrap'>
+              <Checkbox
+                checked={selectAllMatching.checked}
+                disabled={selectAllMatching.disabled}
+                onCheckedChange={(checked) => selectAllMatching.onCheckedChange(checked === true)}
+              />
+              {selectAllMatching.label ?? messages.selectAllMatching}
+            </label>
+          )}
           <span>
             {messages.rowsSelected(table.getFilteredSelectedRowModel().rows.length, table.getFilteredRowModel().rows.length)}
           </span>

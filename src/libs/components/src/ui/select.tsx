@@ -57,12 +57,26 @@ function SelectScrollDownButton({ className, ...props }: React.ComponentProps<ty
   )
 }
 
+const SelectSearchContext = React.createContext('')
+
 function SelectContent({
   className,
   children,
   position = 'popper',
+  searchable = false,
+  searchPlaceholder = 'Search...',
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Content>) {
+}: React.ComponentProps<typeof SelectPrimitive.Content> & { searchable?: boolean; searchPlaceholder?: string }) {
+  const [search, setSearch] = React.useState('')
+  const inputRef = React.useRef<HTMLInputElement>(null)
+
+  React.useEffect(() => {
+    if (!searchable) return
+    // Radix focuses the selected item on open; steal focus back to the search input on the next tick.
+    const id = window.setTimeout(() => inputRef.current?.focus(), 0)
+    return () => window.clearTimeout(id)
+  }, [searchable])
+
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
@@ -77,13 +91,27 @@ function SelectContent({
         {...props}
       >
         <SelectScrollUpButton />
+        {searchable && (
+          <div className='sticky top-0 z-10 -mx-1 -mt-1 mb-1 flex items-center border-b bg-popover px-2'>
+            <input
+              ref={inputRef}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key !== 'Escape') e.stopPropagation()
+              }}
+              placeholder={searchPlaceholder}
+              className='placeholder:text-muted-foreground h-9 w-full bg-transparent text-sm outline-none'
+            />
+          </div>
+        )}
         <SelectPrimitive.Viewport
           className={cn(
             'p-1',
             position === 'popper' && 'h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]'
           )}
         >
-          {children}
+          <SelectSearchContext.Provider value={searchable ? search : ''}>{children}</SelectSearchContext.Provider>
         </SelectPrimitive.Viewport>
         <SelectScrollDownButton />
       </SelectPrimitive.Content>
@@ -102,6 +130,10 @@ function SelectLabel({ className, ...props }: React.ComponentProps<typeof Select
 }
 
 function SelectItem({ className, children, ...props }: React.ComponentProps<typeof SelectPrimitive.Item>) {
+  const search = React.useContext(SelectSearchContext)
+  if (search && typeof children === 'string' && !children.toLowerCase().includes(search.toLowerCase())) {
+    return null
+  }
   return (
     <SelectPrimitive.Item
       data-slot='select-item'

@@ -1,3 +1,13 @@
+## 0.0.26 (2026-08-08)
+
+### 🩹 Fixes
+
+- **components:** make combobox Popovers modal so wheel-scroll works inside a Dialog ([7376951](https://github.com/ShzNet/shz-mfe/commit/7376951))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.25 (2026-08-08)
 
 ### 🚀 Features

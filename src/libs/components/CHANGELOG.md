@@ -1,3 +1,14 @@
+## 0.0.24 (2026-08-08)
+
+### 🩹 Fixes
+
+- **components:** make ScrollArea scrollable when only max-height is set ([37ef92f](https://github.com/ShzNet/shz-mfe/commit/37ef92f))
+- **components:** don't select node when clicking the Tree expand chevron ([96304b0](https://github.com/ShzNet/shz-mfe/commit/96304b0))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.23 (2026-08-08)
 
 ### 🚀 Features

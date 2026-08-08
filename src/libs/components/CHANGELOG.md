@@ -1,3 +1,13 @@
+## 0.0.23 (2026-08-08)
+
+### 🚀 Features
+
+- **components:** add search filter to MultiSelect and Select ([713ed4c](https://github.com/ShzNet/shz-mfe/commit/713ed4c))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.22 (2026-07-28)
 
 ### 🩹 Fixes

@@ -71,12 +71,16 @@ interface DataTableProps<TData, TValue> {
   onColumnOrderChange?: OnChangeFn<ColumnOrderState>
   rowSelection?: RowSelectionState
   onRowSelectionChange?: OnChangeFn<RowSelectionState>
+  /** Clicking anywhere on a row (outside interactive controls) triggers this, e.g. to open a detail view. */
+  onRowClick?: (row: TData) => void
   showToolbar?: boolean
   showColumnToggle?: boolean
   stickyHeader?: boolean
   tableWrapperClassName?: string
   getRowId?: (originalRow: TData, index: number, parent?: RowData) => string
 }
+
+const INTERACTIVE_SELECTOR = 'button, a, input, textarea, [role="checkbox"], [role="combobox"], [role="switch"]'
 
 type HeaderFilterConfig =
   | { type: 'text'; placeholder?: string }
@@ -103,6 +107,7 @@ export function DataTable<TData, TValue>({
   onColumnOrderChange,
   rowSelection: controlledRowSelection,
   onRowSelectionChange,
+  onRowClick,
   showToolbar = true,
   showColumnToggle = true,
   stickyHeader = false,
@@ -261,7 +266,19 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                  className={cn(onRowClick && 'cursor-pointer')}
+                  onClick={
+                    onRowClick
+                      ? (event) => {
+                          if ((event.target as HTMLElement).closest(INTERACTIVE_SELECTOR)) return
+                          onRowClick(row.original)
+                        }
+                      : undefined
+                  }
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

@@ -37,7 +37,9 @@ export function MultiSelect({
 
   return (
     <div className='space-y-2'>
-      <Popover open={open} onOpenChange={setOpen}>
+      {/* modal: non-modal Popover has no scroll lock of its own, so wheel events over its
+          portaled content get swallowed by an ancestor Dialog's scroll lock instead. */}
+      <Popover open={open} onOpenChange={setOpen} modal>
         <PopoverTrigger asChild>
           <Button variant='outline' role='combobox' aria-expanded={open} className='w-full justify-between'>
             {value.length ? `${value.length} selected` : placeholder}

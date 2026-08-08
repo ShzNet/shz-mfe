@@ -22,7 +22,9 @@ export function Autocomplete({ options, value, onValueChange, placeholder = 'Sel
   const [open, setOpen] = React.useState(false)
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    // modal: non-modal Popover has no scroll lock of its own, so wheel events over its
+    // portaled content get swallowed by an ancestor Dialog's scroll lock instead.
+    <Popover open={open} onOpenChange={setOpen} modal>
       <PopoverTrigger asChild>
         <Button variant='outline' role='combobox' aria-expanded={open} className='w-full justify-between'>
           {value ? options.find((o) => o.value === value)?.label : placeholder}

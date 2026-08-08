@@ -1,8 +1,10 @@
 import * as React from 'react'
-import { X } from 'lucide-react'
+import { Check, ChevronsUpDown, X } from 'lucide-react'
+import { cn } from '../../lib/utils'
 import { Badge } from '../badge'
 import { Button } from '../button'
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '../dropdown-menu'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '../command'
+import { Popover, PopoverContent, PopoverTrigger } from '../popover'
 
 export interface MultiSelectOption {
   label: string
@@ -14,35 +16,54 @@ interface MultiSelectProps {
   value: string[]
   onValueChange: (value: string[]) => void
   placeholder?: string
+  searchPlaceholder?: string
+  emptyText?: string
 }
 
-export function MultiSelect({ options, value, onValueChange, placeholder = 'Select options' }: MultiSelectProps) {
+export function MultiSelect({
+  options,
+  value,
+  onValueChange,
+  placeholder = 'Select options',
+  searchPlaceholder = 'Search...',
+  emptyText = 'No option found.',
+}: MultiSelectProps) {
+  const [open, setOpen] = React.useState(false)
+
+  function toggle(optionValue: string) {
+    if (value.includes(optionValue)) onValueChange(value.filter((v) => v !== optionValue))
+    else onValueChange([...value, optionValue])
+  }
+
   return (
     <div className='space-y-2'>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant='outline' className='w-full justify-start'>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button variant='outline' role='combobox' aria-expanded={open} className='w-full justify-between'>
             {value.length ? `${value.length} selected` : placeholder}
+            <ChevronsUpDown className='ml-2 size-4 shrink-0 opacity-50' />
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className='w-(--radix-dropdown-menu-trigger-width)'>
-          {options.map((opt) => {
-            const checked = value.includes(opt.value)
-            return (
-              <DropdownMenuCheckboxItem
-                key={opt.value}
-                checked={checked}
-                onCheckedChange={(next) => {
-                  if (next) onValueChange([...value, opt.value])
-                  else onValueChange(value.filter((v) => v !== opt.value))
-                }}
-              >
-                {opt.label}
-              </DropdownMenuCheckboxItem>
-            )
-          })}
-        </DropdownMenuContent>
-      </DropdownMenu>
+        </PopoverTrigger>
+        <PopoverContent className='w-(--radix-popover-trigger-width) p-0'>
+          <Command>
+            <CommandInput placeholder={searchPlaceholder} />
+            <CommandList>
+              <CommandEmpty>{emptyText}</CommandEmpty>
+              <CommandGroup>
+                {options.map((opt) => {
+                  const checked = value.includes(opt.value)
+                  return (
+                    <CommandItem key={opt.value} value={opt.label} onSelect={() => toggle(opt.value)}>
+                      <Check className={cn('mr-2 size-4', checked ? 'opacity-100' : 'opacity-0')} />
+                      {opt.label}
+                    </CommandItem>
+                  )
+                })}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
 
       <div className='flex flex-wrap gap-2'>
         {value.map((v) => {

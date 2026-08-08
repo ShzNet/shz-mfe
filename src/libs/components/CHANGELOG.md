@@ -1,3 +1,13 @@
+## 0.0.25 (2026-08-08)
+
+### 🚀 Features
+
+- **components:** add onRowClick to DataTable ([9721a73](https://github.com/ShzNet/shz-mfe/commit/9721a73))
+
+### ❤️ Thank You
+
+- Chien Tran
+
 ## 0.0.24 (2026-08-08)
 
 ### 🩹 Fixes

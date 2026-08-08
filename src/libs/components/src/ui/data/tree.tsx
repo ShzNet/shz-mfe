@@ -45,13 +45,17 @@ function TreeItem({ node, depth, selectedId, expandedIds, onSelect, onToggle, re
             ? 'bg-accent text-accent-foreground'
             : 'hover:bg-muted/60 text-foreground',
         )}
-        onClick={() => {
-          if (hasChildren) onToggle(node.id)
-          onSelect(node)
-        }}
+        onClick={() => onSelect(node)}
       >
         {/* Expand chevron */}
-        <span className='flex size-4 shrink-0 items-center justify-center'>
+        <span
+          className={cn('flex size-4 shrink-0 items-center justify-center', hasChildren && 'cursor-pointer')}
+          onClick={(event) => {
+            if (!hasChildren) return
+            event.stopPropagation()
+            onToggle(node.id)
+          }}
+        >
           {hasChildren && (
             <ChevronRightIcon
               className={cn('size-3.5 text-muted-foreground transition-transform', isExpanded && 'rotate-90')}
